@@ -38,7 +38,7 @@ from typing import Any, Dict, List, Optional
 
 from . import __version__, errors, transfer
 from .audit import read_events
-from .config import Config, load as load_config, validate as validate_config
+from .config import Config, load as load_config, validate as validate_config, require_path
 from .diagnostics import gather as gather_diagnostics
 from .errors import AjError
 from .memory import MemoryStore
@@ -313,11 +313,11 @@ def build_parser() -> argparse.ArgumentParser:
 
 # --- config helpers ------------------------------------------------------
 def _tasks_dir(config: Config) -> Path:
-    return Path(str(config.get("core.data_dir"))).expanduser()
+    return require_path(config, "core.data_dir")
 
 
 def _audit_dir(config: Config) -> Path:
-    return Path(str(config.get("core.audit_dir"))).expanduser()
+    return require_path(config, "core.audit_dir")
 
 
 def _memory(config: Config) -> Optional[MemoryStore]:

@@ -25,9 +25,28 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Protocol
 
+from . import errors
 from .locking import file_lock
 
 DEFAULT_AUDIT_DIR = Path(os.path.expanduser("~")) / ".local" / "share" / "aj" / "audit"
+_NULL_PATH_TEXT = {"none", "null"}
+
+
+def _validate_audit_directory(directory: str | Path) -> Path:
+    if directory is None:
+        raise errors.ConfigError("core.audit_dir must be a path string, not null")
+    if isinstance(directory, bool):
+        raise errors.ConfigError("core.audit_dir must be a path string, not a boolean")
+    if not isinstance(directory, (str, Path)):
+        raise errors.ConfigError(
+            f"core.audit_dir must be a path string, not {type(directory).__name__}")
+    text = str(directory).strip()
+    if not text:
+        raise errors.ConfigError("core.audit_dir must be a non-empty path")
+    if text.lower() in _NULL_PATH_TEXT:
+        raise errors.ConfigError(
+            f"core.audit_dir must be a filesystem path, not {text!r}")
+    return Path(text).expanduser()
 
 SECRET_HINTS = (
     "token", "password", "passwd", "secret", "api_key", "apikey", "authorization",
@@ -113,7 +132,7 @@ class JsonlAuditSink:
     """Append-only monthly JSONL files, mode 0600."""
 
     def __init__(self, directory: str | Path = DEFAULT_AUDIT_DIR, clock=None):
-        self.directory = Path(directory)
+        self.directory = _validate_audit_directory(directory)
         self._clock = clock or _dt.datetime.now
 
     def path_for_now(self) -> Path:
@@ -121,6 +140,8 @@ class JsonlAuditSink:
 
     def write(self, event: AuditEvent) -> None:
         path = self.path_for_now()
+        if path.name == "events-.jsonl":
+            raise errors.ConfigError(f"core.audit_dir resolved to invalid path {path.parent!s}")
         path.parent.mkdir(parents=True, exist_ok=True)
         with file_lock(str(path) + ".lock", exclusive=True, timeout=5.0):
             fd = os.open(path, os.O_APPEND | os.O_CREAT | os.O_WRONLY, 0o600)
@@ -236,7 +257,7 @@ def read_events(directory: str | Path = DEFAULT_AUDIT_DIR, *, limit: int = 50,
     Malformed lines are counted, never rewritten or dropped from the file.
     Results stay in file order; ``limit`` keeps the most recent matches.
     """
-    root = Path(directory).expanduser()
+    root = _validate_audit_directory(directory)
     files = sorted(root.glob("events-*.jsonl")) if root.is_dir() else []
     collected: List[Dict[str, Any]] = []
     malformed = 0

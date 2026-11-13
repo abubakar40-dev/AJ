@@ -118,13 +118,16 @@ def _deep_merge(base: Dict[str, Any], overlay: Mapping[str, Any]) -> Dict[str, A
     return out
 
 
+_NULL_TEXT = {"none", "null"}
+
+
 def _coerce(text: str) -> Any:
     lowered = text.strip().lower()
     if lowered in ("true", "yes", "on"):
         return True
     if lowered in ("false", "no", "off"):
         return False
-    if lowered in ("none", "null", ""):
+    if lowered in _NULL_TEXT or lowered == "":
         return "" if lowered == "" else None
     try:
         return int(text)
@@ -135,6 +138,44 @@ def _coerce(text: str) -> Any:
     except ValueError:
         pass
     return text
+
+
+def invalid_path_reason(value: Any, *, allow_empty: bool = False) -> Optional[str]:
+    """Return why *value* is unusable as a filesystem path, else None."""
+    if value is None:
+        return "must be a path string, not null"
+    if isinstance(value, bool):
+        return "must be a path string, not a boolean"
+    if not isinstance(value, str):
+        return f"must be a path string, not {type(value).__name__}"
+    stripped = value.strip()
+    if not stripped:
+        return None if allow_empty else "must be a non-empty path"
+    if stripped.lower() in _NULL_TEXT:
+        return f"must be a filesystem path, not {stripped!r}"
+    return None
+
+
+def require_path(
+    config: "Config",
+    key: str,
+    *,
+    allow_empty: bool = False,
+) -> Path:
+    """Resolve a path-bearing config value or fail closed.
+
+    Raises :class:`errors.ConfigError` for null-like, blank, or otherwise
+    invalid values so callers never coerce them into ``Path("None")`` or write
+    before rejection.
+    """
+    value = config.get(key)
+    reason = invalid_path_reason(value, allow_empty=allow_empty)
+    if reason is not None:
+        raise errors.ConfigError(f"{key} {reason}")
+    text = str(value).strip() if isinstance(value, str) else str(value)
+    if allow_empty and not text:
+        return Path("")
+    return Path(text).expanduser()
 
 
 def _env_overrides(env: Mapping[str, str]) -> Dict[str, Any]:
@@ -242,10 +283,14 @@ def load(
 
 def memory_path(config: "Config") -> Path:
     """Where canonical raw events live. Explicit path wins over the data dir."""
-    explicit = str(config.get("core.memory_path", "") or "")
+    explicit_value = config.get("core.memory_path", "")
+    reason = invalid_path_reason(explicit_value, allow_empty=True)
+    if reason is not None:
+        raise errors.ConfigError(f"core.memory_path {reason}")
+    explicit = str(explicit_value).strip() if isinstance(explicit_value, str) else ""
     if explicit:
         return Path(explicit).expanduser()
-    data_dir = Path(str(config.get("core.data_dir"))).expanduser()
+    data_dir = require_path(config, "core.data_dir")
     return data_dir / str(config.get("runtime.memory_filename", "memory.sqlite3"))
 
 
@@ -269,10 +314,15 @@ def validate(config: Config) -> List[str]:
         issues.append("permissions.approval_ttl_seconds must be an integer >= 1")
     for key in ("core.data_dir", "core.audit_dir"):
         value = config.get(key)
-        if not isinstance(value, str) or not value.strip():
-            issues.append(f"{key} must be a non-empty path")
-        elif not _writable_path(Path(value).expanduser()):
+        reason = invalid_path_reason(value, allow_empty=False)
+        if reason is not None:
+            issues.append(f"{key} {reason}")
+        elif not _writable_path(Path(str(value)).expanduser()):
             issues.append(f"{key} is not writable: {value}")
+    mem_value = config.get("core.memory_path", "")
+    mem_reason = invalid_path_reason(mem_value, allow_empty=True)
+    if mem_reason is not None:
+        issues.append(f"core.memory_path {mem_reason}")
     attempts = config.get("providers.max_attempts")
     if not isinstance(attempts, int) or isinstance(attempts, bool) or attempts < 1:
         issues.append("providers.max_attempts must be an integer >= 1")

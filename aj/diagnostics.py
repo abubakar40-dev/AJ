@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any, Dict
 
 from .audit import read_events
-from .config import Config, memory_path
+from .config import Config, memory_path, require_path
 from .locking import lock_status
 from .memory import MemoryStore
 from .task import TaskStore
@@ -34,13 +34,13 @@ def _mtime(path: Path) -> str:
 
 
 def gather(config: Config) -> Dict[str, Any]:
-    data_dir = Path(str(config.get("core.data_dir"))).expanduser()
+    data_dir = require_path(config, "core.data_dir")
     tasks_path = data_dir / "tasks.jsonl"
     store = TaskStore(data_dir)
     records = store.all()
     last_task = max(records, key=lambda r: r.updated_at, default=None)
 
-    audit_dir = Path(str(config.get("core.audit_dir"))).expanduser()
+    audit_dir = require_path(config, "core.audit_dir")
     audit = read_events(audit_dir, limit=0)
     last_audit = audit.events[-1] if audit.events else None
 

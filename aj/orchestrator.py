@@ -40,7 +40,7 @@ from .receipts import ReceiptStore
 from .agents import AgentRegistry, UnconfiguredAgent
 from .audit import AuditLog, JsonlAuditSink
 from .capability import OWNER_AJ, CapabilityRegistry, CapabilitySpec
-from .config import Config, load as load_config
+from .config import Config, load as load_config, require_path
 from .contracts import AgentRequest, AgentResult, ExecutionRequest
 from .execution import ExecutionPort, SkillRegistry, UnavailableExecutionAdapter, execute
 from .memory import MemoryStore
@@ -146,7 +146,7 @@ class Aj:
         self.registry = registry or CapabilityRegistry()
         self.agents = agents or AgentRegistry()
         self.audit = audit or AuditLog(
-            JsonlAuditSink(str(self.config.get("core.audit_dir")))
+            JsonlAuditSink(require_path(self.config, "core.audit_dir"))
         )
         if authorizer is not None:
             self.authorizer = authorizer
@@ -154,10 +154,10 @@ class Aj:
             self.authorizer = Authorizer(
                 unattended_ceiling=int(self.config.get("permissions.unattended_ceiling", 1))
             )
-        self.tasks = tasks or taskmod.TaskStore(
-            self.config.get("core.data_dir") if self.config.get("runtime.persist_tasks", True)
-            else None
-        )
+        persist_dir = (require_path(self.config, "core.data_dir")
+                       if self.config.get("runtime.persist_tasks", True)
+                       else None)
+        self.tasks = tasks or taskmod.TaskStore(persist_dir)
         self.execution: ExecutionPort = execution or UnavailableExecutionAdapter()
         self.skills = skills or SkillRegistry()
         self.memory = memory

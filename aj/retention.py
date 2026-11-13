@@ -10,16 +10,16 @@ import datetime as _dt
 from pathlib import Path
 from typing import Any, Dict
 
-from .config import Config, memory_path
+from .config import Config, memory_path, require_path
 from .diagnostics import gather
 
 
 def assess(config: Config) -> Dict[str, Any]:
     report = gather(config)
-    data_dir = Path(str(config.get("core.data_dir"))).expanduser()
+    data_dir = require_path(config, "core.data_dir")
     paths = {
         "tasks": data_dir / "tasks.jsonl",
-        "audit": Path(str(config.get("core.audit_dir"))).expanduser(),
+        "audit": require_path(config, "core.audit_dir"),
         "journal": data_dir / "journal.jsonl",
         "receipts": data_dir / "receipts.jsonl",
         "memory": memory_path(config),

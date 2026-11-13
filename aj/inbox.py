@@ -64,6 +64,22 @@ def default_inbox_root() -> Path:
     """Legacy default inbox location (home). Not a silent fallback for configured roots."""
     return default_data_dir() / "knowledge-inbox"
 
+_NULL_PATH_TEXT = {"none", "null"}
+
+
+def _validated_inbox_root_value(value: Any, *, source: str) -> Optional[Path]:
+    if value is None:
+        return None
+    if isinstance(value, bool):
+        raise errors.ConfigError(f"{source} must be a path string, not a boolean")
+    text = str(value).strip()
+    if not text:
+        return None
+    if text.lower() in _NULL_PATH_TEXT:
+        raise errors.ConfigError(f"{source} must be a filesystem path, not {text!r}")
+    return Path(text).expanduser()
+
+
 def resolve_inbox_root(
     explicit: Optional[Path | str] = None,
     config: Any = None,
@@ -75,12 +91,15 @@ def resolve_inbox_root(
     Precedence: explicit arg > AJ_INBOX_ROOT env > config core.inbox_root
     > config core.data_dir/knowledge-inbox > legacy home default.
     """
-    if explicit:
-        return Path(explicit).expanduser()
+    explicit_path = _validated_inbox_root_value(explicit, source="inbox root")
+    if explicit_path is not None:
+        return explicit_path
 
     env_root = os.environ.get("AJ_INBOX_ROOT")
-    if env_root:
-        return Path(env_root).expanduser()
+    if env_root is not None and str(env_root).strip() != "":
+        env_path = _validated_inbox_root_value(env_root, source="AJ_INBOX_ROOT")
+        if env_path is not None:
+            return env_path
 
     if config is not None:
         # Explicit inbox root override if configured.
@@ -88,14 +107,16 @@ def resolve_inbox_root(
             inbox_override = config.get("core.inbox_root", "")
         except Exception:
             inbox_override = ""
-        if inbox_override:
-            return Path(str(inbox_override)).expanduser()
+        override_path = _validated_inbox_root_value(inbox_override, source="core.inbox_root")
+        if override_path is not None:
+            return override_path
         try:
             data_dir = config.get("core.data_dir", "")
         except Exception:
             data_dir = ""
-        if data_dir:
-            return Path(str(data_dir)).expanduser() / "knowledge-inbox"
+        data_path = _validated_inbox_root_value(data_dir, source="core.data_dir")
+        if data_path is not None:
+            return data_path / "knowledge-inbox"
         if require_configured:
             raise errors.ConfigError("AJ config does not define core.data_dir for inbox storage")
 

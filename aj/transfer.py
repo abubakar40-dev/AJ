@@ -21,7 +21,7 @@ from typing import Any, Dict, List, Tuple
 
 from . import errors
 from .audit import AuditEvent, JsonlAuditSink, _redact, read_events
-from .config import Config, memory_path
+from .config import Config, memory_path, require_path
 from .memory import MemoryStore
 from .summary import build as build_summary
 from .task import TaskRecord, TaskStore
@@ -56,11 +56,11 @@ def _atomic_write_json(path: Path, payload: Any) -> None:
 
 def collect(config: Config) -> Dict[str, Any]:
     """Gather all local state into one deterministic, redacted document."""
-    data_dir = Path(str(config.get("core.data_dir"))).expanduser()
+    data_dir = require_path(config, "core.data_dir")
     store = TaskStore(data_dir)
     tasks = sorted((r.to_dict() for r in store.all()), key=lambda t: t["task_id"])
 
-    audit = read_events(Path(str(config.get("core.audit_dir"))).expanduser(), limit=0)
+    audit = read_events(require_path(config, "core.audit_dir"), limit=0)
 
     memory_events: List[Dict[str, Any]] = []
     summaries: List[Dict[str, Any]] = []
@@ -135,7 +135,7 @@ def import_file(config: Config, source: str | Path, *,
     if problems:
         raise errors.Conflict(f"invalid export: {'; '.join(problems)}")
 
-    data_dir = Path(str(config.get("core.data_dir"))).expanduser()
+    data_dir = require_path(config, "core.data_dir")
     store = TaskStore(data_dir)
     existing_ids = {record.task_id for record in store.all()}
     incoming_ids = [task["task_id"] for task in data["tasks"]]
@@ -175,7 +175,7 @@ def import_file(config: Config, source: str | Path, *,
     for task in data["tasks"]:
         store.save(TaskRecord.from_dict(task), "imported")
 
-    sink = JsonlAuditSink(Path(str(config.get("core.audit_dir"))).expanduser())
+    sink = JsonlAuditSink(require_path(config, "core.audit_dir"))
     for event in data["audit"]:
         if isinstance(event, dict):
             sink.write(AuditEvent.from_dict(event))
