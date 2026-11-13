@@ -1,0 +1,65 @@
+{
+  "$comment": "Non-secret defaults. Provider credentials come from the environment (OPENROUTER_API_KEY, GROQ_API_KEY, GEMINI_API_KEY, ...); never put a key in this file.",
+  "core": {
+    "ecosystem_name": "AJ",
+    "require_verification_before_execute": true
+  },
+  "permissions": {
+    "unattended_ceiling": 1,
+    "approval_ttl_seconds": 300
+  },
+  "agents": {
+    "jarvis": {
+      "enabled": true,
+      "transport": "http",
+      "endpoint": "http://127.0.0.1:8875",
+      "timeout_seconds": 120,
+      "notes": "Bridge is WebSocket-based; an AJ task endpoint does not exist yet."
+    },
+    "helix": {
+      "enabled": true,
+      "transport": "ws",
+      "endpoint": "http://127.0.0.1:8765",
+      "timeout_seconds": 60,
+      "notes": "bridge_ws.py speaks a WebSocket protocol; HTTP GET on / returns no response."
+    }
+  },
+  "capability": {
+    "declarations": "config/capabilities.json",
+    "load_jarvis_registry": true,
+    "jarvis_root": ""
+  },
+  "providers": {
+    "default_timeout_seconds": 60,
+    "max_attempts": 2,
+    "fallback_enabled": true,
+    "health_ttl_seconds": 60,
+    "adapters": {
+      "openrouter": { "enabled": true, "credential_env": "OPENROUTER_API_KEY", "base_url": "https://openrouter.ai/api/v1" },
+      "groq": { "enabled": true, "credential_env": "GROQ_API_KEY", "base_url": "https://api.groq.com/openai/v1" },
+      "gemini": { "enabled": true, "credential_env": "GEMINI_API_KEY", "base_url": "https://generativelanguage.googleapis.com/v1beta" },
+      "nvidia": { "enabled": false, "credential_env": "NVIDIA_API_KEY", "base_url": "" },
+      "cloudflare": { "enabled": false, "credential_env": "CLOUDFLARE_API_TOKEN", "base_url": "" },
+      "local": { "enabled": false, "credential_env": "", "base_url": "http://127.0.0.1:11434/v1" }
+    }
+  },
+  "execution": {
+    "runtime": "none",
+    "hermes_endpoint": "",
+    "max_attempts": 1
+  },
+  "integrations": {
+    "device_bridge": "gsconnect",
+    "device_bridge_enabled": true,
+    "voice_separate_from_calls": true
+  },
+  "runtime": {
+    "persist_tasks": true,
+    "log_level": "info"
+  },
+  "feature_flags": {
+    "hermes_skills": false,
+    "calling": false,
+    "provider_fallback": true
+  }
+}

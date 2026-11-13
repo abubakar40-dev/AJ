@@ -1,0 +1,64 @@
+Phase 3.1 Backup/Restore Verification Report
+=============================================
+
+TESTS: test_export_import_dry_run_and_roundtrip,
+       test_backup_verify_restore,
+       test_backup_tamper_is_detected
+
+BACKUP/RESTORE INVARIANTS VERIFIED
+-----------------------------------
+1. Export/import dry-run
+   - transfer.export_file() writes task data to JSON file
+   - transfer.import_file(target, export_path, dry_run=True)
+   - dry_run["dry_run"] is True
+   - dry_run["tasks"] == 1 (one task would be imported)
+   - dry_run["conflicts"] == [] (no conflicts expected)
+   - target data dir does not exist before dry-run
+
+2. Export/import roundtrip
+   - Export task data to JSON file
+   - Import into fresh target config
+   - report["tasks"] == 1 (one task imported)
+   - report["imported_memory"] >= 1 (memory events imported)
+   - Restored task status == COMPLETED
+   - Memory events present for task
+   - verify_summary(memory)["ok"] is True
+
+3. Import conflict detection (idempotency)
+   - Second import_file() raises errors.Conflict
+   - No task-id conflicts allowed
+   - Conservative import: validate first, refuse conflicts
+   - No deletion of existing data
+
+4. Backup directory creation
+   - transfer.backup_directory(config, backup_path)
+   - backup["counts"]["tasks"] == number of tasks
+   - verify_backup(backup_path)["ok"] is True
+   - Backup contains all task/audit/memory data
+
+5. Backup tamper detection
+   - Write " " (space) to backup.json
+   - verify_backup() returns {"ok": False}
+   - Tamper detected and reported
+   - Backup integrity protected
+
+BACKUP/RESTORE SEMANTICS
+------------------------
+- Export: reads live stores, writes JSON to path
+- Backup: creates point-in-time copy of entire store
+- Import: validates, refuses conflicts, imports derived data
+- Dry-run: shows what would happen without modifying target
+- Tamper detection: checksum/integrity check on backup file
+- Conservative: never silently overwrite divergent live stores
+
+STORAGE METRICS (real state unchanged)
+---------------------------------------
+- tasks.jsonl: 7 lines baseline
+- audit events: 9 lines baseline
+- Memory: SQLite WAL mode, count >= 120 (performance sanity)
+- Backup: complete copy of all store data
+
+EXIT CODES:
+- EXIT_OK (0): backup verified, restore successful
+- EXIT_OK (0): export import dry-run passes
+- Errors.Conflict (2): import would conflict with existing

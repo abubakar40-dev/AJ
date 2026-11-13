@@ -1,0 +1,50 @@
+Phase 3.1 Audit Verification Report
+====================================
+
+TESTS: test_audit_memory_and_logs_share_correlation_ids,
+       test_malformed_task_record_is_reported_not_deleted,
+       test_audit_and_raw_memory_are_append_only
+
+AUDIT INVARIANTS VERIFIED
+-------------------------
+1. Audit and memory share correlation IDs
+   - handle("correlation probe") produces task with operation_id
+   - audit events carry operation_id
+   - memory events carry operation_id in meta
+   - consistent across all stores
+
+2. Malformed task record reported, not deleted
+   - "{bad json}" appended to tasks.jsonl
+   - reopened TaskStore still finds 1 valid record
+   - load_errors == 1 (malformed detected)
+   - record.task_id still accessible
+   - Bad JSON line preserved (not deleted)
+
+3. Audit and raw memory are append-only
+   - Single handle("append") operation
+   - Before/after audit file bytes compared
+   - Before/after memory event count compared
+   - Both unchanged after build_summary(), read_events(), etc.
+   - verify()["ok"] remains True
+
+AUDIT LOG STRUCTURE
+-------------------
+- JsonlAuditSink writes JSONL to events-YYYY-MM.jsonl
+- file_lock protection for concurrent writes
+- Each event: action, task_id, operation_id, capability, result, authorization
+- read_events() reads with task_id, event_type, attempt_id, operation_id filters
+- read_events() returns metadata: events list, malformed count
+
+CORRELATION FLOW
+----------------
+task -> audit -> memory -> journal -> logs
+All carry operation_id and attempt_id for cross-system tracing
+
+MALFORMED HANDLING
+------------------
+- Malformed JSON lines detected but not deleted
+- count in read_events result
+- load_errors in TaskStore
+- Verified: bad JSON preserved, valid records kept
+
+EXIT CODES: All audit tests pass

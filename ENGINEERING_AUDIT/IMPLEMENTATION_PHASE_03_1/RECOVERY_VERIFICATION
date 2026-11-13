@@ -1,0 +1,41 @@
+Phase 3.1 Recovery Verification Report
+=======================================
+
+TESTS: test_unsafe_replay_is_refused,
+       test_attempt_model_survives_reload (indirect)
+
+RECOVERY PATHS VERIFIED
+-----------------------
+1. Unsafe replay refused
+   - Task created with jarvis.web_search capability
+   - Transition to UNDERSTANDING
+   - RecoveryManager.scan() -> decision "recovery_required"
+   - RecoveryManager.recover() -> outcomes[0]["ok"] is False
+   - Capability not replay-safe (not internal: adapter)
+
+2. Recovery requires replay-safe capability
+   - Only internal: capabilities (aj.echo, aj.health_check) are replay-safe
+   - spec.replay_safe check in _recover_locked
+   - Non-replay-safe -> _require_manual_recovery with reason
+
+RECOVERY SEMANTICS
+------------------
+- recovery_safe: capability has execution_adapter starting "internal:"
+- replay_safe: capability spec flag
+- Both must be True for automatic recovery
+- Otherwise: recovery_required -> manual operator decision
+
+ATTEMPT COUNTER ON RECOVERY
+---------------------------
+- record.attempt incremented on each recovery attempt
+- Bounded by max_attempts
+- Exhaustion -> ESCALATED -> requires_user_decision
+
+JOURNAL ENTRIES ON RECOVERY
+----------------------------
+- RECOVERY_STARTED event with attempt_id and capability metadata
+- Correlates with task attempt history
+
+EXIT CODES:
+- EXIT_RECOVERY_REQUIRED (3): capability not replay-safe, needs operator
+- EXIT_OK (0): successful recovery and completion

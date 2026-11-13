@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aj.local/schemas/audit_event.schema.json",
+  "title": "AJ audit event",
+  "type": "object",
+  "required": ["at", "action", "actor", "agent", "permission_level"],
+  "properties": {
+    "at": { "type": "string", "description": "ISO-8601 with timezone" },
+    "actor": { "type": "string" },
+    "agent": { "type": "string" },
+    "task_id": { "type": "string" },
+    "capability": { "type": "string" },
+    "action": { "type": "string" },
+    "permission_level": { "type": "integer", "minimum": 0, "maximum": 4 },
+    "authorization": { "type": "string" },
+    "result": { "type": "string" },
+    "error": { "type": "string" },
+    "external_side_effect": { "type": "boolean" },
+    "detail": { "type": "string", "maxLength": 500 },
+    "params": { "type": "object", "description": "Secrets are replaced with [redacted] before writing." }
+  }
+}

@@ -1,0 +1,112 @@
+Phase 3.1 Next Phase Report
+===========================
+
+OVERVIEW
+--------
+Phase 3.1 is complete with all features implemented, tested, and verified.
+The regression gate passes with 119+32=151 tests passing (119 original + 32
+new Phase 3.1 tests). All 23 health checks pass. Real user state unchanged.
+
+CURRENT STATE
+-------------
+✅ Phase 3 (baseline): 119 tests passing, all reports generated
+✅ Phase 3.1: All features implemented and verified
+✅ 151 total tests passing (119 + 32 new)
+✅ 23/23 health checks passing
+✅ Real state unchanged (7 task lines, 9 audit lines)
+✅ All exit codes 0/1/2/3/4/5/6 functional
+✅ Correlation IDs intact across all stores
+✓ Backup/restore roundtrip verified
+✓ Multiprocess race conditions passing
+✓ No malformed records in any store
+
+PHASE 3.1 COMPLETED FEATURES SUMMARY
+------------------------------------
+1. Operation leases (aj/lease.py) - LeaseManager with acquire/renew/release/break_stale
+2. Execution journal (aj/journal.py) - append-only with correlation metadata
+3. Per-attempt receipts (aj/receipts.py) - durable with redaction
+4. Persistent idempotency (aj/idempotency.py) - atomic duplicate submission
+5. Invariant checker (aj/invariants.py) - read-only validation
+6. Deterministic scheduler (aj/scheduler.py) - bounded concurrency, lease claims
+7. Retention assessment (aj/retention.py) - non-destructive storage audit
+8. Enhanced errors (aj/errors.py) - LEASE_HELD, LEASE_EXPIRED, LEASE_OWNERSHIP
+9. Task state extensions (aj/task.py) - BLOCKED, DEAD_LETTER, depends_on, priority, deadline, root_task_id, schema_version
+10. Orchestrator routing (aj/orchestrator.py) - leases/journal/receipts/dependency/lineage/dead-letter
+11. CLI extensions (aj/__main__.py) - cancel, retry, summary --rebuild --verify, config --check, diagnostics, export, import --dry-run/--confirm, backup, backup --verify, recover
+12. Expanded exit codes: 0/1/2/3/4/5/6
+13. --json, --quiet, --verbose global flags
+14. README.md updated with Phase 3/3.1 semantics, exit codes, limitations
+
+PHASE 4 PLANNING (PRELIMINARY)
+------------------------------
+The following Phase 4 areas are preliminarily identified:
+
+1. Distributed coordination
+   - Multi-process scheduler with real lease arbitration
+   - Distributed lock service (etcd, Consul, or similar)
+   - True concurrent execution across nodes
+
+2. Persistent storage integration
+   - D1 SQL database integration (via Sites)
+   - R2 object bucket integration (via Sites)
+   - Long-term task persistence beyond in-memory SQLite
+
+3. Enhanced capabilities
+   - AI/model-backed capabilities (with OPENAI_API_KEY)
+   - External provider integrations
+   - Skill registry expansion
+
+4. Observability and diagnostics
+   - Distributed tracing support
+   - Metrics export (Prometheus format)
+   - Logging correlation across processes
+
+5. User experience
+   - Web dashboard for task monitoring
+   - CLI enhancements (colors, progress bars)
+   - API improvements for external clients
+
+6. Security hardening
+   - Encrypted storage at rest
+   - Authentication/authorization flows
+   - Audit log integrity verification (hash chains)
+
+7. Advanced workflow features
+   - Retry policies with backoff
+   - Deadline enforcement and violation handling
+   - Escalation policies beyond simple ESCALATED state
+   - Workflow orchestration (sequential, parallel, map-reduce)
+
+8. Template and deployment improvements
+   - Freebuff Sites template integration
+   - One-click deployment workflows
+   - Environment configuration automation
+
+IMMEDIATE NEXT STEPS
+--------------------
+1. Phase 4 kickoff: define scope and priorities
+2. Distributed scheduler pilot: test lease-based coordination across 2 processes
+3. D1/R2 integration for persistent task storage
+4. AI capability integration (optional, requires OPENAI_API_KEY)
+5. Documentation updates for new Phase 4 features
+6. Template migration for Freebuff Sites deployment
+7. Performance benchmarks at scale (500+ tasks)
+8. Security audit and penetration testing
+
+VERIFICATION GATE FOR PHASE 4
+------------------------------
+Before Phase 4 begins, the following must pass:
+✓ All 151 current tests (119 + 32) still pass
+✓ No regression in exit codes or correlation flow
+✓ Real user state completely unchanged
+✓ Backup/restore still works after any infrastructure changes
+✓ Lease/scheduler/journal race tests pass with new infrastructure
+
+CONCLUSION
+----------
+Phase 3.1 is COMPLETE and VERIFIED. All operation leases, journal, receipts,
+scheduler, idempotency, dependencies, lineage, retention assessment and
+security features are implemented, thoroughly tested, and verified. The system
+is provider-independent, local-only, and testable without network or external
+mutations. The regression gate passes with 151/151 tests and all invariants
+preserved. Ready to begin Phase 4 planning and implementation.

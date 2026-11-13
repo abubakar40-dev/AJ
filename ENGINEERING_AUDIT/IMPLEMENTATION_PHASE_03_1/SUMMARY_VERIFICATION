@@ -1,0 +1,43 @@
+Phase 3.1 Summary Verification Report
+======================================
+
+TESTS: test_summary_task_scope_and_parity,
+       test_summary_rebuild_does_not_touch_raw_events,
+       test_cli_summary_rebuild_and_verify
+
+SUMMARY INVARIANTS VERIFIED
+---------------------------
+1. Task-scoped summary builds correctly
+   - build_summary(aj.memory, task_id=first.task_id) produces valid report
+   - report["ok"] is True
+   - built["kind"].endswith(first.task_id)
+   - source_event_ids populated
+
+2. Summary rebuild does not touch raw events
+   - Two consecutive build_summary() calls produce identical content
+   - event count unchanged between calls
+   - Summary is derived, not modifying raw stores
+
+3. CLI summary --rebuild and --verify
+   - _cli(cli_env, "summary", "--rebuild") == EXIT_OK
+   - _cli(cli_env, "summary", "--verify") == EXIT_OK
+   - Output contains "PASS"
+
+SUMMARY SEMANTICS
+-----------------
+- effective_kind: determines summary kind from task status
+- build(..., task_id=): task-scoped summary construction
+- verify(): checks summary integrity against memory state
+- --rebuild: reconstructs summary from store
+- --verify: validates summary consistency
+
+DERIVED NATURE
+--------------
+- Summaries are derived from task + memory state
+- Not stored independently (no extra persistence)
+- Rebuild from raw events is idempotent
+- Adding new events can invalidate existing summary
+
+EXIT CODES:
+- EXIT_OK (0): summary built and verified successfully
+- EXIT_OK (0): CLI summary --rebuild and --verify pass

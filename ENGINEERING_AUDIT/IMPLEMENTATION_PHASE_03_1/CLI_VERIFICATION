@@ -1,0 +1,65 @@
+Phase 3.1 CLI Verification Report
+==================================
+
+TESTS: test_cli_lifecycle_and_exit_codes,
+       test_cli_retry_of_unsafe_task_exits_6,
+       test_cli_json_output_is_clean,
+       test_cli_quiet_is_minimal,
+       test_cli_summary_rebuild_and_verify
+
+CLI INVARIANTS VERIFIED
+-----------------------
+1. CLI lifecycle and exit codes
+   - _cli(cli_env, "run", "--capability", "aj.echo", "--input", '{"message": "phase 3"}') == EXIT_OK
+   - _cli(cli_env, "run", "--capability", "nope") == EXIT_NOT_FOUND
+   - _cli(cli_env, "task", "missing-task") == EXIT_NOT_FOUND
+   - _cli(cli_env, "run", "rm -rf /") == EXIT_NOT_FOUND
+   - cancel task_id -> EXIT_FAILURE (task exists but can't cancel)
+   - permissions -> EXIT_OK
+
+2. CLI retry of unsafe task exits 6
+   - Unmarked capability (jarvis.web_search) task -> retry -> EXIT_UNSAFE
+   - Requires user decision, budget exhausted or not retry-safe
+
+3. CLI JSON output is clean
+   - --json flag with any subcommand produces valid JSON dict
+   - Subcommands: tasks, task <id>, audit, memory, summary, capabilities, permissions, config, diagnostics
+   - Payload always isinstance dict
+
+4. CLI quiet is minimal
+   - --quiet flag with "tasks" produces minimal output
+   - Exactly 1 line output
+   - Each line has exactly 2 words (task_id and status)
+
+5. CLI summary rebuild and verify
+   - Run aj.echo task first
+   - --rebuild -> EXIT_OK, output contains "PASS"
+   - --verify -> EXIT_OK, output contains "PASS"
+
+CLI COMMANDS VERIFIED
+---------------------
+- run --capability <name> [--input <json>]: execute task
+- run --capability <nope>: not found -> EXIT_NOT_FOUND
+- task <id>: look up task -> EXIT_NOT_FOUND if missing
+- run "rm -rf /": safety block -> EXIT_NOT_FOUND
+- cancel <task_id>: cancel task -> EXIT_FAILURE if terminal
+- permissions: show permissions -> EXIT_OK
+- retry <task_id>: retry task -> EXIT_UNSAFE if not retry-safe
+- --json <subcommand>: JSON output for any subcommand
+- --quiet: minimal output mode
+- summary --rebuild: rebuild summary -> EXIT_OK
+- summary --verify: verify summary -> EXIT_OK
+
+EXIT CODE MAP (full)
+--------------------
+0: EXIT_OK - successful completion
+1: EXIT_NOT_FOUND - task/capability not found
+2: EXIT_FAILURE - operation refused (terminal, unsafe)
+3: EXIT_RECOVERY_REQUIRED - capability not replay-safe
+4: EXIT_CANCELLED - task was cancelled
+5: EXIT_CONFIG - configuration invalid
+6: EXIT_UNSAFE - retry of non-retry-safe capability
+
+--json: produces valid JSON dict output for any subcommand
+--quiet: minimal one-line output
+--verbose: (global flag, detailed logging)

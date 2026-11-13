@@ -1,0 +1,280 @@
+{
+  "$comment": "HELIX, Hermes-boundary and AJ-level capability declarations. JARVIS tool capabilities are imported from JARVIS/core/capabilities.py at build time so there is one authority for those tiers.",
+  "capabilities": [
+    {
+      "capability_id": "helix.resolve_contact",
+      "name": "Resolve a contact",
+      "description": "Match a spoken or typed name to exactly one contact; ambiguous matches are returned, never guessed.",
+      "owner_agent": "HELIX",
+      "execution_adapter": "helix.contact_resolver",
+      "required_permissions": [
+        "contacts.read"
+      ],
+      "risk_level": 1,
+      "availability": "unknown",
+      "verification_status": "implemented_unverified",
+      "supported_inputs": [
+        "name",
+        "partial_number"
+      ],
+      "supported_outputs": [
+        "contact",
+        "ambiguous_candidates"
+      ],
+      "side_effects": [],
+      "notes": "Resolver port defined in aj/calling.py; no HELIX-side implementation verified."
+    },
+    {
+      "capability_id": "helix.prepare_call",
+      "name": "Prepare a call",
+      "description": "Resolve the contact and stop before dialing, so the user can confirm.",
+      "owner_agent": "HELIX",
+      "execution_adapter": "helix.calling_service",
+      "required_permissions": [
+        "phone_call.prepare"
+      ],
+      "risk_level": 1,
+      "availability": "unavailable",
+      "verification_status": "partial",
+      "supported_inputs": [
+        "contact_query"
+      ],
+      "supported_outputs": [
+        "call_id",
+        "contact",
+        "state"
+      ],
+      "side_effects": [],
+      "notes": "Dispatcher verified 2026-11-13: Aj routes helix.calling_service to CallingService.prepare() with lease/journal/receipt/audit, a real wall-clock timeout and cancellation-aware completion. Execution is in-process via ContactResolver; availability is environment-gated (declared unavailable without a resolver). Does not reach the HELIX HTTP/WS bridge or place a real call. retry_safe/replay_safe stay false."
+    },
+    {
+      "capability_id": "helix.open_dialer",
+      "name": "Open the phone dialer with a number",
+      "description": "Hand a number to the paired phone's dialer, leaving the call button to the user.",
+      "owner_agent": "HELIX",
+      "execution_adapter": "device_bridge:gsconnect",
+      "required_permissions": [
+        "phone_call.dialer"
+      ],
+      "risk_level": 2,
+      "availability": "unavailable",
+      "verification_status": "implemented_unverified",
+      "supported_inputs": [
+        "phone_number"
+      ],
+      "supported_outputs": [
+        "handoff_result"
+      ],
+      "side_effects": [
+        "UI change on the paired phone"
+      ],
+      "notes": "GSConnect exports no dialer interface on this machine (verified 2026-11-09)."
+    },
+    {
+      "capability_id": "helix.place_call",
+      "name": "Place a phone call",
+      "description": "Dial a resolved contact on the paired phone.",
+      "owner_agent": "HELIX",
+      "execution_adapter": "device_bridge:gsconnect",
+      "required_permissions": [
+        "phone_call"
+      ],
+      "risk_level": 3,
+      "availability": "unavailable",
+      "verification_status": "implemented_unverified",
+      "supported_inputs": [
+        "contact",
+        "phone_number"
+      ],
+      "supported_outputs": [
+        "call_state"
+      ],
+      "side_effects": [
+        "places a real call",
+        "may incur carrier charges"
+      ],
+      "notes": "Requires explicit approval. No telephony control interface is exported by the current bridge."
+    },
+    {
+      "capability_id": "helix.get_call_status",
+      "name": "Read call state",
+      "description": "Report the current call state when the bridge exposes it.",
+      "owner_agent": "HELIX",
+      "execution_adapter": "device_bridge:gsconnect",
+      "required_permissions": [
+        "phone_call.read"
+      ],
+      "risk_level": 0,
+      "availability": "unavailable",
+      "verification_status": "implemented_unverified",
+      "supported_inputs": [
+        "call_id"
+      ],
+      "supported_outputs": [
+        "state"
+      ],
+      "side_effects": [],
+      "notes": "If the bridge cannot report state, AJ must report UNKNOWN rather than infer."
+    },
+    {
+      "capability_id": "helix.receive_call_events",
+      "name": "Receive incoming-call events",
+      "description": "Surface incoming-call notifications from the paired phone.",
+      "owner_agent": "HELIX",
+      "execution_adapter": "device_bridge:gsconnect",
+      "required_permissions": [
+        "phone_call.read"
+      ],
+      "risk_level": 0,
+      "availability": "unavailable",
+      "verification_status": "implemented_unverified",
+      "supported_inputs": [],
+      "supported_outputs": [
+        "call_event"
+      ],
+      "side_effects": [],
+      "notes": "No telephony plugin interface is exported by the current bridge."
+    },
+    {
+      "capability_id": "helix.answer_call",
+      "name": "Answer an incoming call",
+      "description": "Answer a ringing call. Requires a reliable, permitted bridge control.",
+      "owner_agent": "HELIX",
+      "execution_adapter": "device_bridge:gsconnect",
+      "required_permissions": [
+        "phone_call"
+      ],
+      "risk_level": 3,
+      "availability": "unavailable",
+      "verification_status": "implemented_unverified",
+      "supported_inputs": [
+        "call_id"
+      ],
+      "supported_outputs": [
+        "call_state"
+      ],
+      "side_effects": [
+        "connects the user's microphone to a live caller"
+      ],
+      "notes": "Auto-answer is not approved; this requires an explicit instruction per call."
+    },
+    {
+      "capability_id": "helix.reject_call",
+      "name": "Reject an incoming call",
+      "description": "Reject a ringing call.",
+      "owner_agent": "HELIX",
+      "execution_adapter": "device_bridge:gsconnect",
+      "required_permissions": [
+        "phone_call"
+      ],
+      "risk_level": 3,
+      "availability": "unavailable",
+      "verification_status": "implemented_unverified",
+      "supported_inputs": [
+        "call_id"
+      ],
+      "supported_outputs": [
+        "call_state"
+      ],
+      "side_effects": [
+        "misses a call"
+      ],
+      "notes": ""
+    },
+    {
+      "capability_id": "helix.end_call",
+      "name": "End an active call",
+      "description": "Hang up a call the user asked to end.",
+      "owner_agent": "HELIX",
+      "execution_adapter": "device_bridge:gsconnect",
+      "required_permissions": [
+        "phone_call"
+      ],
+      "risk_level": 3,
+      "availability": "unavailable",
+      "verification_status": "implemented_unverified",
+      "supported_inputs": [
+        "call_id"
+      ],
+      "supported_outputs": [
+        "call_state"
+      ],
+      "side_effects": [
+        "terminates a live call"
+      ],
+      "notes": "Never end a call merely because the agent believes it is finished."
+    },
+    {
+      "capability_id": "helix.send_message",
+      "name": "Send a message from the paired phone",
+      "description": "Send an SMS/WhatsApp message through HELIX communications.",
+      "owner_agent": "HELIX",
+      "execution_adapter": "helix.comms",
+      "required_permissions": [
+        "message.send"
+      ],
+      "risk_level": 3,
+      "availability": "unknown",
+      "verification_status": "implemented_unverified",
+      "supported_inputs": [
+        "recipient",
+        "text"
+      ],
+      "supported_outputs": [
+        "send_result"
+      ],
+      "side_effects": [
+        "visible message to a third party"
+      ],
+      "notes": "tools/whatsapp.py exists in HELIX; delivery was not verified in this phase."
+    },
+    {
+      "capability_id": "hermes.execute_skill",
+      "name": "Execute a skill through the runtime",
+      "description": "Run one approved skill via the execution port. The port reports unavailable until Hermes is attached.",
+      "owner_agent": "HERMES",
+      "execution_adapter": "execution_port",
+      "required_permissions": [
+        "skill.execute"
+      ],
+      "risk_level": 2,
+      "availability": "unavailable",
+      "verification_status": "planned",
+      "supported_inputs": [
+        "skill_id",
+        "arguments"
+      ],
+      "supported_outputs": [
+        "execution_result"
+      ],
+      "side_effects": [
+        "depends on the skill"
+      ],
+      "notes": "HERMES INTEGRATION NOT ATTACHED. Requires the owner's HERMES GREEN SIGNAL."
+    },
+    {
+      "capability_id": "aj.delegate",
+      "name": "Delegate to a sub-agent",
+      "description": "Hand a bounded task to JARVIS or HELIX with a task record and policy decision.",
+      "owner_agent": "AJ",
+      "execution_adapter": "aj.orchestrator",
+      "required_permissions": [
+        "agent.delegate"
+      ],
+      "risk_level": 1,
+      "availability": "unavailable",
+      "verification_status": "implemented_unverified",
+      "supported_inputs": [
+        "goal",
+        "capability_id"
+      ],
+      "supported_outputs": [
+        "task_id",
+        "status",
+        "result"
+      ],
+      "side_effects": [],
+      "notes": "No AJ delegation dispatcher exists: the executor routes internal: adapters, the HERMES execution port, and agent adapters. AJ owns no agent adapter, so delegation by this id fails with agent_unavailable. Delegate through jarvis.* / helix.* ids instead. Verified 2026-11-11."
+    }
+  ]
+}

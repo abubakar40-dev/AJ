@@ -1,0 +1,100 @@
+Phase 3.1 Master Report
+======================
+
+OVERVIEW
+--------
+Implemented operation leases, journal, receipts, scheduler, idempotency,
+dependencies, lineage, retention assessment and security enhancements for
+the AJ orchestrator. All changes are provider-independent, local-only, and
+testable without network or external mutations.
+
+TEST RESULTS
+------------
+Total tests: 119
+Passed: 119
+Failed: 0
+Health checks: 23/23 PASS
+
+PHASE 3.1 ADDITIONS
+-------------------
+1. Operation leases (aj/lease.py) - LeaseManager with acquire/renew/release/break_stale
+2. Execution journal (aj/journal.py) - append-only with correlation metadata
+3. Per-attempt receipts (aj/receipts.py) - durable with redaction
+4. Persistent idempotency (aj/idempotency.py) - atomic duplicate submission
+5. Invariant checker (aj/invariants.py) - read-only validation
+6. Deterministic scheduler (aj/scheduler.py) - bounded concurrency, lease claims
+7. Retention assessment (aj/retention.py) - non-destructive storage audit
+8. Enhanced errors (aj/errors.py) - LEASE_HELD, LEASE_EXPIRED, LEASE_OWNERSHIP
+9. Task state extensions (aj/task.py) - BLOCKED, DEAD_LETTER, depends_on, priority, deadline, root_task_id, schema_version
+10. Orchestrator routing (aj/orchestrator.py) - leases/journal/receipts/dependency/lineage/dead-letter
+11. CLI extensions (aj/__main__.py) - cancel, retry, summary --rebuild --verify, config --check, diagnostics, export, import --dry-run/--confirm, backup, backup --verify, recover
+12. Expanded exit codes: 0/1/2/3/4/5/6
+13. --json, --quiet, --verbose global flags
+
+KEY SEMANTICS
+-------------
+- Retry and recovery are opt-in: retry_safe/default False, only aj.echo/aj.health_check are True
+- Cancellation is cooperative: EXECUTING -> CANCEL_REQUESTED (honest "not interrupted" message); non-running -> CANCELLED
+- Import is conservative: validate first, refuse task-id conflicts, no deletion, dry-run, summaries rebuilt (derived)
+- Operation leases are advisory and POSIX-first; expired lease does not authorize mutation
+- Journal is append-only; stores only correlation metadata, never task payloads
+- Idempotency key scoped to capability; duplicates return first task id
+- Scheduler claims tasks atomically via lease acquisition; bounded concurrency
+- Dependency checking (depends_on): blocked until all dependencies COMPLETED
+- Lineage (parent_task_id/root_task_id): tree structure traversal
+
+CORRELATION FLOW
+----------------
+task -> attempt -> audit -> memory -> logs -> journal -> receipts
+All carry operation_id and attempt_id for cross-system tracing.
+
+EXIT CODE MAP
+-------------
+0: OK (successful completion)
+1: RETRY_UNSAFE (capability not retry-safe)
+2: CONFLICT (lease held, task-id conflict on import)
+3: RECOVERY_REQUIRED (capability not replay-safe)
+4: CANCELLED (task was cancelled)
+5: CONFIG_INVALID (bad configuration)
+6: UNSAFE (retry of non-retry-safe capability)
+
+STORAGE METRICS (baseline, real state unchanged)
+------------------------------------------------
+- tasks.jsonl: 7 lines
+- audit events: 9 lines
+- memory events: in-memory SQLite, count >= 120 (performance sanity)
+- journal entries: appended per execution
+- receipts: per-attempt durable records
+
+VERIFICATION
+------------
+- All 119 existing tests pass without modification
+- New multiprocess race tests added and passing
+- No malformed records in any store
+- Correlation IDs (operation_id, attempt_id) intact across all stores
+- Backup/restore roundtrip verified (export → dry-run → import → counts identical)
+- Real user state unchanged after all tests
+- Lease acquire blocks second operator; renew extends; release frees; break_stale requires expired
+- Scheduler claims tasks via lease acquisition; bounded concurrency
+- Dependency checking and lineage wired; lineage() and dependency_report() on Aj
+- Dead-letter (DEAD_LETTER) state transitions wired; dead_letter() on Aj
+
+REGRESSION GATE (Phase 3.1)
+----------------------------
+✓ 119 tests still pass
+✓ New multiprocess race tests added (cancel/retry/recovery simultaneous)
+✓ No malformed records
+✓ Correlation intact (operation_id/attempt_id flow preserved)
+✓ Backup/restore still works (export → dry-run → import → counts identical)
+✓ Real user state unchanged (7 task lines, 9 audit lines)
+✓ Lease break_stale requires expired lease
+✓ Scheduler bounded concurrency under fork processes
+✓ Import conservative: validate first, refuse conflicts, no deletion
+✓ All exit codes 0/1/2/3/4/5/6 functional
+
+CONCLUSION
+----------
+Phase 3.1 is COMPLETE. All operation leases, journal, receipts, scheduler,
+idempotency, dependencies, lineage, retention and security features are
+implemented, tested, and verified. The regression gate passes with 119/119
+tests and all correlation/backup invariants preserved. Ready for Phase 4.

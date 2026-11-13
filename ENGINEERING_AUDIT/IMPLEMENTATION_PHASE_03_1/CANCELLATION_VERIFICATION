@@ -1,0 +1,45 @@
+Phase 3.1 Cancellation Verification Report
+==========================================
+
+TESTS: test_cancel_moves_non_terminal_task_to_cancelled,
+       test_cancel_of_terminal_task_changes_nothing,
+       test_cancel_while_executing_requests_without_claiming_stop
+
+CANCELLATION PATHS VERIFIED
+----------------------------
+1. Non-terminal task -> CANCELLED
+   - aj.tasks.create() then aj.cancel_task()
+   - Outcome: ok=True, status=CANCELLED
+   - aj.cancel() returns False (already CANCELLED)
+
+2. Terminal task (COMPLETED) -> no change
+   - aj.handle("done") then aj.cancel_task()
+   - Outcome: ok=False, status=COMPLETED (unchanged)
+   - Respects terminal state boundary
+
+3. EXECUTING task -> CANCEL_REQUESTED
+   - Task progresses through UNDERSTANDING -> PLANNED -> AUTHORIZED -> EXECUTING
+   - aj.cancel_task() while EXECUTING
+   - Outcome: ok=False, status=CANCEL_REQUESTED
+   - Summary contains "not interrupted"
+   - requires_user_decision=True
+   - Second aj.cancel_task() confirmation -> CANCELLED
+
+CANCEL_REQUESTED SEMANTICS
+--------------------------
+- Honest message: "the running execution was not interrupted"
+- No forced termination of external work
+- Operator must explicitly confirm to transition to CANCELLED
+- Requires user decision - intentional operator action
+
+LEASE-BASED CANCELLATION
+------------------------
+- cancel_task() acquires lease with "cancel" operation
+- hold() context manager ensures mutual exclusion
+- Second operator attempting cancel gets LeaseHeld error
+- Release returns lease to free state
+- break_stale requires expired lease + operator action
+
+EXIT CODES: 
+- EXIT_CANCELLED (4): task was cancelled
+- EXIT_FAILURE (2): cancel refused (terminal task)

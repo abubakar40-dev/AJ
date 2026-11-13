@@ -1,0 +1,63 @@
+Phase 3.1 Lifecycle Verification Report
+=======================================
+
+TESTS COVERING TASK LIFECYCLE
+-----------------------------
+1. test_successful_execution_records_one_completed_attempt
+   - Verifies handle -> COMPLETED -> one attempt recorded
+   - operation_id starts with "op_", attempt_number == 1
+
+2. test_retry_preserves_task_id_and_history
+   - Verifies retry of FAILED task creates second attempt
+   - attempts[0] == FAILED, attempts[1] == COMPLETED
+   - task_id preserved, errors carried forward
+
+3. test_retry_is_refused_for_unmarked_capability
+   - Verifies retry refused for non-retry-safe capability (jarvis.web_search)
+   - requires_user_decision = True
+   - attempt count unchanged
+
+4. test_retry_of_terminal_task_is_rejected
+   - Verifies retry of COMPLETED task raises AjError
+
+5. test_cancel_moves_non_terminal_task_to_cancelled
+   - Verifies cancel_task moves non-terminal task to CANCELLED
+   - aj.cancel() returns False (already cancelled)
+
+6. test_cancel_of_terminal_task_changes_nothing
+   - Verifies cancel of COMPLETED task is rejected
+   - Task status stays COMPLETED
+
+7. test_cancel_while_executing_requests_without_claiming_stop
+   - Verifies EXECUTING -> CANCEL_REQUESTED with "not interrupted" message
+   - Persisted request can be confirmed by operator -> CANCELLED
+
+8. test_attempt_model_survives_reload
+   - Verifies _start_attempt/_finish_attempt survive config reload
+   - operation_id and attempt_id persisted correctly
+
+CANCELLATION SEMANTICS VERIFIED
+--------------------------------
+- Non-running states (RECEIVED, UNDERSTANDING, PLANNED, AUTHORIZED,
+  FAILED) -> CANCELLED immediately
+- EXECUTING -> CANCEL_REQUESTED (honest: "not interrupted")
+- Terminal tasks (COMPLETED) -> cancel refused, status unchanged
+- Cooperative cancellation: no forced termination of running work
+
+RETRY SEMANTICS VERIFIED
+-------------------------
+- retry_safe default False per capability
+- Only aj.echo and aj.health_check have retry_safe=True
+- Unmarked capabilities: retry refused, requires_user_decision=True
+- Attempts history preserved: first attempt stays FAILED, second is new
+- Retry budget exhaustion -> RECOVERING -> ESCALATED -> requires_user_decision
+
+EXIT CODES VERIFIED
+-------------------
+- EXIT_OK (0): successful operations
+- EXIT_UNSAFE (6): retry of non-retry-safe capability
+- EXIT_CONFIG (5): invalid configuration
+- EXIT_NOT_FOUND (1): task/not found
+- EXIT_FAILURE (2): operation refused (terminal task, retry refused)
+- EXIT_CANCELLED (4): task was cancelled
+- EXIT_RECOVERY_REQUIRED (3): capability not replay-safe

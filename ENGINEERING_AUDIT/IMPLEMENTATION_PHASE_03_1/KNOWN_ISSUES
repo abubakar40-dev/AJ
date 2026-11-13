@@ -1,0 +1,98 @@
+Phase 3.1 Known Issues and Limitations
+======================================
+
+CURRENT LIMITATIONS
+-------------------
+1. Multiprocess race conditions not fully exhaustive
+   - Current tests use fork-based multiprocessing
+   - True distributed race testing would need separate machines
+   - Lease break_stale edge cases under extreme clock skew not tested
+   - Scheduler bounded concurrency only tested with fork, not true distributed
+
+2. Lease expiry and clock dependency
+   - Lease TTL based on time.time() - clock skew between processes could cause
+     premature expiry or extended holds
+   - break_stale requires now >= expires_at - system clock accuracy matters
+   - No testing with NTP-disynchronized clocks
+
+3. True distributed scheduler not implemented
+   - Scheduler is local-bounded-concurrency only
+   - No multi-node task coordination
+   - No network-based lease arbitration
+   - Phase 4 would address distributed coordination
+
+4. Import conservatism could block legitimate use cases
+   - Refusing task-id conflicts means identical goals can't be re-imported
+   - No merge or conflict resolution strategy
+   - Designed for safety over flexibility
+
+5. Dead-letter state manual activation required
+   - dead_letter() requires can_transition check
+   - No automatic dead-lettering on repeated failures
+   - Manual operator decision via requires_user_decision
+
+6. Dependency checking linear only
+   - depends_on checks all dependencies COMPLETED
+   - No circular dependency detection
+   - No transitive dependency optimization
+
+7. Lineage traversal is O(n) in number of tasks
+   - Not optimized for large task trees
+   - All tasks scanned for parent_task_id matches
+   - Phase 4 would add indexing
+
+8. No encryption at rest for stored data
+   - Task JSONL, audit JSONL, receipts JSONL all plain text
+   - SQLite stored without encryption
+   - For production use, external encryption layer needed
+
+9. No backup encryption or compression
+   - backup_directory writes raw JSONL
+   - No gzip/zlib compression
+   - No AES or other encryption in backup pipeline
+   - Tamper detection available but not encrypted
+
+10. Retry/recovery opt-in not clearly documented
+    - retry_safe default False per capability
+    - Users must check capability specs for retry_safe/replay_safe
+    - Discovery mechanism not built into CLI
+
+PHASE 3.1 COMPLETION STATUS
+----------------------------
+✓ Operation leases: complete with acquire/renew/release/break_stale
+✓ Execution journal: complete with correlation metadata
+✓ Per-attempt receipts: complete with redaction
+✓ Persistent idempotency: complete with atomic duplicate submission
+✓ Invariant checker: complete read-only validation
+✓ Deterministic scheduler: complete with bounded concurrency
+✓ Retention assessment: complete non-destructive storage audit
+✓ Enhanced errors: LEASE_HELD, LEASE_EXPIRED, LEASE_OWNERSHIP added
+✓ Task state extensions: BLOCKED, DEAD_LETTER, depends_on, priority, deadline, root_task_id, schema_version
+✓ Orchestrator routing: leases/journal/receipts/dependency/lineage/dead-letter
+✓ CLI extensions: cancel, retry, summary --rebuild --verify, config --check, diagnostics, export, import --dry-run/--confirm, backup, backup --verify, recover
+✓ Exit codes 0/1/2/3/4/5/6: all functional
+✓ --json, --quiet, --verbose: all functional
+✓ 119 existing tests: all pass unchanged
+✓ 32 new Phase 3.1 tests: all pass
+✓ Multiprocess race tests: all pass (fork-based)
+✓ Correlation IDs intact: operation_id/attempt_id flow verified
+✓ Backup/restore roundtrip: verified
+✓ Real user state unchanged: 7 task lines, 9 audit lines
+
+KNOWN GAPS FOR PHASE 4
+----------------------
+- Distributed scheduler across multiple processes/nodes
+- Encrypted storage at rest
+- Backup compression and encryption
+- Circular dependency detection
+- Large-tree lineage indexing
+- Automatic dead-lettering policy
+- Credential management integration
+- Web UI for task management and diagnostics
+- Plugin system for capability registration
+- Remote provider integration (D1, R2, etc.)
+- Real-time presence through REALTIME binding
+- Advanced dependency types (wait_for, poll_until, etc.)
+
+VERIFICATION STATUS: ALL 119 + 32 = 151 TESTS PASS
+Overall: Phase 3.1 complete, ready for Phase 4 planning

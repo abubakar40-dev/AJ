@@ -1,0 +1,56 @@
+Phase 3.1 Concurrency Verification Report
+==========================================
+
+TESTS: test_concurrent_task_writers_do_not_corrupt_store,
+       test_concurrent_audit_writers_do_not_interleave,
+       test_concurrent_memory_writers_keep_every_event,
+       test_lock_times_out_and_releases_on_exception
+
+CONCURRENCY TESTS PASSED
+-----------------------
+1. Concurrent task writers (fork-based, 4 processes x 15 tasks)
+   - 60 total tasks created across 4 processes
+   - All exit codes == 0
+   - Final count: workers * per_worker = 60
+   - No load_errors
+   - All JSONL lines valid
+   - No data corruption across processes
+
+2. Concurrent audit writers (fork-based, 4 processes x 20 records)
+   - 80 total audit events across 4 processes
+   - All exit codes == 0
+   - Final count: 80 events
+   - malformed == 0 (no interleave corruption)
+   - All events readable via read_events()
+
+3. Concurrent memory writers (fork-based, 4 processes x 20 events)
+   - 80 total events across 4 processes on SQLite WAL
+   - All exit codes == 0
+   - Exact count: 80 events
+   - Unique IDs: 80 (no duplicates)
+   - store.verify()["ok"] is True
+
+4. Lock timeout and release on exception
+   - file_lock with timeout=5.0 holds successfully
+   - Nested lock with timeout=0.05 raises StorageBusy
+   - RuntimeError raised within lock, then released
+   - Lock successfully acquired and released after exception
+
+CONCURRENCY MECHANISMS
+-----------------------
+- file_lock (POSIX flock on Unix, no-op on non-POSIX)
+- Advisory leases via LeaseManager with file-backed storage
+- threading.RLock for in-memory base_dir
+- 30s busy_timeout for SQLite MemoryStore
+- Atomic os.replace+tempfile for JSON writes
+- file_lock sidecar locks for lease files
+
+RACE CONDITIONS VERIFIED
+-------------------------
+- Multiple writers can operate simultaneously without corruption
+- Lock properly blocks and times out
+- SQLite WAL mode handles concurrent writers
+- Audit JSONL with file_lock prevents interleave
+- Task JSONL with advisory locking preserves integrity
+
+EXIT CODES: All tests pass (no exit code failures in these tests)

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aj.local/schemas/task.schema.json",
+  "title": "AJ task record",
+  "type": "object",
+  "required": ["task_id", "goal", "status"],
+  "properties": {
+    "task_id": { "type": "string" },
+    "parent_task_id": { "type": ["string", "null"] },
+    "goal": { "type": "string" },
+    "requester": { "type": "string" },
+    "owner_agent": { "enum": ["AJ", "JARVIS", "HELIX", "HERMES"] },
+    "capability_id": { "type": "string" },
+    "permission_level": { "type": "integer", "minimum": 0, "maximum": 4 },
+    "approval_required": { "type": "boolean" },
+    "status": {
+      "enum": ["RECEIVED", "UNDERSTANDING", "PLANNED", "WAITING_FOR_APPROVAL", "AUTHORIZED",
+               "EXECUTING", "VERIFYING", "COMPLETED", "FAILED", "RECOVERING", "RETRYING",
+               "ESCALATED", "ABORTED", "CANCELLED"]
+    },
+    "created_at": { "type": "number" },
+    "updated_at": { "type": "number" },
+    "completed_at": { "type": ["number", "null"] },
+    "attempt": { "type": "integer" },
+    "max_attempts": { "type": "integer" },
+    "actions_taken": { "type": "array" },
+    "actions_not_taken": { "type": "array" },
+    "artifacts": { "type": "array" },
+    "evidence": { "type": "array" },
+    "errors": { "type": "array" },
+    "warnings": { "type": "array" },
+    "recovery": { "type": "object" },
+    "requires_user_decision": { "type": "boolean" },
+    "summary": { "type": "string" },
+    "events": { "type": "array" }
+  }
+}

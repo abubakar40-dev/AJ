@@ -1,0 +1,52 @@
+Phase 3.1 Retry Verification Report
+====================================
+
+TESTS: test_retry_preserves_task_id_and_history,
+       test_retry_is_refused_for_unmarked_capability,
+       test_retry_of_terminal_task_is_rejected,
+       test_unsafe_replay_is_refused
+
+RETRY PATHS VERIFIED
+---------------------
+1. Retry preserves task ID and history
+   - _failed() creates FAILED task with attempt
+   - aj.retry() transitions through RECOVERING -> RETRYING -> EXECUTING
+   - Outcome: ok=True, status=COMPLETED
+   - Two attempts recorded: [FAILED, COMPLETED]
+   - attempt_number: 1 and 2
+   - errors[0]["code"] == "execution_failed" preserved
+
+2. Retry refused for unmarked capability
+   - _failed() with capability="jarvis.web_search" (not retry-safe)
+   - aj.retry() returns ok=False
+   - Summary contains "retry refused"
+   - requires_user_decision=True
+   - Attempt count unchanged (still 1)
+
+3. Retry of terminal task rejected
+   - aj.handle("done") creates COMPLETED task
+   - aj.retry() raises AjError
+   - Respects terminal state boundary
+
+4. Unsafe replay refused
+   - Task created with jarvis.web_search capability
+   - aj.tasks.transition to UNDERSTANDING
+   - RecoveryManager.scan() -> decision "recovery_required"
+   - RecoveryManager.recover() -> outcomes[0]["ok"] is False
+
+RETRY_SAFE SEMANTICS
+---------------------
+- retry_safe default False per capability registry
+- Only aj.echo and aj.health_check have retry_safe=True
+- Unmarked capabilities explicitly refuse retry
+- Requires operator decision for non-retry-safe retry
+
+ATTEMPT BOUNDS
+--------------
+- max_attempts from capability config
+- Exhausted -> RECOVERING -> ESCALATED -> requires_user_decision
+- Bounded retry budget prevents infinite loops
+
+EXIT CODES:
+- EXIT_UNSAFE (6): retry of non-retry-safe capability
+- EXIT_OK (0): successful retry and completion

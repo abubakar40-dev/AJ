@@ -1,0 +1,97 @@
+Phase 3.1 Implementation Summary
+=================================
+
+CORE MODULES CHANGED
+-------------------
+1. aj/lease.py - LeaseManager class with acquire/renew/release/break_stale
+   - File-backed leases with POSIX flock (non-POSIX in-process fallback)
+   - Expired lease detection and break_stale requiring operator action
+   - hold() context manager for safe lock acquisition
+
+2. aj/journal.py - Journal append-only execution log
+   - Event schema with event_id, task_id, operation_id, attempt_id
+   - correlation_id, worker_id, lease_id, timestamp, schema_version
+   - Metadata redaction via _redact()
+   - file_lock-protected concurrent appends
+
+3. aj/receipts.py - Per-attempt durable receipts
+   - task_id, operation_id, attempt_id, worker_id, lease_id
+   - capability_id, status, verification, started_at, completed_at
+   - output, error (redacted), journal_event_ids
+
+4. aj/idempotency.py - Persistent idempotency keys
+   - Atomic duplicate submission via claim()
+   - Returns existing task_id on duplicate key
+
+5. aj/invariants.py - Read-only invariant checker
+   - task invariants (status transitions, required fields)
+   - lease invariants (active/expired/broken states)
+   - receipt invariants (completeness, redaction)
+
+6. aj/scheduler.py - Deterministic local scheduler
+   - Bounded concurrency workers
+   - Task claiming via lease acquisition
+   - _run_one returns SchedulerResult
+
+7. aj/retention.py - Non-destructive storage assessment
+   - Assesses task/audit/memory/receipt sizes
+   - Reports on storage health without mutation
+
+8. aj/errors.py - Extended error types
+   - LEASE_HELD, LEASE_EXPIRED, LEASE_OWNERSHIP
+   - RETRY_UNSAFE, RECOVERY_REQUIRED (already existed, re-exported)
+
+9. aj/task.py - Task state extensions
+   - BLOCKED, DEAD_LETTER new states
+   - depends_on: list of task_id dependencies
+   - priority: int ranking
+   - deadline: float epoch deadline
+   - root_task_id: tree root identifier
+   - schema_version: int for forward compat
+
+10. aj/orchestrator.py - Routing through new infrastructure
+    - Leases around execute/cancel/recover
+    - Journal entries on all state changes
+    - Receipt recording per attempt
+    - Dependency checking (unsatisfied_dependencies)
+    - Lineage computation (parent -> root -> children)
+    - Dead-lettering (dead_letter method)
+    - Resume from blocked/planned states via leases
+
+11. aj/__main__.py - CLI extensions
+    - cancel, retry, summary --rebuild --verify
+    - config --check, diagnostics
+    - export, import --dry-run, import, backup, backup --verify, recover
+    - --json, --quiet, --verbose global flags
+    - Exit code mapping: 0/1/2/3/4/5/6
+
+12. README.md - Updated with Phase 3/3.1 semantics, exit codes, limitations
+
+NEW TESTS ADDED
+---------------
+- 32 new tests covering: lifecycle, attempts, cancel, retry, recovery,
+  concurrency, diagnostics, config, transfer, CLI, performance invariants
+- Multiprocess race tests for lease/scheduler/journal correctness
+- Tamper detection for backup verify
+- Idempotency duplicate submission handling
+
+STORAGE METRICS (real state unchanged)
+---------------------------------------
+- tasks.jsonl: 7 lines
+- audit events: 9 lines
+- memory: in-memory SQLite with WAL mode, timeout=30s
+- journal: JSONL with file_lock protection
+- receipts: JSONL per-attempt records
+
+VERIFICATION STATUS
+-------------------
+✓ All 119 existing tests pass
+✓ 32 new Phase 3.1 tests pass
+✓ Multiprocess race conditions verified (fork-based)
+✓ No malformed records in any store
+✓ Correlation IDs intact (operation_id/attempt_id)
+✓ Backup/restore roundtrip verified
+✓ Real user state unchanged
+✓ Exit codes 0/1/2/3/4/5/6 all functional
+✓ Lease break_stale requires expired
+✓ Scheduler bounded concurrency under fork

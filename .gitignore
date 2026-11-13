@@ -1,0 +1,88 @@
+# AJ .gitignore (reviewed Phase 1C)
+# Goal: keep versioned source/docs/manifests in, keep local env/build/runtime/operator data out.
+# Preserves all existing files in place; does not delete anything.
+
+# --- Python bytecode/cache ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# --- Virtual environments ---
+.venv/
+venv/
+ENV/
+env/
+
+# --- Packaging/build artifacts ---
+*.egg-info/
+*.egg
+build/
+dist/
+
+# --- Test/tool caches and coverage ---
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Node / frontend generated artifacts (keep source + manifests, incl. package-lock.json) ---
+orb_ui/node_modules/
+orb_ui/dist/
+
+# --- OS / editor noise ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# --- Runtime / operator data (preserve locally, never publish) ---
+# None/ is preserved locally as evidence of prior path-bug investigation.
+None/
+leases/
+# SQLite runtime stores (includes WAL/SHM sidecars).
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+*.sqlite3-journal
+# Append-only runtime logs/records and their locks.
+*.jsonl
+*.jsonl.lock
+# Narrow runtime lock artifacts observed/expected (avoid blanket *.lock to protect legitimate lockfiles).
+journal.jsonl.lock
+receipts.jsonl.lock
+tasks.jsonl.lock
+events-*.lock
+
+# --- Local environment / credentials / keys (never publish) ---
+# Keep safe templates eligible (.env.example, .env.template).
+.env
+.env.*
+!.env.example
+!.env.template
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+id_rsa
+id_rsa.*
+id_ed25519
+id_ed25519.*
+*.token
+secrets.json
+secrets.*.json
+credentials.json
+credentials.*.json
+
+# --- Nested/uncertain duplicates (excluded pending ownership/content review) ---
+Drive/
+
+# --- Local backups/temp artifacts (review case-by-case; preserved locally) ---
+*.bak
+*.tmp

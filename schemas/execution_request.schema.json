@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aj.local/schemas/execution_request.schema.json",
+  "title": "AJ execution request (Hermes boundary)",
+  "type": "object",
+  "required": ["request_id", "capability_id", "permission_level"],
+  "additionalProperties": false,
+  "properties": {
+    "request_id": { "type": "string", "minLength": 1 },
+    "capability_id": { "type": "string", "minLength": 1 },
+    "skill_id": { "type": "string" },
+    "arguments": { "type": "object" },
+    "task_id": { "type": "string" },
+    "requested_by": { "type": "string" },
+    "permission_level": { "type": "integer", "minimum": 0, "maximum": 4 },
+    "timeout_seconds": { "type": "integer", "minimum": 1 },
+    "dry_run": { "type": "boolean" },
+    "created_at": { "type": "number" }
+  },
+  "$comment": "approval_token is intentionally excluded: tokens travel in-process only and are never serialised."
+}

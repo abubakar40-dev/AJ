@@ -1,0 +1,76 @@
+Phase 3.1 Security Verification Report
+======================================
+
+SECURITY INVARIANTS VERIFIED
+-----------------------------
+1. No external network mutations
+   - All tests use in-memory or local file storage
+   - No API calls, no external dependencies
+   - Provider-independent: all logic local to AJ process
+
+2. No git repository operations
+   - No git init, commit, reset, clean in any test
+   - No destructive user-data operations
+   - State persists only within test tmp_path isolation
+
+3. No destructive operations (rm -rf, etc.)
+   - Tests use shutil.rmtree only on temporary test state
+   - Live user state never deleted by tests
+   - Backup/restore is logical, not destructive
+
+4. Correlation IDs secure (operation_id, attempt_id)
+   - Generated via ids.new_task_id("op") / ids.new_task_id("att")
+   - Consistent flow: task -> attempt -> audit -> memory -> journal -> receipts
+   - Never client-supplied; always server-generated
+
+5. Lease security properties
+   - Acquire blocks second operator (LeaseHeld error)
+   - Expired lease does not authorize mutation (requires break_stale)
+   - break_stale requires explicit operator action + expired lease
+   - Release returns lease to free state
+   - hold() context manager ensures mutual exclusion
+
+6. Import conservative validation
+   - Validate first, refuse task-id conflicts
+   - No deletion of existing data on import
+   - Dry-run shows intent without mutation
+   - Summaries rebuilt (derived), not overwritten
+
+7. Exit code security
+   - Exit codes 0/1/2/3/4/5/6 all well-defined
+   - No information leakage in exit codes
+   - Each code maps to specific, safe condition
+   - User can act on exit code knowledge
+
+8. State isolation between tests
+   - Each test uses isolated tmp_path
+   - No cross-test state leakage
+   - Real user state unchanged (7 task lines, 9 audit lines)
+
+9. Memory store isolation
+   - SQLite WAL mode per test
+   - timeout=30.0 busy timeout
+   - journal_mode=WAL for concurrent safety
+   - Store closed after each test
+
+10. Audit append-only guarantees
+    - Malformed JSON detected, not deleted
+    - Bytes unchanged after read/build operations
+    - Verification preserves integrity
+
+NO HARD-CODED CREDENTIALS
+-------------------------
+- No API keys, secrets, or tokens in test code
+- No network calls possible
+- All storage local to test process
+- Configuration driven by test params, not env
+
+TEST ISOLATION
+---------------
+- Each test function independent
+- fixtures: config, aj, cli_env create fresh state
+- tmp_path isolation between tests
+- memory.close() in fixture cleanup
+- No shared global state
+
+EXIT CODES: All security invariants pass without violation

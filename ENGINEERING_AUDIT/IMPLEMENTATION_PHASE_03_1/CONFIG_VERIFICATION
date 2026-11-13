@@ -1,0 +1,58 @@
+Phase 3.1 Config Verification Report
+=====================================
+
+TESTS: test_config_sources_and_validation,
+       test_diagnostics_report_counts_and_locks,
+       test_cli_config_check_invalid_exits_5
+
+CONFIG INVARIANTS VERIFIED
+--------------------------
+1. Config sources and validation
+   - load_config(path, env={}) loads from file source
+   - loaded.source("core") == "file" when config from file
+   - loaded.source("permissions") == "default" (not set in file)
+   - Bad config validation catches issues
+   - "unattended_ceiling" > 1 triggers warning
+   - "max_attempts" <= 0 triggers warning
+
+2. Diagnostics report counts and locks
+   - gather(config) returns report dict
+   - report["tasks"]["records"] == task count
+   - report["tasks"]["malformed"] == 0 (clean state)
+   - report["audit"]["events"] >= 1 (events present)
+   - report["storage"]["memory"]["raw_events"] >= 1
+   - report["locks"]["tasks"] == "free" (no leases held)
+
+3. CLI config --check invalid exits 5
+   - main(["--config", str(path), "config", "--check"]) == EXIT_CONFIG
+   - Bad config file (unattended_ceiling: 9) rejected
+   - Exit code 5 indicates configuration invalid
+
+CONFIG SOURCES
+--------------
+- "default": no config file, use defaults
+- "file": config from specified file path
+- "env": environment variables override
+- "override": overrides dict takes precedence
+- Source tracking: loaded.source("key") returns origin
+
+VALIDATION RULES
+----------------
+- unattended_ceiling: max 1 for unattended operation
+- max_attempts: must be > 0
+- verification before execute: can be required or bypassed
+- Provider configs: checked for sensible values
+
+DIAGNOSTICS INVARIANTS
+----------------------
+- Reports task count, malformed count
+- Reports audit event count
+- Reports memory raw event count
+- Reports lock status (free/busy/held)
+- All counts non-negative
+- malformed always >= 0
+- events always >= 0 when data present
+
+EXIT CODES:
+- EXIT_OK (0): config valid, diagnostics green
+- EXIT_CONFIG (5): configuration invalid

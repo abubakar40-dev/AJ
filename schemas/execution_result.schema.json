@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aj.local/schemas/execution_result.schema.json",
+  "title": "AJ execution result",
+  "type": "object",
+  "required": ["request_id", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "request_id": { "type": "string" },
+    "status": { "enum": ["completed", "failed", "rejected", "timeout", "unknown"] },
+    "output": {},
+    "error": { "type": ["object", "null"] },
+    "side_effects": { "type": "array", "items": { "type": "object" } },
+    "verified": { "type": "boolean" },
+    "verification": { "type": "object" },
+    "started_at": { "type": "number" },
+    "finished_at": { "type": "number" }
+  }
+}

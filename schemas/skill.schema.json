@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aj.local/schemas/skill.schema.json",
+  "title": "AJ skill declaration (Hermes boundary)",
+  "type": "object",
+  "required": ["skill_id", "name", "review_status"],
+  "additionalProperties": false,
+  "properties": {
+    "skill_id": { "type": "string" },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "entrypoint": { "type": "string" },
+    "version": { "type": "string" },
+    "required_capabilities": { "type": "array", "items": { "type": "string" } },
+    "required_permissions": { "type": "array", "items": { "type": "integer", "minimum": 0, "maximum": 4 } },
+    "inputs": { "type": "object" },
+    "outputs": { "type": "object" },
+    "side_effects": { "type": "array", "items": { "type": "string" } },
+    "failure_modes": { "type": "array", "items": { "type": "string" } },
+    "verification_steps": { "type": "array", "items": { "type": "string" } },
+    "approval_required": { "type": "boolean" },
+    "review_status": { "enum": ["draft", "tested", "reviewed", "approved", "rejected", "revoked"] },
+    "tests": { "type": "array", "items": { "type": "object" } },
+    "created_by": { "type": "string" },
+    "created_at": { "type": "number" },
+    "notes": { "type": "string" }
+  },
+  "$comment": "A skill is exposed only when review_status is approved, every recorded test PASSes, and verification_steps are declared. Approval never widens permissions."
+}
