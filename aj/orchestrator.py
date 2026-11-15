@@ -48,7 +48,7 @@ from .execution_domain import (
     ExecutionRecord,
     ExecutionStore,
 )
-from .delegation import AssignmentStore, DelegationStore, LogicalAgentStore, detect_delegation_anomalies
+from .delegation import AssignmentStore, DelegationStore, LogicalAgentStore, aggregate_parent_progress, detect_delegation_anomalies
 from .idempotency import IdempotencyStore
 from .journal import Journal
 from .lease import LeaseManager
