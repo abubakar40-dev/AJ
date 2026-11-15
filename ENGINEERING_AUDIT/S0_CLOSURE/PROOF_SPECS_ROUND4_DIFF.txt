@@ -1,0 +1,11 @@
+--- PROOF_SPECS.md (before round 4 refresh)
++++ PROOF_SPECS.md (after round 4 refresh)
+@@ -44,7 +44,7 @@
+ | Forbidden | False completion with unresolved/failed/cancelled required child; partial-success mapped to COMPLETED; silent optional default for missing/malformed classification. |
+ | Stage | S1 (classification/state mapping) + S3 (guards/reconcile semantics). |
+ | Covering test | Existing: post D-001 completion guard now real in covered cases. New/needed: `test_a5` (xfail), `test_b5` (PASS for current aggregation block), `test_a6`/T-04, full D1/D2 matrix. |
+-| Untestable now? | **Final approved outcome-state mapping (D2/Doc57 decision #2) dependent** for some cases; cannot claim full conformance until decided/implemented. |
++| Untestable now? | D2 outcome semantics are approved in Doc 58 / `58_POLICY_DECISIONS.md`, but implementation/proof not complete; cannot claim full conformance until implemented and proven across all paths. |
+ 
+ ## INV-04 — Cancellation safety
+ | Field | Spec |

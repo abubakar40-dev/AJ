@@ -2,6 +2,9 @@
 
 Purpose: executable proof specifications for INV-01..INV-10 and T-01..T-12 (Doc 54 / Doc 58 intent). Each item states setup, invocation, authoritative persisted record(s), expected result, forbidden result, stage (S1–S4) for implementation/proof, and covering test (existing/new). Items that cannot honestly be tested are marked explicitly. **No implementation performed in S0.**
 
+## Round 4 refresh note (2026-11-15 context)
+- Stale "pending approved mapping" statements refreshed to reflect that D2 outcome semantics are approved in Doc 58 / `58_POLICY_DECISIONS.md`; implementation/proof remains incomplete. No "COMPLETE" claim added.
+
 ## Legend
 - **Authoritative persisted record:** record(s) that constitute ground truth for the assertion (tasks.jsonl, delegations.jsonl, assignments.jsonl, scheduler_decisions.jsonl, leases/state, receipts/journal/audit where applicable).
 - **Stage:** planned stage to implement/fix and/or prove (S1 policy/model, S2 authz/scheduler/admin guards, S3 lifecycle/cancel/reconcile, S4 crash/concurrency feasible boundaries). S0 = spec/evidence only.
@@ -41,7 +44,7 @@ Purpose: executable proof specifications for INV-01..INV-10 and T-01..T-12 (Doc 
 | Forbidden | False completion with unresolved/failed/cancelled required child; partial-success mapped to COMPLETED; silent optional default for missing/malformed classification. |
 | Stage | S1 (classification/state mapping) + S3 (guards/reconcile semantics). |
 | Covering test | Existing: post D-001 completion guard now real in covered cases. New/needed: `test_a5` (xfail), `test_b5` (PASS for current aggregation block), `test_a6`/T-04, full D1/D2 matrix. |
-| Untestable now? | **Final approved outcome-state mapping (D2/Doc57 decision #2) dependent** for some cases; cannot claim full conformance until decided/implemented. |
+| Untestable now? | D2 outcome semantics are approved in Doc 58 / `58_POLICY_DECISIONS.md`, but implementation/proof not complete; cannot claim full conformance until implemented and proven across all paths. |
 
 ## INV-04 — Cancellation safety
 | Field | Spec |
@@ -151,7 +154,7 @@ Purpose: executable proof specifications for INV-01..INV-10 and T-01..T-12 (Doc 
 - **Authoritative persisted record:** Child/parent tasks, aggregation evidence.
 - **Expected:** COMPLETED only when policy satisfied; never unsafe/partial-as-success.
 - **Forbidden:** False completion, partial-as-success.
-- **Stage:** S1/S3. **Covering test:** A4/A5/B5/A6. **Untestable now:** pending approved mapping for all cases.
+- **Stage:** S1/S3. **Covering test:** A4/A5/B5/A6. **Untestable now:** D2 mapping approved (Doc 58), but not implemented/proven for all cases.
 
 ## T-04 — Missing/malformed/contradictory classification
 - **Setup:** `child_spec.required` missing, non-bool (`"maybe"`, 0/1, null), contradictory with `required_child_ids`/policy as applicable.

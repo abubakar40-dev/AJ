@@ -112,3 +112,46 @@ Result: **581 passed, 1 failed, 11 xfailed, 13 warnings** (exit 1). Evidence: `E
 
 ## FINAL VERDICT
 **S0 STATUS: PARTIAL.** E1–E6 each have evidence files and D-001 corrected a real guard-evaluation defect (with wrong-reason masking documented), but S0 closure/proof is **not complete**. Characterization gaps, unimplemented Doc 58 policy/guards, unresolved lifecycle/outcome decisions, non-exhaustive inventories, and open crash/sqlite boundaries prevent claiming S0 COMPLETE. **Do not start S1.**
+
+
+## ROUND 4 (2026-11-15, evidence pass — facts only, reviewer decides)
+**Branch:** `wip/s0-snapshot` (HEAD at start of round 4: `d566840...`). `main` verified: `468fdcebece5b25f02e53add4928d3650ef175f4`.  
+**Edits in this round:** NO edits to `aj/`, NO edits to any existing test. New files under `ENGINEERING_AUDIT/S0_CLOSURE/` (+ `CALLABLE_INVENTORY_S0_v2.md` copy) and scratch copies under `/tmp`. Edits to `PROOF_SPECS.md`, `CALLABLE_INVENTORY_S0.md` (replaced with v3), and `S0_CLOSURE_REPORT.md` (this section). No "COMPLETE" written.
+
+### STEP 1 — measured wrong-reason claim (scratch pre-D-001, no guessing)
+- Method: `git archive eb2674b | tar -x -C /tmp/aj_prefix` (pre-D-001, real repo unchanged). Instrumented `aj/orchestrator.py::_before_task_transition` `except Exception` in scratch to append `PYTEST_CURRENT_TEST | exc_type` to `/tmp/nameerr_hits.log`. Ran 5 delegation test files one at a time in scratch with `--basetemp=/tmp/aj-pre/<subdir>` (PYTHONDONTWRITEBYTECODE=1): foundation (8 passed), r_closure (7 passed), r2 (11 passed), r3 (12 passed), r4 (6 passed). Logs: `/tmp/step1_foundation.txt`, `/tmp/step1_rclosure.txt`, `/tmp/step1_r2.txt`, `/tmp/step1_r3.txt`, `/tmp/step1_r4.txt`.
+- **Measured hits:** 2 log lines, both `NameError`.
+  1. `tests/test_phase5a6r2_parent_lifecycle.py::test_parent_completion_blocked_when_required_child_unresolved (call) | NameError` — **PASSED**. Assertion: `with pytest.raises(Conflict): aj.tasks.transition(parent.task_id, taskmod.COMPLETED, "should block")` (satisfied by NameError-wrapped unverifiable Conflict, wrong reason).
+  2. `tests/test_phase5a6r2_parent_lifecycle.py::test_parent_completion_blocked_direct_guard (call) | NameError` — **PASSED**. Assertion: `with pytest.raises(Conflict): aj.tasks.transition(parent.task_id, taskmod.COMPLETED, "child unresolved")` (same wrong reason).
+- **Measured conclusion:** **2 existing tests (in the 5 measured files) passed for the wrong reason** (NameError path). Other `pytest.raises(Conflict)`/"blocked" sites in those files (e.g. `test_phase5a6r_delegation_closure.py:126` idempotency Conflict, `:157` blocked assertion, `test_phase5a6r3_scenario_certification.py:258` in `test_s16_s31_incorrect_completed_parent_detected`, markers in foundation/r4) did **not** hit the instrumented NameError branch in this measurement; r3:258 was not counted as measured wrong-reason pass. Measurement scope limited to these files/runs.
+- Evidence: `ENGINEERING_AUDIT/S0_CLOSURE/WRONG_REASON_MEASURED.md`.
+
+### STEP 2 — callable inventory rebuilt (E2, v3)
+- Fresh AST scan over `aj/**/*.py` + `integrations/**/*.py`: **47 files scanned, 146 entries, 0 errors** (`/tmp/ast_round4.json`). Compared to old `ast_callgraph_results.json` (146): **delta added 0, removed 0**. No matching entries under `integrations/**/*.py`.
+- `getattr(...)`/target-name scan: no variable target-name dynamic invocation of inventory methods identified; only attribute reads/fixed-name hook (`after_transition`) observed (see v3). Absence of all dynamic dispatch **NOT VERIFIABLE** statically.
+- Objects other than `Aj`/`TaskStore` exposing target-like methods identified/classified (CallRecord/CallStore, Assignment/Delegation stores, ExecutionRecord/Store, RecoveryManager, Scheduler).
+- Domain filter: all transition call sites classified (Task FSM in-domain; CallRecord/ExecutionRecord sites OUT-OF-TASK-DOMAIN with proof; runtime self-checks DIAGNOSTIC-ONLY with proof of tempfile/temp stores, not real data dir).
+- `CALLABLE_INVENTORY_S0.md` replaced with **v3** (grouped by callable, 11-field records for mandatory callables incl Aj.handle/resume/retry/recover/cancel_task/cancel/reconcile+action dispatcher, Aj.dead_letter/requeue/abandon/delegate, Aj.reconcile_delegation_parent/_reconcile_delegation_parent/_prepare_delegated_child_for_scheduling/_delegated_permission_guard/_before_task_transition/_on_task_transition, Scheduler.evaluate_eligibility/evaluate_admission/_dispatch_one/run_once, TaskStore.transition/cancel/mutate/save/import_record, and every task-mutating `_cmd_*` handler; dispositions with target stages; NOT VERIFIABLE entries include exact missing info/seam and what would make verifiable). v2 preserved as `CALLABLE_INVENTORY_S0_v2.md`.
+- Scheduler dead-letter near `scheduler.py:720`: trigger predicate and delegated reachability **NOT VERIFIABLE** in this pass (branch-complete trace needed) — documented with required verifiability conditions.
+- Honest limits listed (dynamic dispatch, cross-store atomicity/crash/freshness, wrapper coverage, orb/inbox/integration coupling, external boundaries).
+
+### STEP 3 — regression-gate protocol (no test edits)
+- Created `ENGINEERING_AUDIT/S0_CLOSURE/TEST_RUN_PROTOCOL.md`. Standard: `python3 -m pytest -q --basetemp=/tmp/aj-pytest-std` (environment/basetemp setting, not a test change; `TMPDIR` points to `/home/abubakargcx/easy-diffusion/tmp` on NTFS/easy-diffusion tmp context, NTFS basetemp previously showed intermittent sqlite sensitivity). Separate T-12 evidence: NTFS basetemp command.
+- Standard runs (3, fresh `/tmp/aj-pytest-std` each run, PYTHONDONTWRITEBYTECODE=1): 
+  - Run 1: `1 failed, 581 passed, 11 xfailed, 13 warnings in 68.62s` (FAILED `tests/test_crash_safety.py::test_multi_process_recovery_same_operation`).
+  - Run 2: `581 passed, 11 xfailed, 16 warnings, 1 error in 68.47s` (ERROR at setup `tests/test_audit_reliability_security.py::test_reconcile_evidence_incomplete_is_reported_not_silent_success`, `FileExistsError` on `/tmp/aj-pytest-std` mkdir/cleanup race with rm_rf warnings).
+  - Run 3: `1 failed, 581 passed, 11 xfailed, 13 warnings in 67.30s` (FAILED `tests/test_audit_reliability_security.py::test_clear_recovery_required_fails_closed_on_completion_receipt_conflict`).
+  Results not identical across runs (recorded factually; no `aj/` edits in round 4).
+- T-12 NTFS basetemp run (1): `582 passed, 11 xfailed, 13 warnings in 60.79s` (`--basetemp="/run/media/abubakargcx/My Drive/easy-diffusion/tmp/aj-pytest-ntfs"`).
+- Evidence: `ENGINEERING_AUDIT/S0_CLOSURE/TEST_RUN_PROTOCOL.md`, `/tmp/std_run1.txt`, `/tmp/std_run2.txt`, `/tmp/std_run3.txt`, `/tmp/ntfs_run.txt`.
+
+### STEP 4 — PROOF_SPECS stale statements refreshed
+- Refreshed stale "pending approved mapping" / D2-dependent wording to reflect D2 outcome semantics approved in Doc 58 / `58_POLICY_DECISIONS.md` (implementation/proof still incomplete). No "COMPLETE" claim added.
+- Evidence of changes: `ENGINEERING_AUDIT/S0_CLOSURE/PROOF_SPECS_ROUND4_DIFF.txt`, `ENGINEERING_AUDIT/S0_CLOSURE/PROOF_SPECS_ROUND4_CHANGED_SENTENCES.md`.
+- **Every sentence/statement changed (listed):**
+  1. **Round 4 refresh note inserted:** Added section "## Round 4 refresh note (2026-11-15 context)" stating D2 approved in Doc 58 / `58_POLICY_DECISIONS.md` while implementation/proof remains incomplete; no "COMPLETE" claim added.
+  2. **INV-03 Untestable now?** BEFORE: `| Untestable now? | **Final approved outcome-state mapping (D2/Doc57 decision #2) dependent** for some cases; cannot claim full conformance until decided/implemented.` AFTER: `| Untestable now? | D2 outcome semantics are approved in Doc 58 / \`58_POLICY_DECISIONS.md\`, but implementation/proof not complete; cannot claim full conformance until implemented and proven across all paths.`
+  3. **T-03 stage/untestable note:** BEFORE: `- **Stage:** S1/S3. **Covering test:** A4/A5/B5/A6. **Untestable now:** pending approved mapping for all cases.` AFTER: `- **Stage:** S1/S3. **Covering test:** A4/A5/B5/A6. **Untestable now:** D2 mapping approved (Doc 58), but not implemented/proven for all cases.`
+
+**Status after round 4:** evidence artifacts added/refined (measured wrong-reason audit, inventory v3, test protocol, refreshed specs). S0 closure/certification **not** claimed; underlying Doc58 implementation gaps and unproven boundaries remain as previously reported.
+

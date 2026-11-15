@@ -1,0 +1,7 @@
+- Round 4 refresh note inserted: Added section "## Round 4 refresh note (2026-11-15 context)" stating D2 approved in Doc 58 / 58_POLICY_DECISIONS.md while implementation/proof remains incomplete; no "COMPLETE" claim added.
+- INV-03 Untestable now? (line ~44 before refresh)
+  - BEFORE: | Untestable now? | **Final approved outcome-state mapping (D2/Doc57 decision #2) dependent** for some cases; cannot claim full conformance until decided/implemented.
+  - AFTER:  | Untestable now? | D2 outcome semantics are approved in Doc 58 / `58_POLICY_DECISIONS.md`, but implementation/proof not complete; cannot claim full conformance until implemented and proven across all paths.
+- T-03 stage/untestable note
+  - BEFORE: - **Stage:** S1/S3. **Covering test:** A4/A5/B5/A6. **Untestable now:** pending approved mapping for all cases.
+  - AFTER:  - **Stage:** S1/S3. **Covering test:** A4/A5/B5/A6. **Untestable now:** D2 mapping approved (Doc 58), but not implemented/proven for all cases.
