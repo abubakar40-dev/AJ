@@ -278,7 +278,12 @@ def build_parser() -> argparse.ArgumentParser:
     _add_json(config)
 
     diagnostics = sub.add_parser("diagnostics", help="local storage and lock diagnostics")
+    diagnostics.add_argument("--storage", action="store_true", help="emit focused SQLite/storage diagnostics")
     _add_json(diagnostics)
+
+    consistency = sub.add_parser("consistency", help="read-only task/audit/journal/operation-evidence consistency check")
+    consistency.add_argument("--task", default="", help="check only this task id")
+    _add_json(consistency)
 
     export = sub.add_parser("export", help="export local state to a JSON file")
     export.add_argument("--output", required=True)
@@ -296,8 +301,25 @@ def build_parser() -> argparse.ArgumentParser:
     _add_json(backup)
 
     recover = sub.add_parser("recover", help="scan persisted tasks and replay safe ones")
-    recover.add_argument("--task", default="", help="recover one specific task")
+    recover.add_argument("--task", default="", help="recover or inspect one specific task")
+    recover.add_argument("--inspect", action="store_true",
+                         help="read-only recovery inspection (no mutation, no replay)")
     _add_json(recover)
+
+    reconcile = sub.add_parser("reconcile", help="explicit operator reconciliation for non-auto-recoverable tasks")
+    reconcile.add_argument("task_id")
+    reconcile.add_argument("--action", required=True,
+                           choices=["abort", "dead_letter", "abandon", "clear_recovery_required"],
+                           help="explicit reconciliation action")
+    reconcile.add_argument("--reason", required=True, help="operator reason (required)")
+    reconcile.add_argument("--evidence-basis", default="", dest="evidence_basis",
+                           help="operator evidence basis/reference")
+    reconcile.add_argument("--operator", default="operator", help="operator identity/context label")
+    reconcile.add_argument("--operation-id", default="", dest="operation_id",
+                           help="optional stable operation id for idempotent duplicate prevention")
+    reconcile.add_argument("--idempotency-key", default="", dest="idempotency_key",
+                           help="optional idempotency key metadata for this reconciliation operation")
+    _add_json(reconcile)
 
     orb = sub.add_parser("orb", help="launch the AJ floating capture orb (desktop GUI)")
     orb.add_argument("--inbox-root", dest="inbox_root", default="", help="override canonical inbox root")
@@ -640,6 +662,16 @@ def _cmd_config(config: Config, args) -> int:
 
 def _cmd_diagnostics(config: Config, args) -> int:
     payload = gather_diagnostics(config)
+    if getattr(args, "storage", False):
+        try:
+            aj = assemble(config)
+            try:
+                payload["storage_diagnostics_focus"] = aj.storage_diagnostics()
+            finally:
+                if aj.memory is not None:
+                    aj.memory.close()
+        except Exception as exc:
+            payload["storage_diagnostics_focus_error"] = f"{type(exc).__name__}: {exc}"
     if getattr(args, "json", False):
         _emit(payload)
     elif getattr(args, "quiet", False):
@@ -699,6 +731,47 @@ def _cmd_recover(config: Config, args) -> int:
     aj = assemble(config)
     try:
         manager = RecoveryManager(aj)
+        if getattr(args, "inspect", False):
+            if args.task:
+                result = {"inspection": aj.recovery_inspection(args.task)}
+                if getattr(args, "json", False):
+                    _emit(result)
+                else:
+                    ins = result["inspection"]
+                    task = ins.get("task", {})
+                    rec = ins.get("recovery", {})
+                    exp = ins.get("explanation", {})
+                    print(f"Task: {task.get('task_id')}")
+                    print(f"Status: {task.get('status')}  Capability: {task.get('capability_id') or '-'}")
+                    print(f"Recovery: {rec.get('classification')}  replay_permitted={rec.get('automatic_replay_permitted')}  blocked={rec.get('blocked')}  reconciliation_required={rec.get('reconciliation_required')}")
+                    print(f"Reason: {rec.get('reason')}")
+                    if exp.get("known"):
+                        print("Known: " + "; ".join(exp.get("known", [])[:6]))
+                    if exp.get("unknown"):
+                        print("Unknown: " + "; ".join(exp.get("unknown", [])))
+                    if exp.get("conflicts"):
+                        print("Conflicts: " + "; ".join(exp.get("conflicts", [])))
+                    if exp.get("safe_actions"):
+                        print("Safe actions: " + "; ".join(
+                            f"{a.get('action')} ({a.get('reason')})" for a in exp.get("safe_actions", [])))
+                return EXIT_OK
+            findings = manager.scan()
+            inspections = []
+            for f in findings:
+                try:
+                    inspections.append(aj.recovery_inspection(f.task_id))
+                except Exception as exc:
+                    inspections.append({"task": {"task_id": f.task_id}, "error": {"message": str(exc)}})
+            result = {"findings": [f.to_dict() for f in findings], "inspections": inspections}
+            if getattr(args, "json", False):
+                _emit(result)
+            else:
+                if not findings:
+                    print("No interrupted tasks.")
+                for f in findings:
+                    print(f"{f.task_id}  {f.status:<20} {f.decision:<20} {f.reason}")
+            return EXIT_OK
+
         result = manager.recover(args.task or None)
         if getattr(args, "json", False):
             _emit(result)
@@ -716,6 +789,30 @@ def _cmd_recover(config: Config, args) -> int:
             outcomes = result["outcomes"]
             return EXIT_OK if outcomes and outcomes[0]["ok"] else EXIT_FAILURE
         return EXIT_OK
+    finally:
+        if aj.memory is not None:
+            aj.memory.close()
+
+
+def _cmd_reconcile(config: Config, args) -> int:
+    aj = assemble(config)
+    try:
+        result = aj.reconcile(
+            args.task_id, args.action,
+            reason=args.reason,
+            evidence_basis=getattr(args, "evidence_basis", "") or "",
+            operator=getattr(args, "operator", "operator") or "operator",
+            operation_id=getattr(args, "operation_id", "") or "",
+            idempotency_key=getattr(args, "idempotency_key", "") or "",
+        )
+        if getattr(args, "json", False):
+            _emit(result)
+        else:
+            print(f"Task: {result.get('task_id')}")
+            print(f"Action: {result.get('action')}")
+            print(f"Outcome: {'ok' if result.get('ok') else 'refused'} ({result.get('detail')})")
+            print(f"Status: {(result.get('previous') or {}).get('status')} -> {(result.get('resulting') or {}).get('status')}")
+        return EXIT_OK if result.get("ok") else EXIT_FAILURE
     finally:
         if aj.memory is not None:
             aj.memory.close()
@@ -817,6 +914,22 @@ def _cmd_orb(config: Config, args) -> int:
     return EXIT_OK if proc.returncode == 0 else EXIT_FAILURE
 
 
+def _cmd_consistency(config: Config, args) -> int:
+    aj = assemble(config)
+    try:
+        result = aj.consistency_check(task_id=getattr(args, "task", "") or "")
+        if getattr(args, "json", False):
+            _emit(result)
+        elif getattr(args, "quiet", False):
+            print(f"status={result.get('status')} findings={(result.get('counts') or {}).get('findings', 0)}")
+        else:
+            print(result.get("operator_summary") or f"status={result.get('status')}")
+        return EXIT_OK if result.get("status") == "consistent" and not (result.get("findings") or []) else EXIT_FAILURE
+    finally:
+        if aj.memory is not None:
+            aj.memory.close()
+
+
 _COMMANDS = {
     "run": _cmd_run,
     "tasks": _cmd_tasks,
@@ -830,10 +943,12 @@ _COMMANDS = {
     "permissions": _cmd_permissions,
     "config": _cmd_config,
     "diagnostics": _cmd_diagnostics,
+    "consistency": _cmd_consistency,
     "export": _cmd_export,
     "import": _cmd_import,
     "backup": _cmd_backup,
     "recover": _cmd_recover,
+    "reconcile": _cmd_reconcile,
     "orb": _cmd_orb,
     "inbox": cmd_inbox,
 }

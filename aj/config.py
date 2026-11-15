@@ -86,6 +86,17 @@ DEFAULTS: Dict[str, Any] = {
         "runtime": "none",
         "hermes_endpoint": "",
         "max_attempts": 1,
+        # Hermes CLI adapter (Phase 4B.1 spike): default-disabled, deny-by-default.
+        # Enable explicitly only in controlled local_trust environments.
+        "hermes": {
+            "enabled": False,
+            "capability_status_read_enabled": False,
+            "cli_path": "hermes",
+            "default_timeout_ms": 10000,
+            "max_timeout_ms": 30000,
+            "stdout_max_bytes": 8000,
+            "stderr_max_bytes": 4000,
+        },
     },
     "integrations": {
         "device_bridge": "gsconnect",
@@ -98,8 +109,28 @@ DEFAULTS: Dict[str, Any] = {
         "memory_filename": "memory.sqlite3",
         "log_level": "info",
     },
+    "scheduler": {
+        # Conservative, configurable logical capacities (NOT measured host limits).
+        # Unknown/unhealthy persistence/capacity state must fail closed at admission.
+        "enabled": True,
+        "global_max_active_executions": 1,
+        "global_max_admitted_waiting": 10,
+        "max_dispatch_per_run": 5,
+        "max_workers": 1,
+        # Simple starvation prevention: after this wait (seconds), priority is aged up.
+        # 0 disables aging. Deterministic and conservative.
+        "aging_seconds": 300,
+    },
+    "delegation": {
+        # Bounded logical/internal delegation foundation (5A.6). No real remote transport.
+        "enabled": True,
+        "max_children_per_delegation": 10,
+        "max_delegations_per_parent": 20,
+        "max_active_assignments_per_child": 1,
+    },
     "feature_flags": {
         "hermes_skills": False,
+        "hermes_execution_adapter": False,
         "calling": False,
         "provider_fallback": True,
     },
@@ -331,4 +362,30 @@ def validate(config: Config) -> List[str]:
         issues.append("execution.runtime must be 'none' or 'hermes'")
     if runtime != "none" and not config.get("feature_flags.hermes_skills", False):
         issues.append("execution.runtime is set but feature_flags.hermes_skills is disabled")
+    sched = config.section("scheduler")
+    if isinstance(sched, dict):
+        if not isinstance(sched.get("enabled"), bool):
+            issues.append("scheduler.enabled must be a boolean")
+        for key in ("global_max_active_executions", "global_max_admitted_waiting",
+                    "max_dispatch_per_run", "max_workers", "aging_seconds"):
+            val = sched.get(key)
+            if not isinstance(val, int) or isinstance(val, bool) or val < 0:
+                issues.append(f"scheduler.{key} must be a non-negative integer")
+        for key in ("global_max_active_executions", "max_dispatch_per_run", "max_workers"):
+            val = sched.get(key)
+            if isinstance(val, int) and not isinstance(val, bool) and val < 1:
+                issues.append(f"scheduler.{key} must be an integer >= 1")
+    else:
+        issues.append("scheduler must be an object")
+    deleg = config.section("delegation")
+    if isinstance(deleg, dict):
+        if not isinstance(deleg.get("enabled"), bool):
+            issues.append("delegation.enabled must be a boolean")
+        for key in ("max_children_per_delegation", "max_delegations_per_parent",
+                    "max_active_assignments_per_child"):
+            val = deleg.get(key)
+            if not isinstance(val, int) or isinstance(val, bool) or val < 1:
+                issues.append(f"delegation.{key} must be an integer >= 1")
+    else:
+        issues.append("delegation must be an object")
     return issues

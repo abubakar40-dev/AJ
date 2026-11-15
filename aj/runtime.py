@@ -15,7 +15,7 @@ import importlib
 import logging
 import tempfile
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Mapping, Optional
 
 from . import __version__, errors, transfer
 from .actions import InternalActions, default_actions, specs as internal_specs
@@ -25,7 +25,7 @@ from .agents import AgentRegistry
 from .audit import AuditLog, JsonlAuditSink, MemoryAuditSink, read_events
 from .capability import CapabilityRegistry
 from .config import Config, load as load_config
-from .execution import SkillRegistry, UnavailableExecutionAdapter
+from .execution import ExecutionPort, SkillRegistry, UnavailableExecutionAdapter
 from .locking import file_lock
 from .memory import MemoryStore
 from .orchestrator import Aj, build
@@ -72,6 +72,42 @@ def build_memory(config: Config, *, ephemeral: bool = False) -> MemoryStore:
     return MemoryStore(memory_path(config))
 
 
+def _build_execution(config: Config) -> ExecutionPort:
+    """Select execution runtime; default is explicitly unattached/disabled."""
+    runtime = str(config.get("execution.runtime", "none") or "none").strip().lower()
+    ff = bool(config.get("feature_flags.hermes_execution_adapter", False))
+    h = config.section("execution").get("hermes", {}) if isinstance(config.section("execution"), Mapping) else {}
+    if not isinstance(h, Mapping):
+        h = {}
+    enabled = ff and runtime == "hermes_cli" and bool(h.get("enabled", False))
+    cap_enabled = enabled and bool(h.get("capability_status_read_enabled", False))
+    if not enabled:
+        return UnavailableExecutionAdapter()
+    try:
+        from .hermes_adapter import HermesExecutionAdapter
+        # Strict validation: fail closed on invalid/unsafe config (no permissive coercion).
+        cli_path = h.get("cli_path", "hermes")
+        if not isinstance(cli_path, str) or not cli_path.strip():
+            raise errors.ConfigError("execution.hermes.cli_path must be a non-empty string")
+        if isinstance(h.get("enabled"), bool) is False and "enabled" in h and not isinstance(h.get("enabled"), bool):
+            raise errors.ConfigError("execution.hermes.enabled must be boolean")
+        if "capability_status_read_enabled" in h and not isinstance(h.get("capability_status_read_enabled"), bool):
+            raise errors.ConfigError("execution.hermes.capability_status_read_enabled must be boolean")
+        return HermesExecutionAdapter(
+            enabled=enabled,
+            capability_enabled=cap_enabled,
+            cli_path=cli_path,
+            default_timeout_ms=h.get("default_timeout_ms", 10000),
+            max_timeout_ms=h.get("max_timeout_ms", 30000),
+            stdout_max_bytes=h.get("stdout_max_bytes", 8000),
+            stderr_max_bytes=h.get("stderr_max_bytes", 4000),
+            strict_config=True,
+        )
+    except Exception:
+        # Fail closed: never attach a partially configured adapter.
+        return UnavailableExecutionAdapter(reason="hermes execution adapter configuration is invalid or unavailable")
+
+
 # --- assembly ------------------------------------------------------------
 def assemble(
     config: Optional[Config] = None,
@@ -80,13 +116,15 @@ def assemble(
     ephemeral_memory: bool = False,
     actions: Optional[InternalActions] = None,
     calling=None,
+    execution: Optional[ExecutionPort] = None,
 ) -> Aj:
     """Build a usable control plane from configuration."""
     config = config or load_config()
     if memory is None and config.get("runtime.persist_memory", True):
         memory = build_memory(config, ephemeral=ephemeral_memory)
+    port = execution or _build_execution(config)
     return build(config, memory=memory, actions=actions or default_actions(),
-                 calling=calling)
+                 calling=calling, execution=port)
 
 
 # --- health --------------------------------------------------------------

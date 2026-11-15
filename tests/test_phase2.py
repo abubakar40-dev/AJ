@@ -176,9 +176,14 @@ def test_replay_safe_task_recovers_without_losing_history(tmp_path):
     kinds = [event.kind for event in memory.events(task_id=record.task_id, limit=50)]
     assert "task.recovery" in kinds and "task.completed" in kinds
 
-    # A completed task cannot be replayed a second time.
-    with pytest.raises(errors.AjError):
-        RecoveryManager(aj).recover(record.task_id)
+    # Repeated recovery must converge idempotently (3C): terminal tasks are not replayed/mutated.
+    converged = RecoveryManager(aj).recover(record.task_id)["outcomes"][0]
+    assert converged["ok"] is True and converged["status"] == COMPLETED
+    assert converged["task_id"] == record.task_id
+    assert "converged" in converged.get("summary", "").lower() or "terminal" in converged.get("summary", "").lower()
+    assert store.get(record.task_id).status == COMPLETED
+    assert store.get(record.task_id).events == recovered.events
+    assert len([e for e in sink.events if e.get("action") == "recovery_started"]) == 1
     memory.close()
 
 

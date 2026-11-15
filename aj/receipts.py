@@ -32,7 +32,8 @@ class ReceiptStore:
                status: str, started_at: float, completed_at: Optional[float] = None,
                verification: str = "", output: Any = None,
                error: Optional[Mapping[str, Any]] = None,
-               journal_event_ids: Optional[List[str]] = None) -> Dict[str, Any]:
+               journal_event_ids: Optional[List[str]] = None,
+               metadata: Optional[Mapping[str, Any]] = None) -> Dict[str, Any]:
         receipt = {
             "receipt_id": ids.new_task_id("rcpt"),
             "task_id": task_id,
@@ -51,6 +52,8 @@ class ReceiptStore:
             "idempotency_key": "",
             "schema_version": SCHEMA_VERSION,
         }
+        if metadata:
+            receipt["metadata"] = _safe(dict(metadata))
         line = json.dumps(receipt, ensure_ascii=False, default=str)
         with file_lock(str(self.path) + ".lock", timeout=5.0):
             with self.path.open("a", encoding="utf-8") as handle:

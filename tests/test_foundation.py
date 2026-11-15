@@ -134,8 +134,8 @@ def test_happy_path_transitions():
     store = TaskStore()
     record = store.create("do work")
     for status in ("UNDERSTANDING", "PLANNED", "AUTHORIZED", "EXECUTING", "VERIFYING"):
-        store.transition(record.task_id, status)
-    store.transition(record.task_id, COMPLETED, "done")
+        record = store.transition(record.task_id, status)
+    record = store.transition(record.task_id, COMPLETED, "done")
     assert record.status == COMPLETED and record.terminal and record.completed_at
 
 
@@ -176,7 +176,8 @@ def test_child_task_keeps_parent_visible():
 def test_terminal_task_cannot_persist_new_results_silently():
     store = TaskStore()
     record = store.create("x")
-    store.cancel(record.task_id)
+    assert store.cancel(record.task_id) is True
+    record = store.get(record.task_id)
     assert record.terminal
     assert store.cancel(record.task_id) is False
 

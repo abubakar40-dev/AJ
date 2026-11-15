@@ -674,12 +674,14 @@ def test_valid_linear_dependency_no_cycle(aj):
     from aj.orchestrator import Aj
     # Create upstream task B and mark it COMPLETED
     record_b = aj.tasks.create("upstream-b", capability_id="aj.echo")
-    record_b.status = "COMPLETED"
+    for status in ("UNDERSTANDING", "PLANNED", "AUTHORIZED", "EXECUTING", "VERIFYING", "COMPLETED"):
+        aj.tasks.transition(record_b.task_id, status)
     # Create downstream task A depending on B
     record_a = aj.tasks.create("downstream-a", capability_id="aj.echo")
     record_a.depends_on = [record_b.task_id]
+    aj.tasks.save(record_a, "deps")
     # B is COMPLETED, so A should have no unsatisfied deps
-    unsatisfied_a = aj.unsatisfied_dependencies(record_a)
+    unsatisfied_a = aj.unsatisfied_dependencies(aj.tasks.get(record_a.task_id))
     # B's id should NOT be in unsatisfied since it's COMPLETED
     assert record_b.task_id not in unsatisfied_a
 
@@ -689,13 +691,16 @@ def test_valid_branching_dependency_no_cycle(aj):
     from aj.orchestrator import Aj
     # Create two upstream tasks and mark both COMPLETED
     record_1 = aj.tasks.create("upstream-1", capability_id="aj.echo")
-    record_1.status = "COMPLETED"
+    for status in ("UNDERSTANDING", "PLANNED", "AUTHORIZED", "EXECUTING", "VERIFYING", "COMPLETED"):
+        aj.tasks.transition(record_1.task_id, status)
     record_2 = aj.tasks.create("upstream-2", capability_id="aj.echo")
-    record_2.status = "COMPLETED"
+    for status in ("UNDERSTANDING", "PLANNED", "AUTHORIZED", "EXECUTING", "VERIFYING", "COMPLETED"):
+        aj.tasks.transition(record_2.task_id, status)
     # Create task depending on both
     record_branching = aj.tasks.create("branching-task", capability_id="aj.echo")
     record_branching.depends_on = [record_1.task_id, record_2.task_id]
-    unsatisfied = aj.unsatisfied_dependencies(record_branching)
+    aj.tasks.save(record_branching, "deps")
+    unsatisfied = aj.unsatisfied_dependencies(aj.tasks.get(record_branching.task_id))
     # Both upstreams are COMPLETED, so no unsatisfied deps from them
     assert record_1.task_id not in unsatisfied
     assert record_2.task_id not in unsatisfied

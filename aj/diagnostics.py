@@ -16,6 +16,8 @@ from .config import Config, memory_path, require_path
 from .locking import lock_status
 from .memory import MemoryStore
 from .task import TaskStore
+from .storage_diagnostics import inspect_storage, sqlite_runtime_info, classify_sqlite_error
+from .operation_evidence import OperationEvidenceStore
 
 
 def _iso(value: float) -> str:
@@ -58,6 +60,13 @@ def gather(config: Config) -> Dict[str, Any]:
         finally:
             memory_store.close()
 
+    # Phase 3E: operation evidence and SQLite/storage diagnostics (read-only)
+    op_path = data_dir / "reconciliation_operations.jsonl"
+    op_store = OperationEvidenceStore(op_path)
+    op_views = op_store.list_operations()
+    incomplete_ops = [v.to_dict() for v in op_views if v.is_incomplete()]
+    storage_diag = inspect_storage(config.as_dict() if hasattr(config, "as_dict") else {}, data_dir=data_dir, memory_path=store_path)
+
     return {
         "storage": {
             "data_dir": str(data_dir),
@@ -87,7 +96,17 @@ def gather(config: Config) -> Dict[str, Any]:
         "summaries": summaries,
         "locks": {
             "tasks": lock_status(str(tasks_path) + ".lock"),
+            "journal": lock_status(str(data_dir / "journal.jsonl.lock")),
+            "receipts": lock_status(str(data_dir / "receipts.jsonl.lock")),
+            "reconciliation_operations": lock_status(str(op_path) + ".lock"),
         },
+        "operation_evidence": {
+            "path": str(op_path),
+            "operations": len(op_views),
+            "incomplete_operations": len(incomplete_ops),
+            "incomplete": incomplete_ops[:20],
+        },
+        "sqlite_storage": storage_diag,
         "configuration": {
             "sources": getattr(config, "sources", {}),
             "sections": sorted(config.as_dict()),

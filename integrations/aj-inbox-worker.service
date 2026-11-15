@@ -1,0 +1,13 @@
+[Unit]
+Description=AJ Knowledge Inbox Worker
+After=default.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h
+ExecStart=/bin/bash -lc 'AJ_ROOT="/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ"; cd "$AJ_ROOT" && PYTHONPATH="$AJ_ROOT" "$AJ_ROOT/.venv/bin/python" -m aj inbox worker --interval 3'
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=default.target

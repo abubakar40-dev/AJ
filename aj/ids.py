@@ -32,3 +32,16 @@ def new_call_id() -> str:
 def new_skill_id(name: str) -> str:
     slug = "".join(ch if ch.isalnum() else "_" for ch in (name or "").lower()).strip("_")
     return f"skill_{slug or 'unnamed'}_{uuid.uuid4().hex[:6]}"
+
+
+def new_execution_id() -> str:
+    """Return a stable, AJ-owned execution id (never a fabricated external id)."""
+    return new_task_id("exc")
+
+
+def new_delegation_id() -> str:
+    return f"dlg_{uuid.uuid4().hex[:16]}"
+
+
+def new_assignment_id() -> str:
+    return f"asg_{uuid.uuid4().hex[:16]}"

@@ -173,7 +173,7 @@ def import_file(config: Config, source: str | Path, *,
         return report
 
     for task in data["tasks"]:
-        store.save(TaskRecord.from_dict(task), "imported")
+        store.import_record(task, reason="imported")
 
     sink = JsonlAuditSink(require_path(config, "core.audit_dir"))
     for event in data["audit"]:

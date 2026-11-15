@@ -158,6 +158,7 @@ def test_retry_is_bounded_and_escalates_instead_of_looping():
 
     task = aj.tasks.get(first.task_id)
     task.max_attempts = 1
+    aj.tasks.save(task, "test")
     escalated = aj.retry(first.task_id)
     assert escalated.status == ESCALATED and escalated.requires_user_decision
 

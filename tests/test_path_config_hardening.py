@@ -147,6 +147,11 @@ def test_cli_run_rejects_invalid_audit_dir_without_creating_none(tmp_path):
     env = os.environ.copy()
     env.update(_isolated_env(tmp_path, AJ_CORE__AUDIT_DIR="none"))
     env["PYTHONDONTWRITEBYTECODE"] = "1"
+    # Run from an arbitrary cwd to assert no unintended audit output is created there,
+    # but ensure the source-tree package is importable in the subprocess environment.
+    env["PYTHONPATH"] = str(AJ_ROOT) + (
+        os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else ""
+    )
     proc = subprocess.run(
         [sys.executable, "-m", "aj", "--json", "run",
          "--capability", "aj.echo", "--text", "repro"],
