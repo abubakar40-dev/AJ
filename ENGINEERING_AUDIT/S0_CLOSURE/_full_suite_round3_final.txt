@@ -1,0 +1,57 @@
+xxxxxxxxx....xx......................................................... [ 12%]
+........................................................................ [ 24%]
+........................................................................ [ 36%]
+..................F..................................................... [ 48%]
+........................................................................ [ 60%]
+........................................................................ [ 72%]
+........................................................................ [ 84%]
+........................................................................ [ 97%]
+.................                                                        [100%]
+=================================== FAILURES ===================================
+_______________ test_concurrent_memory_writers_keep_every_event ________________
+
+tmp_path = PosixPath('/run/media/abubakargcx/My Drive/easy-diffusion/tmp/pytest-of-abubakargcx/pytest-259/test_concurrent_memory_writers0')
+
+    def test_concurrent_memory_writers_keep_every_event(tmp_path):
+        path = str(tmp_path / "memory.sqlite3")
+        workers, per_worker = 4, 20
+        ctx = multiprocessing.get_context("fork")
+        processes = [ctx.Process(target=_memory_writer, args=(path, per_worker))
+                     for _ in range(workers)]
+        for process in processes:
+            process.start()
+        for process in processes:
+            process.join(30)
+>       assert all(process.exitcode == 0 for process in processes)
+E       assert False
+E        +  where False = all(<generator object test_concurrent_memory_writers_keep_every_event.<locals>.<genexpr> at 0x740f04dd1cb0>)
+
+tests/test_phase3.py:285: AssertionError
+----------------------------- Captured stderr call -----------------------------
+Process ForkProcess-25:
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/multiprocessing/process.py", line 320, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "/usr/lib/python3.14/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/tests/test_phase3.py", line 235, in _memory_writer
+    store = MemoryStore(path)
+  File "/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py", line 116, in __init__
+    self._conn.execute("PRAGMA journal_mode=WAL")
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: disk I/O error
+=============================== warnings summary ===============================
+../../../../../../usr/lib/python3/dist-packages/gi/overrides/__init__.py:159
+  /usr/lib/python3/dist-packages/gi/overrides/__init__.py:159: PyGIDeprecationWarning: GLib.unix_signal_add_full is deprecated; use GLibUnix.signal_add_full instead
+    value = getattr(proxy, attr)
+
+tests/test_phase3.py: 12 warnings
+  /usr/lib/python3.14/multiprocessing/popen_fork.py:70: DeprecationWarning: This process (pid=836000) is multi-threaded, use of fork() may lead to deadlocks in the child.
+    self.pid = os.fork()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_phase3.py::test_concurrent_memory_writers_keep_every_event
+1 failed, 581 passed, 11 xfailed, 13 warnings in 61.16s (0:01:01)

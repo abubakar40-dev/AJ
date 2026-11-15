@@ -1,0 +1,33 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_____ test_a5_force_complete_parent_blocked_with_unresolved_required_child _____
+
+ext4_tmpdir = PosixPath('/tmp/aj_s0_proof_52wc20g0')
+
+    @pytest.mark.xfail(strict=True, reason="INV-xx/T parent completion guard: cannot complete with unresolved required child even with force=True")
+    def test_a5_force_complete_parent_blocked_with_unresolved_required_child(ext4_tmpdir):
+        """A5: parent COMPLETED via force=True with unresolved required child must be blocked."""
+        aj = make_aj(ext4_tmpdir)
+        parent_id, child_id, _did, _res = create_delegated_child(aj, ext4_tmpdir)
+        # child left unresolved (not completed)
+        child = aj.tasks.get(child_id)
+        assert child.status != taskmod.COMPLETED
+        # attempt forced completion of parent
+        raised = None
+        try:
+            aj.tasks.transition(parent_id, taskmod.COMPLETED, "force complete", force=True)
+        except Exception as e:
+            raised = e
+        parent = aj.tasks.get(parent_id)
+>       assert raised is not None or parent.status != taskmod.COMPLETED, (
+            f"parent force-completed despite unresolved required child; raised={raised} status={parent.status}"
+        )
+E       AssertionError: parent force-completed despite unresolved required child; raised=None status=COMPLETED
+E       assert (None is not None or 'COMPLETED' != 'COMPLETED')
+E        +  where 'COMPLETED' = TaskRecord(task_id='aj_20261115T153119_2d8f2763', goal='parent goal', operation_id='op_20261115T153119_92f31be8', sche... 1794738679.7470639, 'detail': 'force complete'}], authorization_context={}, current_execution_id='', execution_ids=[]).status
+E        +  and   'COMPLETED' = taskmod.COMPLETED
+
+tests/s0_proof/test_s0_characterization.py:298: AssertionError
+=========================== short test summary info ============================
+FAILED tests/s0_proof/test_s0_characterization.py::test_a5_force_complete_parent_blocked_with_unresolved_required_child
+1 failed, 6 deselected in 0.81s

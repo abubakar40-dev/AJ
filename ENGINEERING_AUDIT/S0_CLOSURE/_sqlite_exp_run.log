@@ -1,0 +1,18 @@
+CELL tmp_tmpfs_or_tmp::v1_fork4_no_precreate pass=20 fail=0
+CELL tmp_tmpfs_or_tmp::v2_fork4_precreate pass=20 fail=0
+CELL tmp_tmpfs_or_tmp::v3_1proc pass=20 fail=0
+CELL tmp_tmpfs_or_tmp::v4_spawn4_no_precreate pass=18 fail=2
+CELL home_ext4::v1_fork4_no_precreate pass=20 fail=0
+CELL home_ext4::v2_fork4_precreate pass=20 fail=0
+CELL home_ext4::v3_1proc pass=20 fail=0
+CELL home_ext4::v4_spawn4_no_precreate pass=20 fail=0
+CELL dev_shm::v1_fork4_no_precreate pass=19 fail=1
+CELL dev_shm::v2_fork4_precreate pass=20 fail=0
+CELL dev_shm::v3_1proc pass=20 fail=0
+CELL dev_shm::v4_spawn4_no_precreate pass=17 fail=3
+CELL ntfs_workspace::v1_fork4_no_precreate pass=9 fail=11
+CELL ntfs_workspace::v2_fork4_precreate pass=17 fail=3
+CELL ntfs_workspace::v3_1proc pass=20 fail=0
+CELL ntfs_workspace::v4_spawn4_no_precreate pass=15 fail=5
+WROTE /run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_matrix_results.json
+WROTE /run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_matrix_summary.txt

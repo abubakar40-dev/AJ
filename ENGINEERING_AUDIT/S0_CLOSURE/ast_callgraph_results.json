@@ -1,0 +1,1062 @@
+{
+  "targets": [
+    "TaskRecord.transition",
+    "_dispatch_one",
+    "_prepare_delegated_child_for_scheduling",
+    "_reconcile_delegation_parent",
+    "abandon",
+    "cancel",
+    "cancel_task",
+    "dead_letter",
+    "delegate",
+    "import_record",
+    "mutate",
+    "reconcile",
+    "recover",
+    "requeue",
+    "resume",
+    "retry",
+    "run_once",
+    "save",
+    "tasks.transition",
+    "transition"
+  ],
+  "ast_results": [
+    {
+      "file": "aj/__main__.py",
+      "line": 439,
+      "caller": "_cmd_cancel",
+      "call": "aj.cancel_task",
+      "target": "cancel_task"
+    },
+    {
+      "file": "aj/__main__.py",
+      "line": 457,
+      "caller": "_cmd_retry",
+      "call": "aj.retry",
+      "target": "retry"
+    },
+    {
+      "file": "aj/__main__.py",
+      "line": 775,
+      "caller": "_cmd_recover",
+      "call": "manager.recover",
+      "target": "recover"
+    },
+    {
+      "file": "aj/__main__.py",
+      "line": 800,
+      "caller": "_cmd_reconcile",
+      "call": "aj.reconcile",
+      "target": "reconcile"
+    },
+    {
+      "file": "aj/calling.py",
+      "line": 264,
+      "caller": "prepare",
+      "call": "record.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/calling.py",
+      "line": 266,
+      "caller": "prepare",
+      "call": "record.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/calling.py",
+      "line": 269,
+      "caller": "prepare",
+      "call": "record.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/calling.py",
+      "line": 273,
+      "caller": "prepare",
+      "call": "record.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/calling.py",
+      "line": 277,
+      "caller": "prepare",
+      "call": "record.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/calling.py",
+      "line": 281,
+      "caller": "prepare",
+      "call": "record.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/calling.py",
+      "line": 285,
+      "caller": "prepare",
+      "call": "record.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/calling.py",
+      "line": 304,
+      "caller": "confirm_and_dial",
+      "call": "record.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/calling.py",
+      "line": 333,
+      "caller": "confirm_and_dial",
+      "call": "record.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/calling.py",
+      "line": 334,
+      "caller": "confirm_and_dial",
+      "call": "record.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/calling.py",
+      "line": 338,
+      "caller": "confirm_and_dial",
+      "call": "record.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/calling.py",
+      "line": 344,
+      "caller": "confirm_and_dial",
+      "call": "record.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/calling.py",
+      "line": 347,
+      "caller": "confirm_and_dial",
+      "call": "record.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/calling.py",
+      "line": 376,
+      "caller": "hang_up",
+      "call": "record.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/calling.py",
+      "line": 383,
+      "caller": "cancel",
+      "call": "record.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/execution_domain.py",
+      "line": 256,
+      "caller": "transition",
+      "call": "rec.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/execution_domain.py",
+      "line": 257,
+      "caller": "transition",
+      "call": "self.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orb.py",
+      "line": 615,
+      "caller": "on_draw",
+      "call": "cr.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 315,
+      "caller": "handle",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 331,
+      "caller": "handle",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 337,
+      "caller": "handle",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 338,
+      "caller": "handle",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 344,
+      "caller": "handle",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 386,
+      "caller": "handle",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 391,
+      "caller": "handle",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 414,
+      "caller": "handle",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 418,
+      "caller": "handle",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 439,
+      "caller": "handle",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 445,
+      "caller": "handle",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 490,
+      "caller": "_retry_locked",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 492,
+      "caller": "_retry_locked",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 495,
+      "caller": "_retry_locked",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 512,
+      "caller": "_retry_locked",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 534,
+      "caller": "_retry_locked",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 563,
+      "caller": "_retry_locked",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 583,
+      "caller": "_retry_locked",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 585,
+      "caller": "_retry_locked",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 628,
+      "caller": "_cancel_locked",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 632,
+      "caller": "_cancel_locked",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 649,
+      "caller": "_cancel_locked",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 664,
+      "caller": "cancel",
+      "call": "self.cancel_task",
+      "target": "cancel_task"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1018,
+      "caller": "_recover_locked",
+      "call": "self.tasks.mutate",
+      "target": "mutate"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1092,
+      "caller": "_recover_locked",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1094,
+      "caller": "_recover_locked",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1100,
+      "caller": "_recover_locked",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1173,
+      "caller": "_require_manual_recovery",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1184,
+      "caller": "_require_manual_recovery",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1308,
+      "caller": "_execute",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1348,
+      "caller": "_execute",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1349,
+      "caller": "_execute",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1351,
+      "caller": "_execute",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1356,
+      "caller": "_execute",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1423,
+      "caller": "_execute",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1425,
+      "caller": "_execute",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1431,
+      "caller": "_execute",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1449,
+      "caller": "_execute",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1450,
+      "caller": "_execute",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1455,
+      "caller": "_execute",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1499,
+      "caller": "_execute",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1501,
+      "caller": "_execute",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1503,
+      "caller": "_execute",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1512,
+      "caller": "_execute",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1527,
+      "caller": "_execute",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1619,
+      "caller": "_execute_calling",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1625,
+      "caller": "_execute_calling",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1631,
+      "caller": "_execute_calling",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1656,
+      "caller": "_execute_calling",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1658,
+      "caller": "_execute_calling",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 1666,
+      "caller": "_execute_calling",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 2009,
+      "caller": "_handle_stale_authorization",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 2012,
+      "caller": "_handle_stale_authorization",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 2058,
+      "caller": "_resume_locked",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 2075,
+      "caller": "_resume_locked",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 2097,
+      "caller": "_resume_locked",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 2116,
+      "caller": "_resume_locked",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 2120,
+      "caller": "_resume_locked",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 2147,
+      "caller": "_resume_locked",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 2169,
+      "caller": "_resume_locked",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 2188,
+      "caller": "_resume_locked",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 2192,
+      "caller": "_resume_locked",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 2251,
+      "caller": "dead_letter",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 2254,
+      "caller": "dead_letter",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 2775,
+      "caller": "_record_operator_reconciliation",
+      "call": "self.tasks.mutate",
+      "target": "mutate"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 2851,
+      "caller": "_record_operator_reconciliation",
+      "call": "self.tasks.mutate",
+      "target": "mutate"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3247,
+      "caller": "reconcile",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3269,
+      "caller": "reconcile",
+      "call": "self.dead_letter",
+      "target": "dead_letter"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3279,
+      "caller": "reconcile",
+      "call": "self.abandon",
+      "target": "abandon"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3307,
+      "caller": "reconcile",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3437,
+      "caller": "requeue",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3455,
+      "caller": "requeue",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3494,
+      "caller": "abandon",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3502,
+      "caller": "abandon",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3562,
+      "caller": "_transition_execution",
+      "call": "rec.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3563,
+      "caller": "_transition_execution",
+      "call": "self.executions.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3597,
+      "caller": "_start_attempt",
+      "call": "erec.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3598,
+      "caller": "_start_attempt",
+      "call": "self.executions.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3599,
+      "caller": "_start_attempt",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3618,
+      "caller": "_finish_attempt",
+      "call": "erec.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3619,
+      "caller": "_finish_attempt",
+      "call": "self.executions.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3624,
+      "caller": "_finish_attempt",
+      "call": "erec.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3625,
+      "caller": "_finish_attempt",
+      "call": "self.executions.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3660,
+      "caller": "_fail",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3666,
+      "caller": "_fail",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3778,
+      "caller": "_mark_delegation_reconciliation_pending",
+      "call": "self.delegations.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3808,
+      "caller": "_on_task_transition",
+      "call": "self._reconcile_delegation_parent",
+      "target": "_reconcile_delegation_parent"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3831,
+      "caller": "reconcile_delegation_parent",
+      "call": "self._reconcile_delegation_parent",
+      "target": "_reconcile_delegation_parent"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3942,
+      "caller": "_prepare_delegated_child_for_scheduling",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3957,
+      "caller": "_prepare_delegated_child_for_scheduling",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3960,
+      "caller": "_prepare_delegated_child_for_scheduling",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3976,
+      "caller": "_prepare_delegated_child_for_scheduling",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3985,
+      "caller": "_prepare_delegated_child_for_scheduling",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 3996,
+      "caller": "_prepare_delegated_child_for_scheduling",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 4002,
+      "caller": "_prepare_delegated_child_for_scheduling",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 4005,
+      "caller": "_prepare_delegated_child_for_scheduling",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 4008,
+      "caller": "_prepare_delegated_child_for_scheduling",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 4011,
+      "caller": "_prepare_delegated_child_for_scheduling",
+      "call": "self.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 4026,
+      "caller": "_prepare_delegated_child_for_scheduling",
+      "call": "self.tasks.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 4052,
+      "caller": "_reconcile_delegation_parent",
+      "call": "self._prepare_delegated_child_for_scheduling",
+      "target": "_prepare_delegated_child_for_scheduling"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 4113,
+      "caller": "_reconcile_delegation_parent",
+      "call": "self.delegations.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 4321,
+      "caller": "delegate",
+      "call": "self.delegations.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 4352,
+      "caller": "delegate",
+      "call": "self.delegations.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 4392,
+      "caller": "delegate",
+      "call": "self._prepare_delegated_child_for_scheduling",
+      "target": "_prepare_delegated_child_for_scheduling"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 4422,
+      "caller": "delegate",
+      "call": "self.delegations.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 4432,
+      "caller": "delegate",
+      "call": "self._reconcile_delegation_parent",
+      "target": "_reconcile_delegation_parent"
+    },
+    {
+      "file": "aj/orchestrator.py",
+      "line": 4443,
+      "caller": "delegate",
+      "call": "self.delegations.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/recovery.py",
+      "line": 92,
+      "caller": "_recover_one",
+      "call": "self.aj.recover",
+      "target": "recover"
+    },
+    {
+      "file": "aj/runtime.py",
+      "line": 163,
+      "caller": "_check_tasks",
+      "call": "store.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/runtime.py",
+      "line": 164,
+      "caller": "_check_tasks",
+      "call": "store.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/runtime.py",
+      "line": 246,
+      "caller": "_check_task_persistence",
+      "call": "store.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/runtime.py",
+      "line": 247,
+      "caller": "_check_task_persistence",
+      "call": "store.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/runtime.py",
+      "line": 303,
+      "caller": "_check_recovery",
+      "call": "aj.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/runtime.py",
+      "line": 422,
+      "caller": "_check_cancel_retry",
+      "call": "aj.cancel_task",
+      "target": "cancel_task"
+    },
+    {
+      "file": "aj/runtime.py",
+      "line": 428,
+      "caller": "_check_cancel_retry",
+      "call": "aj.tasks.transition",
+      "target": "tasks.transition"
+    },
+    {
+      "file": "aj/runtime.py",
+      "line": 429,
+      "caller": "_check_cancel_retry",
+      "call": "aj.retry",
+      "target": "retry"
+    },
+    {
+      "file": "aj/scheduler.py",
+      "line": 720,
+      "caller": "_dispatch_one",
+      "call": "self.aj.dead_letter",
+      "target": "dead_letter"
+    },
+    {
+      "file": "aj/scheduler.py",
+      "line": 740,
+      "caller": "_dispatch_one",
+      "call": "self.aj.resume",
+      "target": "resume"
+    },
+    {
+      "file": "aj/scheduler.py",
+      "line": 836,
+      "caller": "run_once",
+      "call": "self._dispatch_one",
+      "target": "_dispatch_one"
+    },
+    {
+      "file": "aj/scheduler.py",
+      "line": 839,
+      "caller": "run_once",
+      "call": "self._dispatch_one",
+      "target": "_dispatch_one"
+    },
+    {
+      "file": "aj/task.py",
+      "line": 628,
+      "caller": "update",
+      "call": "self.save",
+      "target": "save"
+    },
+    {
+      "file": "aj/task.py",
+      "line": 650,
+      "caller": "transition",
+      "call": "record.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/task.py",
+      "line": 665,
+      "caller": "cancel",
+      "call": "record.transition",
+      "target": "transition"
+    },
+    {
+      "file": "aj/transfer.py",
+      "line": 176,
+      "caller": "import_file",
+      "call": "store.import_record",
+      "target": "import_record"
+    }
+  ],
+  "grep": {
+    "grep_tasks_transition": {
+      "exit": 0,
+      "stdout": "aj/orchestrator.py:331:        self.tasks.transition(record.task_id, taskmod.UNDERSTANDING,\naj/orchestrator.py:338:        self.tasks.transition(record.task_id, taskmod.PLANNED, route.rule)\naj/orchestrator.py:344:            self.tasks.transition(record.task_id, taskmod.BLOCKED, reason)\naj/orchestrator.py:386:            self.tasks.transition(record.task_id, taskmod.WAITING_FOR_APPROVAL,\naj/orchestrator.py:414:            self.tasks.transition(record.task_id, taskmod.ABORTED, decision.reason)\naj/orchestrator.py:439:        self.tasks.transition(record.task_id, taskmod.AUTHORIZED, decision.reason)\naj/orchestrator.py:490:            self.tasks.transition(task_id, taskmod.RECOVERING,\naj/orchestrator.py:492:            record = self.tasks.transition(task_id, taskmod.ESCALATED,\naj/orchestrator.py:583:        self.tasks.transition(task_id, taskmod.RECOVERING,\naj/orchestrator.py:585:        self.tasks.transition(task_id, taskmod.RETRYING, f\"attempt {record.attempt + 1}\")\naj/orchestrator.py:628:            self.tasks.transition(record.task_id, taskmod.CANCEL_REQUESTED,\naj/orchestrator.py:649:        record = self.tasks.transition(record.task_id, taskmod.CANCELLED,\naj/orchestrator.py:1092:                    record = self.tasks.transition(record.task_id, taskmod.RECOVERING,\naj/orchestrator.py:1094:                    record = self.tasks.transition(record.task_id, taskmod.RETRYING,\naj/orchestrator.py:1100:                record = self.tasks.transition(record.task_id, taskmod.AUTHORIZED,\naj/orchestrator.py:1173:                record = self.tasks.transition(record.task_id, taskmod.RECOVERY_REQUIRED, reason)\naj/orchestrator.py:1308:        self.tasks.transition(record.task_id, taskmod.EXECUTING,\naj/orchestrator.py:1349:            self.tasks.transition(record.task_id, taskmod.VERIFYING,\naj/orchestrator.py:1351:            self.tasks.transition(record.task_id, taskmod.COMPLETED,\naj/orchestrator.py:1425:                self.tasks.transition(record.task_id, taskmod.FAILED, result.status)\naj/orchestrator.py:1449:            self.tasks.transition(record.task_id, taskmod.VERIFYING, \"execution returned\")\naj/orchestrator.py:1450:            self.tasks.transition(record.task_id, taskmod.COMPLETED,\naj/orchestrator.py:1501:        self.tasks.transition(record.task_id, taskmod.VERIFYING, f\"result={result.status}\")\naj/orchestrator.py:1503:            self.tasks.transition(record.task_id, taskmod.COMPLETED,\naj/orchestrator.py:1512:            self.tasks.transition(record.task_id, taskmod.FAILED, result.status)\naj/orchestrator.py:1625:            self.tasks.transition(record.task_id, taskmod.CANCELLED,\naj/orchestrator.py:1656:            self.tasks.transition(record.task_id, taskmod.VERIFYING,\naj/orchestrator.py:1658:            self.tasks.transition(record.task_id, taskmod.COMPLETED,\naj/orchestrator.py:2009:            self.tasks.transition(record.task_id, target, f\"stale authorization: {reason}\")\naj/orchestrator.py:2058:            self.tasks.transition(record.task_id, taskmod.PLANNED,\naj/orchestrator.py:2075:                self.tasks.transition(record.task_id, taskmod.WAITING_FOR_APPROVAL,\naj/orchestrator.py:2097:                self.tasks.transition(record.task_id, taskmod.ABORTED, decision.reason)\naj/orchestrator.py:2116:            self.tasks.transition(record.task_id, taskmod.AUTHORIZED,\naj/orchestrator.py:2147:                self.tasks.transition(record.task_id, taskmod.WAITING_FOR_APPROVAL,\naj/orchestrator.py:2169:                self.tasks.transition(record.task_id, taskmod.ABORTED, decision.reason)\naj/orchestrator.py:2188:            self.tasks.transition(record.task_id, taskmod.AUTHORIZED,\naj/orchestrator.py:2251:            self.tasks.transition(task_id, taskmod.DEAD_LETTER, reason)\naj/orchestrator.py:3247:                        self.tasks.transition(task_id, taskmod.ABORTED, f\"operator reconciliation(abort): {reason}\"[:300])\naj/orchestrator.py:3307:                        self.tasks.transition(task_id, taskmod.FAILED, f\"operator reconciliation(clear_recovery_required): {reason}\"[:300])\naj/orchestrator.py:3437:        self.tasks.transition(task_id, taskmod.PLANNED, \"requeue from dead-letter\",\naj/orchestrator.py:3494:        record = self.tasks.transition(task_id, \"ABANDONED\",\naj/orchestrator.py:3660:                self.tasks.transition(record.task_id, target, error.message)\naj/orchestrator.py:3942:                        self.tasks.transition(task_id, taskmod.ABORTED, \"delegated parent cancelled/revoked/unverifiable\")\naj/orchestrator.py:3957:                self.tasks.transition(task_id, taskmod.UNDERSTANDING, \"delegated child preparation\")\naj/orchestrator.py:3960:                self.tasks.transition(task_id, taskmod.PLANNED, \"delegated child preparation\")\naj/orchestrator.py:3976:                self.tasks.transition(task_id, taskmod.FAILED, \"capability not found\")\naj/orchestrator.py:3985:                self.tasks.transition(task_id, final, str(getattr(blocker, \"message\", \"blocked\")))\naj/orchestrator.py:3996:                self.tasks.transition(task_id, taskmod.ABORTED, f\"authorization error: {exc}\")\naj/orchestrator.py:4002:            self.tasks.transition(task_id, taskmod.WAITING_FOR_APPROVAL, decision.reason)\naj/orchestrator.py:4008:            self.tasks.transition(task_id, taskmod.ABORTED, decision.reason)\naj/orchestrator.py:4011:        self.tasks.transition(task_id, taskmod.AUTHORIZED, f\"delegated authorization: {decision.reason}\")\naj/runtime.py:303:        aj.tasks.transition(record.task_id, UNDERSTANDING)\naj/runtime.py:428:            aj.tasks.transition(failed.task_id, status)\ntests/test_phase5a4_execution_domain.py:98:        aj.tasks.transition(rec.task_id, st)\ntests/test_phase5a5_scheduler_admission.py:71:            aj.tasks.transition(task_id, st)\ntests/test_phase5a5_scheduler_admission.py:92:    aj.tasks.transition(wa.task_id, \"UNDERSTANDING\")\ntests/test_phase5a5_scheduler_admission.py:93:    aj.tasks.transition(wa.task_id, \"PLANNED\")\ntests/test_phase5a5_scheduler_admission.py:94:    aj.tasks.transition(wa.task_id, \"WAITING_FOR_APPROVAL\")\ntests/test_phase5a5_scheduler_admission.py:100:        aj.tasks.transition(done.task_id, st)\ntests/test_phase5a5_scheduler_admission.py:107:    aj.tasks.transition(dep.task_id, \"UNDERSTANDING\")\ntests/test_phase5a5_scheduler_admission.py:108:    aj.tasks.transition(dep.task_id, \"PLANNED\")\ntests/test_phase5a5_scheduler_admission.py:109:    aj.tasks.transition(dep.task_id, \"BLOCKED\", \"deps\")\ntests/test_phase5a5_scheduler_admission.py:122:    aj.tasks.transition(rec.task_id, \"EXECUTING\")\ntests/test_phase5a5_scheduler_admission.py:165:    aj.tasks.transition(busy.task_id, \"EXECUTING\")\ntests/test_phase5a5_scheduler_admission.py:291:    aj.tasks.transition(rr.task_id, \"RECOVERY_REQUIRED\", \"manual\")\ntests/test_phase5a6r2_parent_lifecycle.py:55:            aj.tasks.transition(rec.task_id, st)\ntests/test_phase5a6r2_parent_lifecycle.py:127:            aj.tasks.transition(parent.task_id, st)\ntests/test_phase5a6r2_parent_lifecycle.py:131:            aj.tasks.transition(parent.task_id, taskmod.COMPLETED, \"should block\")\ntests/test_phase5a6r2_parent_lifecycle.py:149:            aj.tasks.transition(parent.task_id, st)\ntests/test_phase5a6r2_parent_lifecycle.py:153:            aj.tasks.transition(parent.task_id, taskmod.COMPLETED, \"child unresolved\")\ntests/test_phase5a6r2_parent_lifecycle.py:232:            aj.tasks.transition(cid, st)\ntests/test_phase5a6r2_parent_lifecycle.py:259:                    aj.tasks.transition(cid, st)\ntests/test_phase5a6r3_scenario_certification.py:56:            aj.tasks.transition(rec.task_id, st)\ntests/test_phase5a6r3_scenario_certification.py:113:            aj.tasks.transition(tid, st)\ntests/test_phase5a6r3_scenario_certification.py:151:        aj.tasks.transition(cid, taskmod.ABORTED, \"authorization rejected\")\ntests/test_phase5a6r3_scenario_certification.py:174:        aj.tasks.transition(cid, taskmod.CANCEL_REQUESTED)\ntests/test_phase5a6r3_scenario_certification.py:181:        aj.tasks.transition(cid, taskmod.FAILED)\ntests/test_phase5a6r3_scenario_certification.py:183:        aj.tasks.transition(cid, taskmod.CANCELLED)\ntests/test_phase5a6r3_scenario_certification.py:259:            aj.tasks.transition(parent.task_id, taskmod.COMPLETED)\ntests/test_phase5a6r4_gap_closure.py:55:            aj.tasks.transition(rec.task_id, st)\ntests/test_phase5a6r4_gap_closure.py:112:        aj.tasks.transition(parent.task_id, taskmod.CANCELLED, \"cancel\")\ntests/test_phase5a6r4_gap_closure.py:120:                aj.tasks.transition(parent.task_id, st)\ntests/test_phase5a6r4_gap_closure.py:144:        aj.tasks.transition(cid, taskmod.AUTHORIZED)\ntests/test_phase5a6r4_gap_closure.py:168:        aj.tasks.transition(cid, taskmod.AUTHORIZED)\ntests/test_phase5a6r4_gap_closure.py:224:            aj.tasks.transition(cid, st)\ntests/test_phase5a6r4_gap_closure.py:227:        aj.tasks.transition(cid, taskmod.CANCEL_REQUESTED)\ntests/test_phase5a6r_delegation_closure.py:57:            aj.tasks.transition(rec.task_id, st)\ntests/test_phase5a6r_delegation_closure.py:152:        aj.tasks.transition(cid, \"AUTHORIZED\") if child.can_transition(\"AUTHORIZED\") else None\ntests/test_phase5a6r_delegation_closure.py:176:            aj.tasks.transition(cid, stt)\ntests/test_phase5a6_delegation_foundation.py:54:            aj.tasks.transition(rec.task_id, st)\ntests/test_phase5a6_delegation_foundation.py:233:            aj.tasks.transition(cid, st)\ntests/test_step_c_gap_closure.py:61:aj.tasks.transition(rec.task_id, \"RECEIVED\")\ntests/test_step_c_gap_closure.py:62:aj.tasks.transition(rec.task_id, \"UNDERSTANDING\")\ntests/test_step_c_gap_closure.py:63:aj.tasks.transition(rec.task_id, \"PLANNED\")\ntests/test_step_c_gap_closure.py:64:rec = aj.tasks.transition(rec.task_id, \"AUTHORIZED\")\ntests/test_step_c_gap_closure.py:99:aj.tasks.transition(rec.task_id, \"RECEIVED\")\ntests/test_step_c_gap_closure.py:100:aj.tasks.transition(rec.task_id, \"UNDERSTANDING\")\ntests/test_step_c_gap_closure.py:101:aj.tasks.transition(rec.task_id, \"PLANNED\")\ntests/test_step_c_gap_closure.py:102:aj.tasks.transition(rec.task_id, \"AUTHORIZED\")\ntests/test_step_c_gap_closure.py:103:rec = aj.tasks.transition(rec.task_id, \"EXECUTING\")\ntests/test_step_c_gap_closure.py:138:aj.tasks.transition(rec.task_id, \"RECEIVED\")\ntests/test_step_c_gap_closure.py:139:aj.tasks.transition(rec.task_id, \"UNDERSTANDING\")\ntests/test_step_c_gap_closure.py:140:aj.tasks.transition(rec.task_id, \"PLANNED\")\ntests/test_step_c_gap_closure.py:141:aj.tasks.transition(rec.task_id, \"AUTHORIZED\")\ntests/test_step_c_gap_closure.py:142:aj.tasks.transition(rec.task_id, \"EXECUTING\")\ntests/test_step_c_gap_closure.py:182:aj.tasks.transition(rec.task_id, \"RECEIVED\")\ntests/test_step_c_gap_closure.py:183:aj.tasks.transition(rec.task_id, \"UNDERSTANDING\")\ntests/test_step_c_gap_closure.py:184:aj.tasks.transition(rec.task_id, \"PLANNED\")\ntests/test_step_c_gap_closure.py:185:aj.tasks.transition(rec.task_id, \"AUTHORIZED\")\ntests/test_step_c_gap_closure.py:186:aj.tasks.transition(rec.task_id, \"RECOVERY_REQUIRED\", \"test\")\ntests/test_step_c_gap_closure.py:187:aj.tasks.transition(rec.task_id, \"FAILED\")\ntests/test_step_c_gap_closure.py:192:    aj.tasks.transition(rec2.task_id, \"RECOVERING\", \"retry scheduling\")\ntests/test_step_c_gap_closure.py:194:    aj.tasks.transition(rec2.task_id, \"RETRYING\", \"retry scheduled\")\ntests/test_step_c_gap_closure.py:222:aj.tasks.transition(rec.task_id, \"RECEIVED\")\ntests/test_step_c_gap_closure.py:223:aj.tasks.transition(rec.task_id, \"UNDERSTANDING\")\ntests/test_step_c_gap_closure.py:224:aj.tasks.transition(rec.task_id, \"PLANNED\")\ntests/test_step_c_gap_closure.py:225:aj.tasks.transition(rec.task_id, \"AUTHORIZED\")\ntests/test_step_c_gap_closure.py:226:aj.tasks.transition(rec.task_id, \"RECOVERY_REQUIRED\", \"test\")\ntests/test_step_c_gap_closure.py:227:aj.tasks.transition(rec.task_id, \"FAILED\")\ntests/test_step_c_gap_closure.py:278:aj.tasks.transition(rec.task_id, \"RECEIVED\")\ntests/test_step_c_gap_closure.py:279:aj.tasks.transition(rec.task_id, \"UNDERSTANDING\")\ntests/test_step_c_gap_closure.py:280:aj.tasks.transition(rec.task_id, \"PLANNED\")\ntests/test_step_c_gap_closure.py:281:aj.tasks.transition(rec.task_id, \"AUTHORIZED\")\ntests/test_step_c_gap_closure.py:308:aj.tasks.transition(rec.task_id, \"RECEIVED\")\ntests/test_step_c_gap_closure.py:309:aj.tasks.transition(rec.task_id, \"UNDERSTANDING\")\ntests/test_step_c_gap_closure.py:310:aj.tasks.transition(rec.task_id, \"PLANNED\")\ntests/test_step_c_gap_closure.py:311:aj.tasks.transition(rec.task_id, \"AUTHORIZED\")\ntests/test_step_c_gap_closure.py:312:aj.tasks.transition(rec.task_id, \"RECOVERY_REQUIRED\", \"test\")\ntests/test_step_c_gap_closure.py:313:aj.tasks.transition(rec.task_id, \"FAILED\")\ntests/test_step_c_subprocess_crash_matrix.py:147:aj.tasks.transition(rec.task_id, \"RECEIVED\")\ntests/test_step_c_subprocess_crash_matrix.py:148:aj.tasks.transition(rec.task_id, \"UNDERSTANDING\")\ntests/test_step_c_subprocess_crash_matrix.py:149:aj.tasks.transition(rec.task_id, \"PLANNED\")\ntests/test_step_c_subprocess_crash_matrix.py:150:aj.tasks.transition(rec.task_id, \"AUTHORIZED\")\ntests/test_step_c_subprocess_crash_matrix.py:241:aj.tasks.transition(rec.task_id, \"RECEIVED\")\ntests/test_step_c_subprocess_crash_matrix.py:242:aj.tasks.transition(rec.task_id, \"UNDERSTANDING\")\ntests/test_step_c_subprocess_crash_matrix.py:243:aj.tasks.transition(rec.task_id, \"PLANNED\")\ntests/test_step_c_subprocess_crash_matrix.py:244:aj.tasks.transition(rec.task_id, \"AUTHORIZED\")\ntests/test_step_c_subprocess_crash_matrix.py:310:aj.tasks.transition(rec.task_id, \"RECEIVED\")\ntests/test_step_c_subprocess_crash_matrix.py:311:aj.tasks.transition(rec.task_id, \"UNDERSTANDING\")\ntests/test_step_c_subprocess_crash_matrix.py:312:aj.tasks.transition(rec.task_id, \"PLANNED\")\ntests/test_step_c_subprocess_crash_matrix.py:313:aj.tasks.transition(rec.task_id, \"AUTHORIZED\")\ntests/test_step_f_calling_dispatcher.py:419:        aj.tasks.transition(record.task_id, \"CANCEL_REQUESTED\", \"test cancel\")\ntests/test_task_persistence_fail_closed.py:221:            aj.tasks.transition(rec.task_id, s)\ntests/test_task_persistence_fail_closed.py:530:        aj.tasks.transition(tid, taskmod.UNDERSTANDING)\ntests/test_task_persistence_fail_closed.py:531:        aj.tasks.transition(tid, taskmod.PLANNED)\ntests/s0_proof/test_s0_characterization.py:146:    aj.tasks.transition(parent.task_id, taskmod.UNDERSTANDING, \"s0\")\ntests/s0_proof/test_s0_characterization.py:147:    aj.tasks.transition(parent.task_id, taskmod.PLANNED, \"s0\")\ntests/s0_proof/test_s0_characterization.py:177:    aj.tasks.transition(rec.task_id, taskmod.UNDERSTANDING)\ntests/s0_proof/test_s0_characterization.py:178:    aj.tasks.transition(rec.task_id, taskmod.PLANNED)\ntests/s0_proof/test_s0_characterization.py:179:    aj.tasks.transition(rec.task_id, taskmod.AUTHORIZED)\ntests/s0_proof/test_s0_characterization.py:180:    aj.tasks.transition(rec.task_id, taskmod.EXECUTING)\ntests/s0_proof/test_s0_characterization.py:181:    aj.tasks.transition(rec.task_id, taskmod.FAILED, \"fail\")\ntests/s0_proof/test_s0_characterization.py:202:    aj.tasks.transition(parent_id, taskmod.CANCELLED, \"cancel parent\")\ntests/s0_proof/test_s0_characterization.py:206:        aj.tasks.transition(child_id, taskmod.EXECUTING, \"exec\")\ntests/s0_proof/test_s0_characterization.py:207:        aj.tasks.transition(child_id, taskmod.FAILED, \"fail\")\ntests/s0_proof/test_s0_characterization.py:209:        aj.tasks.transition(child_id, taskmod.FAILED, \"fail\")\ntests/s0_proof/test_s0_characterization.py:228:    aj.tasks.transition(parent_id, taskmod.CANCELLED, \"cancel parent\")\ntests/s0_proof/test_s0_characterization.py:232:        aj.tasks.transition(child_id, taskmod.EXECUTING, \"exec\")\ntests/s0_proof/test_s0_characterization.py:233:        aj.tasks.transition(child_id, taskmod.FAILED, \"fail\")\ntests/s0_proof/test_s0_characterization.py:234:        aj.tasks.transition(child_id, taskmod.DEAD_LETTER, \"dl\")\ntests/s0_proof/test_s0_characterization.py:236:        aj.tasks.transition(child_id, taskmod.DEAD_LETTER, \"dl\")\ntests/s0_proof/test_s0_characterization.py:238:        aj.tasks.transition(child_id, taskmod.FAILED, \"fail\")\ntests/s0_proof/test_s0_characterization.py:239:        aj.tasks.transition(child_id, taskmod.DEAD_LETTER, \"dl\")\ntests/s0_proof/test_s0_characterization.py:258:    aj.tasks.transition(parent_id, taskmod.CANCELLED, \"cancel parent\")\ntests/s0_proof/test_s0_characterization.py:274:    aj.tasks.transition(parent_id, taskmod.CANCELLED, \"cancel parent\")\ntests/s0_proof/test_s0_characterization.py:292:        aj.tasks.transition(child_id, taskmod.EXECUTING, \"simulate running\")\ntests/s0_proof/test_s0_characterization.py:297:        aj.tasks.transition(parent_id, taskmod.CANCELLED, \"force cancel parent\")\ntests/s0_proof/test_s0_characterization.py:315:        aj.tasks.transition(parent_id, taskmod.COMPLETED, \"force complete\", force=True)\ntests/s0_proof/test_s0_characterization.py:397:    aj.tasks.transition(rec.task_id, taskmod.UNDERSTANDING)\ntests/s0_proof/test_s0_characterization.py:398:    aj.tasks.transition(rec.task_id, taskmod.PLANNED)\ntests/s0_proof/test_s0_characterization.py:399:    aj.tasks.transition(rec.task_id, taskmod.AUTHORIZED)\ntests/s0_proof/test_s0_characterization.py:400:    aj.tasks.transition(rec.task_id, taskmod.EXECUTING)\ntests/s0_proof/test_s0_characterization.py:401:    aj.tasks.transition(rec.task_id, taskmod.FAILED, \"fail\")\ntests/s0_proof/test_s0_characterization.py:414:    aj.tasks.transition(rec.task_id, taskmod.UNDERSTANDING)\ntests/s0_proof/test_s0_characterization.py:415:    aj.tasks.transition(rec.task_id, taskmod.PLANNED)\ntests/s0_proof/test_s0_characterization.py:416:    aj.tasks.transition(rec.task_id, taskmod.AUTHORIZED)\ntests/s0_proof/test_s0_characterization.py:417:    aj.tasks.transition(rec.task_id, taskmod.EXECUTING)\ntests/s0_proof/test_s0_characterization.py:418:    aj.tasks.transition(rec.task_id, taskmod.FAILED, \"fail\")\ntests/s0_proof/test_s0_characterization.py:433:        aj.tasks.transition(child_id, taskmod.EXECUTING, \"exec\")\ntests/s0_proof/test_s0_characterization.py:434:        aj.tasks.transition(child_id, taskmod.VERIFYING, \"verify\")\ntests/s0_proof/test_s0_characterization.py:435:        aj.tasks.transition(child_id, taskmod.COMPLETED, \"done\")\ntests/s0_proof/test_s0_characterization.py:437:        aj.tasks.transition(child_id, taskmod.COMPLETED, \"done\")\ntests/s0_proof/test_s0_characterization.py:443:                aj.tasks.transition(child_id, st, \"progress\")\ntests/s0_proof/test_s0_characterization.py:462:            aj.tasks.transition(parent_id, st, \"complete parent\")\ntests/s0_proof/test_s0_characterization.py:485:    aj.tasks.transition(rec.task_id, taskmod.UNDERSTANDING)\ntests/s0_proof/test_s0_characterization.py:486:    aj.tasks.transition(rec.task_id, taskmod.PLANNED)\ntests/s0_proof/test_s0_characterization.py:487:    aj.tasks.transition(rec.task_id, taskmod.AUTHORIZED)\ntests/s0_proof/test_s0_characterization.py:488:    aj.tasks.transition(rec.task_id, taskmod.EXECUTING)\ntests/s0_proof/test_s0_characterization.py:489:    aj.tasks.transition(rec.task_id, taskmod.FAILED, \"fail\")\ntests/s0_proof/test_s0_characterization.py:516:    aj.tasks.transition(rec.task_id, taskmod.UNDERSTANDING)\ntests/s0_proof/test_s0_characterization.py:517:    aj.tasks.transition(rec.task_id, taskmod.PLANNED)\ntests/s0_proof/test_s0_characterization.py:518:    aj.tasks.transition(rec.task_id, taskmod.AUTHORIZED)\ntests/s0_proof/test_s0_characterization.py:519:    aj.tasks.transition(rec.task_id, taskmod.EXECUTING)\ntests/s0_proof/test_s0_characterization.py:520:    aj.tasks.transition(rec.task_id, taskmod.VERIFYING)\ntests/s0_proof/test_s0_characterization.py:521:    aj.tasks.transition(rec.task_id, taskmod.COMPLETED, \"done\")\ntests/s0_proof/test_s0_characterization.py:547:            aj.tasks.transition(parent_id, st)\ntests/s0_proof/test_s0_characterization.py:549:        aj.tasks.transition(parent_id, taskmod.COMPLETED, \"must be blocked\")\ntests/test_audit_reliability_security.py:27:        aj.tasks.transition(task_id, st)\ntests/test_audit_reliability_security.py:36:    aj.tasks.transition(rec.task_id, \"RECOVERY_REQUIRED\", \"manual\")\ntests/test_audit_reliability_security.py:127:        aj.tasks.transition(rec.task_id, \"FAILED\", \"fail\")\ntests/test_crash_safety.py:189:    control.tasks.transition(record.task_id, \"RECEIVED\")\ntests/test_crash_safety.py:190:    control.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_crash_safety.py:191:    control.tasks.transition(record.task_id, \"PLANNED\")\ntests/test_crash_safety.py:192:    control.tasks.transition(record.task_id, \"AUTHORIZED\")\ntests/test_crash_safety.py:242:    control.tasks.transition(record.task_id, \"RECEIVED\")\ntests/test_crash_safety.py:243:    control.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_crash_safety.py:244:    control.tasks.transition(record.task_id, \"PLANNED\")\ntests/test_crash_safety.py:245:    control.tasks.transition(record.task_id, \"AUTHORIZED\")\ntests/test_crash_safety.py:247:    control.tasks.transition(record.task_id, \"RECOVERY_REQUIRED\", \"test recovery required\")\ntests/test_crash_safety.py:249:    control.tasks.transition(record.task_id, \"FAILED\")\ntests/test_crash_safety.py:353:    control.tasks.transition(record.task_id, \"RECEIVED\")\ntests/test_crash_safety.py:354:    control.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_crash_safety.py:355:    control.tasks.transition(record.task_id, \"PLANNED\")\ntests/test_crash_safety.py:356:    control.tasks.transition(record.task_id, \"AUTHORIZED\")\ntests/test_crash_safety.py:453:    control.tasks.transition(record.task_id, \"RECEIVED\")\ntests/test_crash_safety.py:454:    control.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_crash_safety.py:455:    control.tasks.transition(record.task_id, \"PLANNED\")\ntests/test_crash_safety.py:456:    control.tasks.transition(record.task_id, \"AUTHORIZED\")\ntests/test_crash_safety.py:521:    control.tasks.transition(record.task_id, \"RECEIVED\")\ntests/test_crash_safety.py:522:    control.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_crash_safety.py:523:    control.tasks.transition(record.task_id, \"PLANNED\")\ntests/test_crash_safety.py:524:    control.tasks.transition(record.task_id, \"AUTHORIZED\")\ntests/test_crash_safety.py:525:    control.tasks.transition(record.task_id, \"RECOVERY_REQUIRED\", \"test\")\ntests/test_crash_safety.py:526:    control.tasks.transition(record.task_id, \"FAILED\")\ntests/test_crash_safety.py:656:    control.tasks.transition(record.task_id, \"RECEIVED\")\ntests/test_crash_safety.py:657:    control.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_crash_safety.py:658:    control.tasks.transition(record.task_id, \"PLANNED\")\ntests/test_crash_safety.py:659:    control.tasks.transition(record.task_id, \"AUTHORIZED\")\ntests/test_crash_safety.py:660:    control.tasks.transition(record.task_id, \"RECOVERY_REQUIRED\", \"test\")\ntests/test_crash_safety.py:661:    control.tasks.transition(record.task_id, \"FAILED\")\ntests/test_crash_safety.py:726:    control.tasks.transition(record.task_id, \"RECEIVED\")\ntests/test_crash_safety.py:727:    control.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_crash_safety.py:728:    control.tasks.transition(record.task_id, \"PLANNED\")\ntests/test_crash_safety.py:729:    control.tasks.transition(record.task_id, \"AUTHORIZED\")\ntests/test_crash_safety.py:799:    control.tasks.transition(record.task_id, \"RECEIVED\")\ntests/test_crash_safety.py:800:    control.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_crash_safety.py:801:    control.tasks.transition(record.task_id, \"PLANNED\")\ntests/test_crash_safety.py:802:    control.tasks.transition(record.task_id, \"AUTHORIZED\")\ntests/test_crash_safety.py:843:    control.tasks.transition(record.task_id, \"RECEIVED\")\ntests/test_crash_safety.py:844:    control.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_crash_safety.py:845:    control.tasks.transition(record.task_id, \"PLANNED\")\ntests/test_crash_safety.py:846:    control.tasks.transition(record.task_id, \"AUTHORIZED\")\ntests/test_crash_safety.py:847:    control.tasks.transition(record.task_id, \"RECOVERY_REQUIRED\", \"test\")\ntests/test_crash_safety.py:848:    control.tasks.transition(record.task_id, \"FAILED\")\ntests/test_crash_safety.py.bak:160:    control.tasks.transition(record.task_id, \"RECEIVED\")\ntests/test_crash_safety.py.bak:161:    control.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_crash_safety.py.bak:162:    control.tasks.transition(record.task_id, \"PLANNED\")\ntests/test_crash_safety.py.bak:163:    control.tasks.transition(record.task_id, \"AUTHORIZED\")\ntests/test_crash_safety.py.bak:213:    control.tasks.transition(record.task_id, \"RECEIVED\")\ntests/test_crash_safety.py.bak:214:    control.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_crash_safety.py.bak:215:    control.tasks.transition(record.task_id, \"PLANNED\")\ntests/test_crash_safety.py.bak:216:    control.tasks.transition(record.task_id, \"AUTHORIZED\")\ntests/test_crash_safety.py.bak:218:    control.tasks.transition(record.task_id, \"RECOVERY_REQUIRED\", \"test recovery required\")\ntests/test_crash_safety.py.bak:220:    control.tasks.transition(record.task_id, \"FAILED\")\ntests/test_crash_safety.py.bak:324:    control.tasks.transition(record.task_id, \"RECEIVED\")\ntests/test_crash_safety.py.bak:325:    control.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_crash_safety.py.bak:326:    control.tasks.transition(record.task_id, \"PLANNED\")\ntests/test_crash_safety.py.bak:327:    control.tasks.transition(record.task_id, \"AUTHORIZED\")\ntests/test_crash_safety.py.bak:424:    control.tasks.transition(record.task_id, \"RECEIVED\")\ntests/test_crash_safety.py.bak:425:    control.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_crash_safety.py.bak:426:    control.tasks.transition(record.task_id, \"PLANNED\")\ntests/test_crash_safety.py.bak:427:    control.tasks.transition(record.task_id, \"AUTHORIZED\")\ntests/test_crash_safety.py.bak:484:    control.tasks.transition(record.task_id, \"RECEIVED\")\ntests/test_crash_safety.py.bak:485:    control.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_crash_safety.py.bak:486:    control.tasks.transition(record.task_id, \"PLANNED\")\ntests/test_crash_safety.py.bak:487:    control.tasks.transition(record.task_id, \"AUTHORIZED\")\ntests/test_crash_safety.py.bak:488:    control.tasks.transition(record.task_id, \"RECOVERY_REQUIRED\", \"test\")\ntests/test_crash_safety.py.bak:489:    control.tasks.transition(record.task_id, \"FAILED\")\ntests/test_crash_safety.py.bak:619:    control.tasks.transition(record.task_id, \"RECEIVED\")\ntests/test_crash_safety.py.bak:620:    control.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_crash_safety.py.bak:621:    control.tasks.transition(record.task_id, \"PLANNED\")\ntests/test_crash_safety.py.bak:622:    control.tasks.transition(record.task_id, \"AUTHORIZED\")\ntests/test_crash_safety.py.bak:623:    control.tasks.transition(record.task_id, \"RECOVERY_REQUIRED\", \"test\")\ntests/test_crash_safety.py.bak:624:    control.tasks.transition(record.task_id, \"FAILED\")\ntests/test_crash_safety.py.bak:685:    control.tasks.transition(record.task_id, \"RECEIVED\")\ntests/test_crash_safety.py.bak:686:    control.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_crash_safety.py.bak:687:    control.tasks.transition(record.task_id, \"PLANNED\")\ntests/test_crash_safety.py.bak:688:    control.tasks.transition(record.task_id, \"AUTHORIZED\")\ntests/test_crash_safety.py.bak:750:    control.tasks.transition(record.task_id, \"RECEIVED\")\ntests/test_crash_safety.py.bak:751:    control.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_crash_safety.py.bak:752:    control.tasks.transition(record.task_id, \"PLANNED\")\ntests/test_crash_safety.py.bak:753:    control.tasks.transition(record.task_id, \"AUTHORIZED\")\ntests/test_crash_safety.py.bak:815:    control.tasks.transition(record.task_id, \"RECEIVED\")\ntests/test_crash_safety.py.bak:816:    control.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_crash_safety.py.bak:817:    control.tasks.transition(record.task_id, \"PLANNED\")\ntests/test_crash_safety.py.bak:818:    control.tasks.transition(record.task_id, \"AUTHORIZED\")\ntests/test_crash_safety.py.bak:819:    control.tasks.transition(record.task_id, \"RECOVERY_REQUIRED\", \"test\")\ntests/test_crash_safety.py.bak:820:    control.tasks.transition(record.task_id, \"FAILED\")\ntests/test_f2_authorization_context.py:101:        aj.tasks.transition(record2.task_id, st)\ntests/test_f2_authorization_context.py:104:    aj.tasks.transition(record2.task_id, \"AUTHORIZED\", \"prior authorization\")\ntests/test_f2_authorization_context.py:122:        aj.tasks.transition(record.task_id, st)\ntests/test_f2_authorization_context.py:125:    aj.tasks.transition(record.task_id, \"AUTHORIZED\", \"prior authorization\")\ntests/test_f2_authorization_context.py:151:        aj.tasks.transition(record.task_id, st)\ntests/test_f2_authorization_context.py:154:    aj.tasks.transition(record.task_id, \"AUTHORIZED\", \"prior authorization\")\ntests/test_f2_authorization_context.py:172:        aj.tasks.transition(record.task_id, st)\ntests/test_f2_authorization_context.py:176:    aj.tasks.transition(record.task_id, \"AUTHORIZED\", \"prior authorization\")\ntests/test_f2_authorization_context.py:194:        aj.tasks.transition(record.task_id, st)\ntests/test_f2_authorization_context.py:197:    aj.tasks.transition(record.task_id, \"AUTHORIZED\", \"prior authorization\")\ntests/test_f2_authorization_context.py:215:        aj.tasks.transition(record.task_id, st)\ntests/test_f2_authorization_context.py:218:    aj.tasks.transition(record.task_id, \"AUTHORIZED\", \"prior authorization\")\ntests/test_f2_authorization_context.py:235:        aj.tasks.transition(record.task_id, st)\ntests/test_f2_authorization_context.py:238:    aj.tasks.transition(record.task_id, \"AUTHORIZED\", \"prior authorization\")\ntests/test_f2_authorization_context.py:256:        aj.tasks.transition(record.task_id, st)\ntests/test_f2_authorization_context.py:272:        aj.tasks.transition(record.task_id, st)\ntests/test_f2_authorization_context.py:290:        aj.tasks.transition(record.task_id, st)\ntests/test_f2_authorization_context.py:306:        aj.tasks.transition(record.task_id, st)\ntests/test_f2_authorization_context.py:309:    aj.tasks.transition(record.task_id, \"AUTHORIZED\", \"prior authorization\")\ntests/test_f2_authorization_context.py:333:        aj.tasks.transition(record.task_id, st)\ntests/test_f2_authorization_context.py:336:    aj.tasks.transition(record.task_id, \"AUTHORIZED\", \"prior authorization\")\ntests/test_f2_permission_enforcement.py:181:        aj.tasks.transition(record.task_id, status)\ntests/test_f2_permission_enforcement.py:199:        aj.tasks.transition(record.task_id, status)\ntests/test_f2_permission_enforcement.py:216:        aj.tasks.transition(record.task_id, status)\ntests/test_f2_scheduler_resume.py:67:    aj.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_f2_scheduler_resume.py:68:    aj.tasks.transition(record.task_id, PLANNED)\ntests/test_f2_scheduler_resume.py:84:    aj.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_f2_scheduler_resume.py:85:    aj.tasks.transition(record.task_id, PLANNED)\ntests/test_f2_scheduler_resume.py:100:    aj.tasks.transition(record.task_id, \"UNDERSTANDING\")\ntests/test_f2_scheduler_resume.py:101:    aj.tasks.transition(record.task_id, PLANNED)\ntests/test_f2_scheduler_resume.py:102:    aj.tasks.transition(record.task_id, BLOCKED, \"manual\")\ntests/test_f2_scheduler_resume.py:122:        aj.tasks.transition(record.task_id, status)\ntests/test_f2_scheduler_resume.py:126:    aj.tasks.transition(record.task_id, \"AUTHORIZED\", \"prior authorization\")\ntests/test_f2_scheduler_resume.py:144:        aj.tasks.transition(record.task_id, status)\ntests/test_f2_scheduler_resume.py:170:        aj.tasks.transition(record.task_id, status)\ntests/test_phase3.py:72:        control.tasks.transition(record.task_id, status)\ntests/test_phase3.py:75:    control.tasks.transition(record.task_id, FAILED)\ntests/test_phase3.py:149:        aj.tasks.transition(record.task_id, status)\ntests/test_phase3.py:510:    aj.tasks.transition(record.task_id, UNDERSTANDING)\ntests/test_phase3.py:678:        aj.tasks.transition(record_b.task_id, status)\ntests/test_phase3.py:695:        aj.tasks.transition(record_1.task_id, status)\ntests/test_phase3.py:698:        aj.tasks.transition(record_2.task_id, status)\ntests/test_phase3c_recovery_integrity.py:30:        aj.tasks.transition(task_id, st)\ntests/test_phase3c_recovery_integrity.py:55:                    aj.tasks.transition(rec.task_id, \"FAILED\", \"fail\")\ntests/test_phase3c_recovery_integrity.py:56:                    aj.tasks.transition(rec.task_id, \"RECOVERING\", \"recover\")\ntests/test_phase3c_recovery_integrity.py:57:                    aj.tasks.transition(rec.task_id, \"DEAD_LETTER\", \"terminal\")\ntests/test_phase3c_recovery_integrity.py:59:                    aj.tasks.transition(rec.task_id, \"ABORTED\", \"terminal\")\ntests/test_phase3c_recovery_integrity.py:61:                    aj.tasks.transition(rec.task_id, \"CANCELLED\", \"terminal\")\ntests/test_phase3c_recovery_integrity.py:63:                    aj.tasks.transition(rec.task_id, status, \"terminal\")\ntests/test_phase3c_recovery_integrity.py:259:        aj.tasks.transition(rec.task_id, \"FAILED\", \"exhausted\")\ntests/test_phase3d_recovery_observability.py:29:        aj.tasks.transition(task_id, st)\ntests/test_phase3d_recovery_observability.py:39:    aj.tasks.transition(rec.task_id, \"RECOVERY_REQUIRED\", \"manual review\")\ntests/test_phase3e_evidence_consistency.py:35:        aj.tasks.transition(rec.task_id, st)\ntests/test_phase3e_evidence_consistency.py:36:    aj.tasks.transition(rec.task_id, \"RECOVERY_REQUIRED\", \"manual\")\ntests/test_phase3f_identity_trust_boundary.py:33:        aj.tasks.transition(rec.task_id, st)\ntests/test_phase3f_identity_trust_boundary.py:34:    aj.tasks.transition(rec.task_id, \"RECOVERY_REQUIRED\", \"manual\")\ntests/test_phase3_lifecycle_reliability.py:138:            aj.tasks.transition(rec.task_id, s)\ntests/test_phase3_lifecycle_reliability.py:170:            aj.tasks.transition(rec.task_id, s)\n"
+    },
+    "grep_selected": {
+      "exit": 0,
+      "stdout": "aj/orchestrator.py:1265:            capability_id=route.capability_id or f\"agent.{route.owner_agent.lower()}.delegate\",\naj/orchestrator.py:1303:        # Defense-in-depth: delegated child execution must satisfy recorded narrowing envelope.\naj/orchestrator.py:1305:            guard = self._delegated_permission_guard(record, spec)\naj/orchestrator.py:1309:                             f\"{route.owner_agent}:{route.capability_id or 'delegate'}\")\naj/orchestrator.py:1315:            reason=f\"{route.owner_agent}:{route.capability_id or 'delegate'}\",\naj/orchestrator.py:1328:            metadata={\"capability\": route.capability_id or \"delegate\"})]\naj/orchestrator.py:1494:        record.record_action(\"delegate\", f\"agent={route.owner_agent}\")\naj/orchestrator.py:1499:        record = self.tasks.save(record, \"delegated\")\naj/orchestrator.py:1530:            \"delegated\", task_id=record.task_id,\naj/orchestrator.py:1545:        self._receipt(record, attempt_id, route.capability_id or \"delegate\",\naj/orchestrator.py:2236:        guard = self._delegated_permission_guard(record, spec)\naj/orchestrator.py:2244:    def dead_letter(self, task_id: str, reason: str) -> taskmod.TaskRecord:\naj/orchestrator.py:2254:            self.tasks.save(record, \"dead_letter\")\naj/orchestrator.py:2255:            self.audit.record(\"task_dead_lettered\", task_id=task_id,\naj/orchestrator.py:2258:                              result=\"dead_letter\", detail=reason[:300])\naj/orchestrator.py:2261:            self._remember(record, \"task.dead_letter\", reason,\naj/orchestrator.py:2539:                    safe_actions.append({\"action\": \"reconcile.dead_letter\", \"safe_now\": \"if_operator_confirms_no_safe_replay\", \"reason\": \"explicitly abandon unrecoverable work with audit trail\"})\naj/orchestrator.py:2872:          - dead_letter: RECOVERY_REQUIRED -> DEAD_LETTER (explicit unrecoverable disposition)\naj/orchestrator.py:2873:          - abandon: mark task as ABANDONED via existing controlled semantics (legacy-compatible terminal operator disposition)\naj/orchestrator.py:3208:                        # idempotent no-op for explicit abandon on ABANDONED handled below in action\naj/orchestrator.py:3209:                        if action == \"abandon\" and self._safe_status_str(record.status) == \"ABANDONED\":\naj/orchestrator.py:3210:                            final_result = _result(\"idempotent\", \"task is already abandoned\", True, resulting_status=\"ABANDONED\", resulting_classification=\"converged\")\naj/orchestrator.py:3259:                    if action == \"dead_letter\":\naj/orchestrator.py:3261:                            final_result = _result(\"refused\", f\"dead_letter reconciliation requires RECOVERY_REQUIRED (current {record.status})\", False)\naj/orchestrator.py:3269:                        rec = self.dead_letter(task_id, f\"operator reconciliation: {reason}\")\naj/orchestrator.py:3275:                    if action == \"abandon\":\naj/orchestrator.py:3276:                        # Preserve existing abandon semantics (including forced ABANDONED state/idempotency behavior)\naj/orchestrator.py:3278:                            _op_progress(\"state_change_begin\", \"abandon\")\naj/orchestrator.py:3279:                            rec = self.abandon(task_id, f\"operator reconciliation: {reason}\")\naj/orchestrator.py:3281:                            # existing abandon may raise for already-abandoned in some paths; treat as idempotent if state confirms\naj/orchestrator.py:3284:                                final_result = _result(\"idempotent\", \"task is already abandoned\", True,\naj/orchestrator.py:3292:                        final_result = _result(\"ok\" if status == \"ABANDONED\" else \"ok\", \"task abandoned by explicit operator reconciliation\", True,\naj/orchestrator.py:3408:    def requeue(self, task_id: str) -> TaskRecord:\naj/orchestrator.py:3437:        self.tasks.transition(task_id, taskmod.PLANNED, \"requeue from dead-letter\",\naj/orchestrator.py:3438:                              force=True, reason=\"requeue\")\naj/orchestrator.py:3455:        record = self.tasks.save(record, \"requeue\")\naj/orchestrator.py:3456:        self.audit.record(\"task_requeued\", task_id=task_id,\naj/orchestrator.py:3459:                          result=\"planned\", detail=\"requeue from dead-letter\")\naj/orchestrator.py:3461:                      metadata={\"reason\": \"requeue from dead-letter\",\naj/orchestrator.py:3463:        self._remember(record, \"task.requeued\", \"requeued from dead-letter\",\naj/orchestrator.py:3467:    def abandon(self, task_id: str, reason: str = \"\") -> TaskRecord:\naj/orchestrator.py:3468:        \"\"\"Explicitly abandon a dead-letter task.\naj/orchestrator.py:3485:        Do not silently convert abandonment into success.\naj/orchestrator.py:3490:                f\"task {task_id} is already abandoned\",\naj/orchestrator.py:3492:        # Mark as abandoned through store-controlled mutation (ABANDONED is a\naj/orchestrator.py:3495:                                       reason or \"task abandoned\",\naj/orchestrator.py:3496:                                       force=True, reason=\"abandoned\")\naj/orchestrator.py:3499:            record.record_error(f\"abandoned: {reason}\", stage=\"abandonment\")\naj/orchestrator.py:3501:            record.record_error(\"task abandoned\", stage=\"abandonment\")\naj/orchestrator.py:3502:        record = self.tasks.save(record, \"abandoned\")\naj/orchestrator.py:3503:        self.audit.record(\"task_abandoned\", task_id=task_id,\naj/orchestrator.py:3506:                          result=\"abandoned\", detail=reason[:300])\naj/orchestrator.py:3509:        self._remember(record, \"task.abandoned\", \"task abandoned\",\naj/orchestrator.py:3803:                # cheap conservative check: still may be child of delegated parent\naj/orchestrator.py:3835:    def _delegated_permission_guard(self, record: taskmod.TaskRecord, spec: CapabilitySpec) -> Optional[TaskOutcome]:\naj/orchestrator.py:3836:        \"\"\"Fail-closed execution-boundary enforcement for delegated child permissions.\naj/orchestrator.py:3848:                              errors.PolicyDenied(\"delegated execution blocked: permission narrowing evidence missing/invalid\"),\naj/orchestrator.py:3853:                              errors.PolicyDenied(\"delegated execution blocked: malformed effective permission envelope\"),\naj/orchestrator.py:3860:                              errors.PolicyDenied(\"delegated execution blocked: missing parent linkage\"),\naj/orchestrator.py:3866:                              errors.PolicyDenied(\"delegated execution blocked: parent task unverifiable\"),\naj/orchestrator.py:3869:        # delegated child execution must not proceed (no fabricated continuation).\naj/orchestrator.py:3872:                              errors.PolicyDenied(\"delegated execution blocked: parent delegation authority revoked/cancelled\"),\naj/orchestrator.py:3881:                                  errors.PolicyDenied(\"delegated execution blocked: delegation record unverifiable\"),\naj/orchestrator.py:3885:                                  errors.PolicyDenied(\"delegated execution blocked: delegation-parent mismatch\"),\naj/orchestrator.py:3889:                                  errors.PolicyDenied(\"delegated execution blocked: delegation no longer active\"),\naj/orchestrator.py:3893:                                  errors.PolicyDenied(\"delegated execution blocked: child not linked to delegation\"),\naj/orchestrator.py:3900:                                  errors.PolicyDenied(\"delegated execution blocked: effective permissions exceed requested envelope\"),\naj/orchestrator.py:3904:                              errors.PolicyDenied(\"delegated execution blocked: malformed requested permission snapshot\"),\naj/orchestrator.py:3910:                                  errors.PolicyDenied(\"delegated execution blocked: effective permissions exceed parent envelope\"),\naj/orchestrator.py:3914:                              errors.PolicyDenied(\"delegated execution blocked: malformed parent permission snapshot\"),\naj/orchestrator.py:3916:        # Logical-internal delegated children must remain within delegation-coordination scope\naj/orchestrator.py:3920:                              errors.PolicyDenied(\"delegated execution blocked: unverifiable permission scope for logical-internal delegation\"),\naj/orchestrator.py:3924:    def _prepare_delegated_child_for_scheduling(self, task_id: str) -> Dict[str, Any]:\naj/orchestrator.py:3925:        \"\"\"Progress a delegated child through existing planning/authorization paths to a schedulable\naj/orchestrator.py:3939:                # Fail closed: do not prepare/authorize new delegated work under cancelled/revoked/unverifiable parent.\naj/orchestrator.py:3942:                        self.tasks.transition(task_id, taskmod.ABORTED, \"delegated parent cancelled/revoked/unverifiable\")\naj/orchestrator.py:3957:                self.tasks.transition(task_id, taskmod.UNDERSTANDING, \"delegated child preparation\")\naj/orchestrator.py:3960:                self.tasks.transition(task_id, taskmod.PLANNED, \"delegated child preparation\")\naj/orchestrator.py:4005:            self.tasks.save(rec, \"delegated_awaiting_approval\")\naj/orchestrator.py:4011:        self.tasks.transition(task_id, taskmod.AUTHORIZED, f\"delegated authorization: {decision.reason}\")\naj/orchestrator.py:4026:        self.tasks.save(rec, \"delegated_authorized\")\naj/orchestrator.py:4052:                        child_results.append(self._prepare_delegated_child_for_scheduling(cid))\naj/orchestrator.py:4230:    def delegate(self, request: Mapping[str, Any], *, actor: str = \"aj\") -> Dict[str, Any]:\naj/orchestrator.py:4253:        # parent must be allowed to delegate (conservative: not terminal/aborted/failed-final-only states for delegation intent)\naj/orchestrator.py:4255:            raise errors.Conflict(f\"parent task {parent.task_id} is not allowed to delegate in state {parent.status}\")\naj/orchestrator.py:4388:                        self.tasks._persist_locked(cur, \"delegated_child_created\")\naj/orchestrator.py:4392:                    prep = self._prepare_delegated_child_for_scheduling(child.task_id)\naj/scheduler.py:668:    def _dispatch_one(self, task_id: str, *, eligibility: EligibilityDecision,\naj/scheduler.py:720:                self.aj.dead_letter(task_id, \"deadline exceeded before execution\")\naj/scheduler.py:779:    def run_once(self, *, limit: int = 10, workers: int = 1) -> Dict[str, Any]:\naj/scheduler.py:836:                    results = list(pool.map(lambda item: self._dispatch_one(item[\"task_id\"], eligibility=item[\"eligibility\"], admission=item[\"admission\"]), admitted_plan))\naj/scheduler.py:839:                    results.append(self._dispatch_one(item[\"task_id\"], eligibility=item[\"eligibility\"], admission=item[\"admission\"]))\naj/task.py:3:One task record is created for every request AJ accepts, and every delegated\naj/task.py:62:# Permanently abandoned after a human/policy decision; preserves all history.\naj/task.py:265:    - **Import/restore:** ``import_record`` explicitly adopts validated historical\naj/task.py:345:        # Preserve explicit root lineage for delegated/orchestrated hierarchies.\naj/task.py:466:        Use ``create``/``child_of`` for normal new tasks and ``import_record``\naj/task.py:474:                    \"use create() for new tasks or import_record() for validated restore/import\",\naj/task.py:499:    def _validate_import_record(record: TaskRecord) -> None:\naj/task.py:564:            # historical records (e.g. requeue/abandon), so edge legality is not\naj/task.py:599:    def import_record(self, record: TaskRecord | Dict[str, Any], *,\naj/task.py:614:        self._validate_import_record(candidate)\naj/transfer.py:176:        store.import_record(task, reason=\"imported\")\naj/__main__.py:312:                           choices=[\"abort\", \"dead_letter\", \"abandon\", \"clear_recovery_required\"],\naj/agents.py:193:    \"\"\"The agents AJ may delegate to, and their honest availability.\"\"\"\naj/contracts.py:32:    \"\"\"One delegated unit of work handed to a sub-agent.\"\"\"\naj/inbox_cli.py:126:    worker.add_argument(\"--requeue-stale-seconds\", type=int, default=300, help=\"requeue PROCESSING items older than this\")\naj/inbox_cli.py:332:            stale = int(getattr(args, 'requeue_stale_seconds', 300))\naj/inbox_cli.py:333:            def requeue_stale():\naj/inbox_cli.py:346:                        store.update_status(r['capture_id'], 'queued', error_details='requeued: stale processing/interrupted')\naj/inbox_cli.py:350:                rq = requeue_stale()\naj/inbox_cli.py:353:                    _emit({\"ok\": True, \"requeued_stale\": rq, \"processed\": out})\naj/inbox_cli.py:355:                    print(f\"requeued_stale={rq} processed={len(out)}\")\naj/inbox_cli.py:358:                print(f\"Inbox worker running (interval={interval}s, stale_requeue={stale}s). Ctrl+C to stop.\")\naj/inbox_cli.py:361:                    requeue_stale()\n"
+    }
+  },
+  "notes": [
+    "AST cannot see dynamic dispatch (getattr/setattr/callables in vars), reflection, monkeypatch indirection, decorator/wrapper effects at runtime, threaded/callback/registered handler invocation paths, string-eval/exec, cross-process/CLI-subprocess behavior, or calls in non-ast-visible generated code.",
+    "AST reports syntactic call sites in aj/*.py only (by design of this script run)."
+  ]
+}

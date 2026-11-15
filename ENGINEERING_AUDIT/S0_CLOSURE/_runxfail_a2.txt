@@ -1,0 +1,74 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+__________ test_a2_delegated_child_ops_blocked_when_parent_cancelled ___________
+
+ext4_tmpdir = PosixPath('/tmp/aj_s0_proof_pthteuge')
+
+    @pytest.mark.xfail(strict=True, reason="INV delegation safety/Doc58: delegated child lifecycle blocked without safe reconcile")
+    def test_a2_delegated_child_ops_blocked_when_parent_cancelled(ext4_tmpdir):
+        """A2 (delegated child safety under cancelled parent): dead_letter/requeue/abandon on a
+        delegated child whose parent is CANCELLED must be blocked or require operator reconcile
+        with evidence (Doc 58). Current behavior expected to allow unsafe operations."""
+        aj = make_aj(ext4_tmpdir)
+        parent_id, child_id, _did, _res = create_delegated_child(aj, ext4_tmpdir)
+        # cancel parent
+        aj.tasks.transition(parent_id, taskmod.CANCELLED, "cancel parent")
+        child = aj.tasks.get(child_id)
+        # try to put child into states that permit dead_letter/requeue/abandon where possible
+        # move child toward FAILED for dead_letter path if transitionable
+        try:
+            # child may be AUTHORIZED/PLANNED; attempt to reach FAILED
+            c = aj.tasks.get(child_id)
+            if c.can_transition(taskmod.FAILED):
+                aj.tasks.transition(child_id, taskmod.FAILED, "fail child")
+            elif c.status == taskmod.AUTHORIZED and c.can_transition(taskmod.EXECUTING):
+                aj.tasks.transition(child_id, taskmod.EXECUTING)
+                aj.tasks.transition(child_id, taskmod.FAILED, "fail child")
+        except Exception:
+            pass
+    
+        blocked = True
+        errors = []
+        # dead_letter attempt
+        try:
+            c = aj.tasks.get(child_id)
+            if c.status in (taskmod.FAILED, taskmod.ESCALATED, taskmod.RECOVERING):
+                aj.dead_letter(child_id, "try dl")
+                errors.append("dead_letter_succeeded")
+            else:
+                errors.append(f"dead_letter_not_applicable_status={c.status}")
+        except Exception as e:
+            errors.append(f"dead_letter_blocked:{type(e).__name__}")
+        # requeue attempt (need DEAD_LETTER)
+        try:
+            c = aj.tasks.get(child_id)
+            if c.status == taskmod.DEAD_LETTER:
+                aj.requeue(child_id)
+                errors.append("requeue_succeeded")
+            else:
+                # try to dead-letter first if possible
+                if c.status in (taskmod.FAILED, taskmod.ESCALATED, taskmod.RECOVERING):
+                    aj.dead_letter(child_id, "dl for requeue")
+                    aj.requeue(child_id)
+                    errors.append("dead_letter_then_requeue_succeeded")
+        except Exception as e:
+            errors.append(f"requeue_blocked:{type(e).__name__}")
+        # abandon attempt
+        try:
+            c = aj.tasks.get(child_id)
+            # abandon can be called from various states in current impl
+            aj.abandon(child_id, "try abandon")
+            errors.append("abandon_succeeded")
+        except Exception as e:
+            errors.append(f"abandon_blocked:{type(e).__name__}")
+    
+        # invariant: all such operations must be blocked/deferred when parent cancelled without operator reconcile evidence
+>       assert not any("succeeded" in e for e in errors), f"unsafe delegated ops succeeded: {errors}"
+E       AssertionError: unsafe delegated ops succeeded: ['dead_letter_not_applicable_status=ABORTED', 'abandon_succeeded']
+E       assert not True
+E        +  where True = any(<generator object test_a2_delegated_child_ops_blocked_when_parent_cancelled.<locals>.<genexpr> at 0x74c8a76ebe00>)
+
+tests/s0_proof/test_s0_characterization.py:235: AssertionError
+=========================== short test summary info ============================
+FAILED tests/s0_proof/test_s0_characterization.py::test_a2_delegated_child_ops_blocked_when_parent_cancelled
+1 failed, 6 deselected in 0.56s

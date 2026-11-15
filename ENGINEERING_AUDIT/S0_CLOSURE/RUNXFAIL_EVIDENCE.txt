@@ -1,0 +1,296 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___________________ test_a1_abandon_survives_reload_and_list ___________________
+
+ext4_tmpdir = PosixPath('/tmp/aj_s0_proof_xql77p2r')
+
+    @pytest.mark.xfail(strict=True, reason="INV-ABANDONED/Doc58: ABANDONED must be formal terminal+loadable")
+    def test_a1_abandon_survives_reload_and_list(ext4_tmpdir):
+        """A1 (ABANDONED formal terminal, INV loadability): abandon a task, rebuild TaskStore
+        from disk, assert it is still loaded and listed.
+        Expected gap: ABANDONED not in TRANSITIONS/TERMINAL so reload skips it (load error)."""
+        aj = make_aj(ext4_tmpdir)
+        rec = aj.tasks.create("task to abandon")
+        aj.tasks.save(rec, "created")
+        # move to FAILED so abandon path is reachable via dead_letter/abandon semantics? abandon() allows from many states in current impl?
+        aj.tasks.transition(rec.task_id, taskmod.UNDERSTANDING)
+        aj.tasks.transition(rec.task_id, taskmod.PLANNED)
+        aj.tasks.transition(rec.task_id, taskmod.AUTHORIZED)
+        aj.tasks.transition(rec.task_id, taskmod.EXECUTING)
+        aj.tasks.transition(rec.task_id, taskmod.FAILED, "fail")
+        # dead letter then abandon (current supported flow)
+        aj.dead_letter(rec.task_id, "dl")
+        aj.abandon(rec.task_id, "abandon now")
+        assert aj.tasks.get(rec.task_id).status == "ABANDONED"
+    
+        # rebuild store from disk
+        store2 = taskmod.TaskStore(ext4_tmpdir)
+        found = store2.find(rec.task_id)
+        # invariant: abandoned task must remain loadable/listed with preserved history
+        assert found is not None, f"abandoned task missing after reload; load_errors={store2.load_errors}"
+>       assert found.status == "ABANDONED"
+E       AssertionError: assert 'DEAD_LETTER' == 'ABANDONED'
+E         
+E         - ABANDONED
+E         + DEAD_LETTER
+
+tests/s0_proof/test_s0_characterization.py:172: AssertionError
+=========================== short test summary info ============================
+FAILED tests/s0_proof/test_s0_characterization.py::test_a1_abandon_survives_reload_and_list
+1 failed, 6 deselected in 0.69s
+F                                                                        [100%]
+=================================== FAILURES ===================================
+__________ test_a2_delegated_child_ops_blocked_when_parent_cancelled ___________
+
+ext4_tmpdir = PosixPath('/tmp/aj_s0_proof_pthteuge')
+
+    @pytest.mark.xfail(strict=True, reason="INV delegation safety/Doc58: delegated child lifecycle blocked without safe reconcile")
+    def test_a2_delegated_child_ops_blocked_when_parent_cancelled(ext4_tmpdir):
+        """A2 (delegated child safety under cancelled parent): dead_letter/requeue/abandon on a
+        delegated child whose parent is CANCELLED must be blocked or require operator reconcile
+        with evidence (Doc 58). Current behavior expected to allow unsafe operations."""
+        aj = make_aj(ext4_tmpdir)
+        parent_id, child_id, _did, _res = create_delegated_child(aj, ext4_tmpdir)
+        # cancel parent
+        aj.tasks.transition(parent_id, taskmod.CANCELLED, "cancel parent")
+        child = aj.tasks.get(child_id)
+        # try to put child into states that permit dead_letter/requeue/abandon where possible
+        # move child toward FAILED for dead_letter path if transitionable
+        try:
+            # child may be AUTHORIZED/PLANNED; attempt to reach FAILED
+            c = aj.tasks.get(child_id)
+            if c.can_transition(taskmod.FAILED):
+                aj.tasks.transition(child_id, taskmod.FAILED, "fail child")
+            elif c.status == taskmod.AUTHORIZED and c.can_transition(taskmod.EXECUTING):
+                aj.tasks.transition(child_id, taskmod.EXECUTING)
+                aj.tasks.transition(child_id, taskmod.FAILED, "fail child")
+        except Exception:
+            pass
+    
+        blocked = True
+        errors = []
+        # dead_letter attempt
+        try:
+            c = aj.tasks.get(child_id)
+            if c.status in (taskmod.FAILED, taskmod.ESCALATED, taskmod.RECOVERING):
+                aj.dead_letter(child_id, "try dl")
+                errors.append("dead_letter_succeeded")
+            else:
+                errors.append(f"dead_letter_not_applicable_status={c.status}")
+        except Exception as e:
+            errors.append(f"dead_letter_blocked:{type(e).__name__}")
+        # requeue attempt (need DEAD_LETTER)
+        try:
+            c = aj.tasks.get(child_id)
+            if c.status == taskmod.DEAD_LETTER:
+                aj.requeue(child_id)
+                errors.append("requeue_succeeded")
+            else:
+                # try to dead-letter first if possible
+                if c.status in (taskmod.FAILED, taskmod.ESCALATED, taskmod.RECOVERING):
+                    aj.dead_letter(child_id, "dl for requeue")
+                    aj.requeue(child_id)
+                    errors.append("dead_letter_then_requeue_succeeded")
+        except Exception as e:
+            errors.append(f"requeue_blocked:{type(e).__name__}")
+        # abandon attempt
+        try:
+            c = aj.tasks.get(child_id)
+            # abandon can be called from various states in current impl
+            aj.abandon(child_id, "try abandon")
+            errors.append("abandon_succeeded")
+        except Exception as e:
+            errors.append(f"abandon_blocked:{type(e).__name__}")
+    
+        # invariant: all such operations must be blocked/deferred when parent cancelled without operator reconcile evidence
+>       assert not any("succeeded" in e for e in errors), f"unsafe delegated ops succeeded: {errors}"
+E       AssertionError: unsafe delegated ops succeeded: ['dead_letter_not_applicable_status=ABORTED', 'abandon_succeeded']
+E       assert not True
+E        +  where True = any(<generator object test_a2_delegated_child_ops_blocked_when_parent_cancelled.<locals>.<genexpr> at 0x74c8a76ebe00>)
+
+tests/s0_proof/test_s0_characterization.py:235: AssertionError
+=========================== short test summary info ============================
+FAILED tests/s0_proof/test_s0_characterization.py::test_a2_delegated_child_ops_blocked_when_parent_cancelled
+1 failed, 6 deselected in 0.56s
+F                                                                        [100%]
+=================================== FAILURES ===================================
+________ test_a3_scheduler_does_not_dispatch_child_of_cancelled_parent _________
+
+ext4_tmpdir = PosixPath('/tmp/aj_s0_proof_xdwk4m16')
+
+    @pytest.mark.xfail(strict=True, reason="INV/Doc58: scheduler must not dispatch delegated child with cancelled/revoked parent")
+    def test_a3_scheduler_does_not_dispatch_child_of_cancelled_parent(ext4_tmpdir):
+        """A3: Scheduler.run_once with a cancelled delegated parent must not dispatch child."""
+        aj = make_aj(ext4_tmpdir)
+        parent_id, child_id, _did, _res = create_delegated_child(aj, ext4_tmpdir)
+        # ensure child is authorized/schedulable in current behavior
+        child = aj.tasks.get(child_id)
+        aj.tasks.transition(parent_id, taskmod.CANCELLED, "cancel parent")
+        sched = Scheduler(aj)
+        # if child in dispatchable state, run_once should not dispatch it
+        res = sched.run_once(limit=10, workers=1)
+        dispatched = res.get("selected") or []
+>       assert child_id not in dispatched, f"child dispatched despite cancelled parent: {res}"
+E       AssertionError: child dispatched despite cancelled parent: {'worker_id': 'scheduler-1794738679453124798', 'selected': ['aj_20261115T153119_5dc18b7a'], 'results': [{'task_id': 'aj_20261115T153119_5dc18b7a', 'status': 'ABORTED', 'ok': False, 'detail': 'delegated execution blocked: parent delegation authority revoked/cancelled', 'eligibility': {'eligible': True, 'reason_code': 'ELIGIBLE', 'explanation': 'Task is eligible for admission/dispatch consideration.', 'details': {'status': 'AUTHORIZED', 'capability_id': 'test.child'}}, 'admission': {'admitted': True, 'deferred': False, 'reason_code': 'ADMITTED', 'explanation': 'Admitted for dispatch under current bounded capacity policy.', 'details': {'active_count': 0, 'selected_active': 0, 'limits': {'global_max_active_executions': 2, 'global_max_admitted_waiting': 10, 'max_dispatch_per_run': 5, 'max_workers': 1}}}, 'dispatch': {'state': 'completed_dispatch_call', 'lease_id': 'lease_20261115T153119_d7dd59f0'}}], 'completed': 0, 'failed': 1, 'decisions': [{'task_id': 'aj_20261115T153119_5dc18b7a', 'eligibility': {'eligible': True, 'reason_code': 'ELIGIBLE', 'explanation': 'Task is eligible for admission/dispatch consideration.', 'details': {'status': 'AUTHORIZED', 'capability_id': 'test.child'}}, 'admission': {'admitted': True, 'deferred': False, 'reason_code': 'ADMITTED', 'explanation': 'Admitted for dispatch under current bounded capacity policy.', 'details': {'active_count': 0, 'selected_active': 0, 'limits': {'global_max_active_executions': 2, 'global_max_admitted_waiting': 10, 'max_dispatch_per_run': 5, 'max_workers': 1}}}, 'selected': True}], 'limits': {'requested_limit': 10, 'requested_workers': 1, 'effective_limit': 5, 'effective_workers': 1, 'max_dispatch_per_run': 5, 'global_max_admitted_waiting': 10}}
+E       assert 'aj_20261115T153119_5dc18b7a' not in ['aj_20261115T153119_5dc18b7a']
+
+tests/s0_proof/test_s0_characterization.py:250: AssertionError
+=========================== short test summary info ============================
+FAILED tests/s0_proof/test_s0_characterization.py::test_a3_scheduler_does_not_dispatch_child_of_cancelled_parent
+1 failed, 6 deselected in 0.20s
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______ test_a4_cancel_parent_cancels_or_safely_handles_running_children _______
+
+ext4_tmpdir = PosixPath('/tmp/aj_s0_proof_pv_x44l0')
+
+    @pytest.mark.xfail(strict=True, reason="INV/Doc58: cancelling parent must enforce safe handling of active children")
+    def test_a4_cancel_parent_cancels_or_safely_handles_running_children(ext4_tmpdir):
+        """A4: cancel parent with running/authorized children -> children must be cancelled
+        or moved to explicit safe review state per Doc 58 (no silent orphaned active work)."""
+        aj = make_aj(ext4_tmpdir)
+        parent_id, child_id, _did, _res = create_delegated_child(aj, ext4_tmpdir)
+        # try to get child into EXECUTING (running) state if possible
+        child = aj.tasks.get(child_id)
+        if child.status == taskmod.AUTHORIZED:
+            aj.tasks.transition(child_id, taskmod.EXECUTING, "simulate running")
+        child = aj.tasks.get(child_id)
+        # cancel parent (AJ-level cancel flow)
+        try:
+            aj.cancel_task(parent_id)
+        except Exception:
+            try:
+                aj.tasks.transition(parent_id, taskmod.CANCELLED, "force cancel parent")
+            except Exception:
+                pass
+        child_after = aj.tasks.get(child_id)
+        # invariant: child not left running/authorized without explicit safe handling
+>       assert child_after.status in (
+            taskmod.CANCELLED, taskmod.CANCEL_REQUESTED, taskmod.ABORTED,
+            taskmod.RECOVERY_REQUIRED, taskmod.DEAD_LETTER, taskmod.FAILED
+        ), f"child left in unsafe/active state {child_after.status} after parent cancel"
+E       AssertionError: child left in unsafe/active state EXECUTING after parent cancel
+E       assert 'EXECUTING' in ('CANCELLED', 'CANCEL_REQUESTED', 'ABORTED', 'RECOVERY_REQUIRED', 'DEAD_LETTER', 'FAILED')
+E        +  where 'EXECUTING' = TaskRecord(task_id='aj_20261115T153120_3ae66c94', goal='child goal', operation_id='op_20261115T153120_9a859c26', schem...coordinate'], 'effective_permissions_snapshot': ['delegation.coordinate']}}, current_execution_id='', execution_ids=[]).status
+
+tests/s0_proof/test_s0_characterization.py:277: AssertionError
+=========================== short test summary info ============================
+FAILED tests/s0_proof/test_s0_characterization.py::test_a4_cancel_parent_cancels_or_safely_handles_running_children
+1 failed, 6 deselected in 0.23s
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_____ test_a5_force_complete_parent_blocked_with_unresolved_required_child _____
+
+ext4_tmpdir = PosixPath('/tmp/aj_s0_proof_52wc20g0')
+
+    @pytest.mark.xfail(strict=True, reason="INV-xx/T parent completion guard: cannot complete with unresolved required child even with force=True")
+    def test_a5_force_complete_parent_blocked_with_unresolved_required_child(ext4_tmpdir):
+        """A5: parent COMPLETED via force=True with unresolved required child must be blocked."""
+        aj = make_aj(ext4_tmpdir)
+        parent_id, child_id, _did, _res = create_delegated_child(aj, ext4_tmpdir)
+        # child left unresolved (not completed)
+        child = aj.tasks.get(child_id)
+        assert child.status != taskmod.COMPLETED
+        # attempt forced completion of parent
+        raised = None
+        try:
+            aj.tasks.transition(parent_id, taskmod.COMPLETED, "force complete", force=True)
+        except Exception as e:
+            raised = e
+        parent = aj.tasks.get(parent_id)
+>       assert raised is not None or parent.status != taskmod.COMPLETED, (
+            f"parent force-completed despite unresolved required child; raised={raised} status={parent.status}"
+        )
+E       AssertionError: parent force-completed despite unresolved required child; raised=None status=COMPLETED
+E       assert (None is not None or 'COMPLETED' != 'COMPLETED')
+E        +  where 'COMPLETED' = TaskRecord(task_id='aj_20261115T153119_2d8f2763', goal='parent goal', operation_id='op_20261115T153119_92f31be8', sche... 1794738679.7470639, 'detail': 'force complete'}], authorization_context={}, current_execution_id='', execution_ids=[]).status
+E        +  and   'COMPLETED' = taskmod.COMPLETED
+
+tests/s0_proof/test_s0_characterization.py:298: AssertionError
+=========================== short test summary info ============================
+FAILED tests/s0_proof/test_s0_characterization.py::test_a5_force_complete_parent_blocked_with_unresolved_required_child
+1 failed, 6 deselected in 0.81s
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___________ test_a6_t04_missing_or_malformed_required_classification ___________
+
+ext4_tmpdir = PosixPath('/tmp/aj_s0_proof_w4kalcd1')
+
+    @pytest.mark.xfail(strict=True, reason="T-04: missing/malformed required classification must fail closed (default required)")
+    def test_a6_t04_missing_or_malformed_required_classification(ext4_tmpdir):
+        """A6 (T-04): missing and malformed `required` classification must be treated as
+        required / fail closed per Doc 58. Current implementation expected to lack this field."""
+        aj = make_aj(ext4_tmpdir)
+        parent = create_planned_parent(aj, "test.child")
+        seed_internal_agent(aj, ["test.child"])
+        # missing required field
+        req_missing = delegation_request(parent.task_id, "test.child")
+        # malformed required field
+        req_malformed = delegation_request(
+            parent.task_id, "test.child",
+            child_specs=[{
+                "child_ref": "c1", "goal": "child 1", "required_capabilities": ["test.child"],
+                "capability_id": "test.child", "required": "maybe",
+            }],
+        )
+    
+        def child_classified_required(res):
+            # target invariant: child/delegation record must carry required classification defaulting to True
+            d = res.get("delegation") or res
+            # inspect persisted delegation/child request for explicit required semantics
+            # try multiple plausible locations
+            req = d.get("request") or {}
+            specs = req.get("child_specs") or []
+            if specs:
+                val = specs[0].get("required", None)
+                return val is True
+            return False
+    
+        # missing case
+        res1 = aj.delegate(req_missing)
+>       assert child_classified_required(res1), f"missing required not treated as required/fail-closed: {res1}"
+E       AssertionError: missing required not treated as required/fail-closed: {'delegation': {'schema_version': 1, 'delegation_id': 'dlg_8c1a990f97d46514', 'parent_task_id': 'aj_20261115T153119_a166f201', 'root_task_id': 'aj_20261115T153119_a166f201', 'request': {'schema_version': 1, 'parent_task_id': 'aj_20261115T153119_a166f201', 'requested_work': 'delegate work', 'required_capabilities': ['test.child'], 'child_specs': [{'goal': 'child goal', 'required_capabilities': ['test.child'], 'capability_id': 'test.child', 'child_ref': 'c1', 'priority': 0, 'deadline': None, 'request_payload': {}, 'permission_context': {}}], 'constraints': [], 'priority': 0, 'deadline': None, 'permission_context': {'parent_permissions': ['delegation.coordinate'], 'requested_permissions': ['delegation.coordinate'], 'agent_permissions': ['delegation.coordinate'], 'system_permissions': ['delegation.coordinate']}, 'correlation_id': '', 'idempotency_key': '', 'provenance': {}, 'aggregation_policy': 'all_required', 'required_child_ids': [], 'max_children': 1}, 'child_task_ids': ['aj_20261115T153119_a41a6bd6'], 'child_refs': {'c1': 'aj_20261115T153119_a41a6bd6'}, 'status': 'COMPLETED_CREATION', 'created_at': 1794738679.9680374, 'updated_at': 1794738679.977363, 'reason': 'reconciled: can_complete=False manual_review=False incorrect_complete=False', 'evidence': {'actor': 'aj', 'provenance': {}, 'last_reconciliation': {'at': 1794738679.9773533, 'trigger': 'explicit', 'actor': 'system', 'source_child_task_id': '', 'aggregation': {'parent_task_id': 'aj_20261115T153119_a166f201', 'aggregation_policy': 'all_required', 'required_child_task_ids': ['aj_20261115T153119_a41a6bd6'], 'counts': {'created': 1, 'eligible': 0, 'admitted': 0, 'running': 0, 'completed': 0, 'failed': 0, 'cancelled': 0, 'recovery_required': 0, 'manual_review': 0, 'waiting': 1, 'unknown': 0}, 'children': [{'child_task_id': 'aj_20261115T153119_a41a6bd6', 'status': 'AUTHORIZED'}], 'waiting_for_children': True, 'can_complete': False, 'requires_manual_review': False, 'child_state_snapshot': {'items': [{'child_task_id': 'aj_20261115T153119_a41a6bd6', 'status': 'AUTHORIZED', 'updated_at': 1794738679.9728017, 'completed_at': None, 'requires_user_decision': False}], 'hash': 'f56af05ace8faf2bb4abf01a6f964b257621a2affa0afa3803b82332e49ceef3'}}, 'children': [], 'incorrect_parent_completion': False}, 'reconciliation_history': [{'at': 1794738679.9773533, 'hash': 'f56af05ace8faf2bb4abf01a6f964b257621a2affa0afa3803b82332e49ceef3', 'can_complete': False, 'manual_review': False, 'trigger': 'explicit'}]}}, 'assignments': [{'schema_version': 1, 'assignment_id': 'asg_5964ba2390503628', 'delegation_id': 'dlg_8c1a990f97d46514', 'parent_task_id': 'aj_20261115T153119_a166f201', 'child_task_id': 'aj_20261115T153119_a41a6bd6', 'execution_id': '', 'attempt_id': '', 'agent_id': 'agent.aj.internal', 'capability_id': 'test.child', 'status': 'ASSIGNED', 'logical_internal': True, 'reason': "Selected agent.aj.internal (deterministic) for capabilities ['test.child'].", 'match': {'ok': True, 'reason': 'matched', 'agent_id': 'agent.aj.internal', 'required_capabilities': ['test.child'], 'execution_mode': 'logical_internal', 'logical_internal': True, 'explanation': "Selected agent.aj.internal (deterministic) for capabilities ['test.child'].", 'rejections': [{'agent_id': 'agent.helix', 'reasons': ['test.child:capability_not_supported']}, {'agent_id': 'agent.jarvis', 'reasons': ['agent_unavailable', 'test.child:agent_unavailable']}]}, 'permission_decision': {'ok': True, 'reason': 'narrowed', 'effective_permissions': ['delegation.coordinate'], 'explanation': 'Effective permissions computed as intersection (narrowing only).', 'parent_permissions': ['delegation.coordinate'], 'requested_permissions': ['delegation.coordinate'], 'agent_permissions': ['delegation.coordinate'], 'system_permissions': ['delegation.coordinate']}, 'lease_id': '', 'created_at': 1794738679.975933, 'updated_at': 1794738679.9759338, 'completed_at': None, 'events': []}], 'aggregation': {'parent_task_id': 'aj_20261115T153119_a166f201', 'aggregation_policy': 'all_required', 'required_child_task_ids': ['aj_20261115T153119_a41a6bd6'], 'counts': {'created': 1, 'eligible': 0, 'admitted': 0, 'running': 0, 'completed': 0, 'failed': 0, 'cancelled': 0, 'recovery_required': 0, 'manual_review': 0, 'waiting': 1, 'unknown': 0}, 'children': [{'child_task_id': 'aj_20261115T153119_a41a6bd6', 'status': 'AUTHORIZED'}], 'waiting_for_children': True, 'can_complete': False, 'requires_manual_review': False}}
+E       assert False
+E        +  where False = <function test_a6_t04_missing_or_malformed_required_classification.<locals>.child_classified_required at 0x719f01b3d900>({'delegation': {'schema_version': 1, 'delegation_id': 'dlg_8c1a990f97d46514', 'parent_task_id': 'aj_20261115T153119_a1...ids': ['aj_20261115T153119_a41a6bd6'], 'counts': {'created': 1, 'eligible': 0, 'admitted': 0, 'running': 0, ...}, ...}})
+
+tests/s0_proof/test_s0_characterization.py:335: AssertionError
+=========================== short test summary info ============================
+FAILED tests/s0_proof/test_s0_characterization.py::test_a6_t04_missing_or_malformed_required_classification
+1 failed, 6 deselected in 0.20s
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___________ test_a7_t11_unsupported_capabilities_or_claims_rejected ____________
+
+ext4_tmpdir = PosixPath('/tmp/aj_s0_proof_7wjgekti')
+
+    @pytest.mark.xfail(strict=True, reason="T-11: unsupported capabilities/claims must be rejected and reported")
+    def test_a7_t11_unsupported_capabilities_or_claims_rejected(ext4_tmpdir):
+        """A7 (T-11): attempts to use unsupported capabilities/claims must be rejected and
+        reported. Current behavior expected to not enforce/support this surface."""
+        aj = make_aj(ext4_tmpdir)
+        parent = create_planned_parent(aj, "test.child")
+        seed_internal_agent(aj, ["test.child"])
+        # attempt unsupported capability/claim in delegation request (Doc 58 semantics)
+        req = delegation_request(parent.task_id, "test.child")
+        req["unsupported_claim"] = "exactly_once_global"
+        req["claims"] = ["cross_store_atomicity", "distributed_exactly_once"]
+        req["required_capabilities"] = ["test.child", "unsupported.magic.capability"]
+        rejected = False
+        report = None
+        try:
+            res = aj.delegate(req)
+            report = res
+            # if not rejected, ensure it explicitly reports unsupported claims/capabilities as rejected
+            # (target invariant)
+            rejected = False
+        except Exception as e:
+            rejected = True
+            report = str(e)
+>       assert rejected, f"unsupported capabilities/claims not rejected: {report}"
+E       AssertionError: unsupported capabilities/claims not rejected: {'delegation': {'schema_version': 1, 'delegation_id': 'dlg_23a26dcfda1d4804', 'parent_task_id': 'aj_20261115T153119_5c88746f', 'root_task_id': 'aj_20261115T153119_5c88746f', 'request': {'schema_version': 1, 'parent_task_id': 'aj_20261115T153119_5c88746f', 'requested_work': 'delegate work', 'required_capabilities': ['test.child', 'unsupported.magic.capability'], 'child_specs': [{'goal': 'child goal', 'required_capabilities': ['test.child'], 'capability_id': 'test.child', 'child_ref': 'c1', 'priority': 0, 'deadline': None, 'request_payload': {}, 'permission_context': {}}], 'constraints': [], 'priority': 0, 'deadline': None, 'permission_context': {'parent_permissions': ['delegation.coordinate'], 'requested_permissions': ['delegation.coordinate'], 'agent_permissions': ['delegation.coordinate'], 'system_permissions': ['delegation.coordinate']}, 'correlation_id': '', 'idempotency_key': '', 'provenance': {}, 'aggregation_policy': 'all_required', 'required_child_ids': [], 'max_children': 1}, 'child_task_ids': ['aj_20261115T153119_037a7c82'], 'child_refs': {'c1': 'aj_20261115T153119_037a7c82'}, 'status': 'COMPLETED_CREATION', 'created_at': 1794738679.4205391, 'updated_at': 1794738679.4310377, 'reason': 'reconciled: can_complete=False manual_review=False incorrect_complete=False', 'evidence': {'actor': 'aj', 'provenance': {}, 'last_reconciliation': {'at': 1794738679.43102, 'trigger': 'explicit', 'actor': 'system', 'source_child_task_id': '', 'aggregation': {'parent_task_id': 'aj_20261115T153119_5c88746f', 'aggregation_policy': 'all_required', 'required_child_task_ids': ['aj_20261115T153119_037a7c82'], 'counts': {'created': 1, 'eligible': 0, 'admitted': 0, 'running': 0, 'completed': 0, 'failed': 0, 'cancelled': 0, 'recovery_required': 0, 'manual_review': 0, 'waiting': 1, 'unknown': 0}, 'children': [{'child_task_id': 'aj_20261115T153119_037a7c82', 'status': 'AUTHORIZED'}], 'waiting_for_children': True, 'can_complete': False, 'requires_manual_review': False, 'child_state_snapshot': {'items': [{'child_task_id': 'aj_20261115T153119_037a7c82', 'status': 'AUTHORIZED', 'updated_at': 1794738679.4267573, 'completed_at': None, 'requires_user_decision': False}], 'hash': '3c9f2a5762cb34a23276a12a18f390e7f4baa988e39b62c2e26053fb7b52636b'}}, 'children': [], 'incorrect_parent_completion': False}, 'reconciliation_history': [{'at': 1794738679.43102, 'hash': '3c9f2a5762cb34a23276a12a18f390e7f4baa988e39b62c2e26053fb7b52636b', 'can_complete': False, 'manual_review': False, 'trigger': 'explicit'}]}}, 'assignments': [{'schema_version': 1, 'assignment_id': 'asg_f88d1be673d2132a', 'delegation_id': 'dlg_23a26dcfda1d4804', 'parent_task_id': 'aj_20261115T153119_5c88746f', 'child_task_id': 'aj_20261115T153119_037a7c82', 'execution_id': '', 'attempt_id': '', 'agent_id': 'agent.aj.internal', 'capability_id': 'test.child', 'status': 'ASSIGNED', 'logical_internal': True, 'reason': "Selected agent.aj.internal (deterministic) for capabilities ['test.child'].", 'match': {'ok': True, 'reason': 'matched', 'agent_id': 'agent.aj.internal', 'required_capabilities': ['test.child'], 'execution_mode': 'logical_internal', 'logical_internal': True, 'explanation': "Selected agent.aj.internal (deterministic) for capabilities ['test.child'].", 'rejections': [{'agent_id': 'agent.helix', 'reasons': ['test.child:capability_not_supported']}, {'agent_id': 'agent.jarvis', 'reasons': ['agent_unavailable', 'test.child:agent_unavailable']}]}, 'permission_decision': {'ok': True, 'reason': 'narrowed', 'effective_permissions': ['delegation.coordinate'], 'explanation': 'Effective permissions computed as intersection (narrowing only).', 'parent_permissions': ['delegation.coordinate'], 'requested_permissions': ['delegation.coordinate'], 'agent_permissions': ['delegation.coordinate'], 'system_permissions': ['delegation.coordinate']}, 'lease_id': '', 'created_at': 1794738679.4288874, 'updated_at': 1794738679.4288878, 'completed_at': None, 'events': []}], 'aggregation': {'parent_task_id': 'aj_20261115T153119_5c88746f', 'aggregation_policy': 'all_required', 'required_child_task_ids': ['aj_20261115T153119_037a7c82'], 'counts': {'created': 1, 'eligible': 0, 'admitted': 0, 'running': 0, 'completed': 0, 'failed': 0, 'cancelled': 0, 'recovery_required': 0, 'manual_review': 0, 'waiting': 1, 'unknown': 0}, 'children': [{'child_task_id': 'aj_20261115T153119_037a7c82', 'status': 'AUTHORIZED'}], 'waiting_for_children': True, 'can_complete': False, 'requires_manual_review': False}}
+E       assert False
+
+tests/s0_proof/test_s0_characterization.py:368: AssertionError
+=========================== short test summary info ============================
+FAILED tests/s0_proof/test_s0_characterization.py::test_a7_t11_unsupported_capabilities_or_claims_rejected
+1 failed, 6 deselected in 0.30s

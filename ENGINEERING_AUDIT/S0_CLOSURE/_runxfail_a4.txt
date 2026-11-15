@@ -1,0 +1,39 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______ test_a4_cancel_parent_cancels_or_safely_handles_running_children _______
+
+ext4_tmpdir = PosixPath('/tmp/aj_s0_proof_pv_x44l0')
+
+    @pytest.mark.xfail(strict=True, reason="INV/Doc58: cancelling parent must enforce safe handling of active children")
+    def test_a4_cancel_parent_cancels_or_safely_handles_running_children(ext4_tmpdir):
+        """A4: cancel parent with running/authorized children -> children must be cancelled
+        or moved to explicit safe review state per Doc 58 (no silent orphaned active work)."""
+        aj = make_aj(ext4_tmpdir)
+        parent_id, child_id, _did, _res = create_delegated_child(aj, ext4_tmpdir)
+        # try to get child into EXECUTING (running) state if possible
+        child = aj.tasks.get(child_id)
+        if child.status == taskmod.AUTHORIZED:
+            aj.tasks.transition(child_id, taskmod.EXECUTING, "simulate running")
+        child = aj.tasks.get(child_id)
+        # cancel parent (AJ-level cancel flow)
+        try:
+            aj.cancel_task(parent_id)
+        except Exception:
+            try:
+                aj.tasks.transition(parent_id, taskmod.CANCELLED, "force cancel parent")
+            except Exception:
+                pass
+        child_after = aj.tasks.get(child_id)
+        # invariant: child not left running/authorized without explicit safe handling
+>       assert child_after.status in (
+            taskmod.CANCELLED, taskmod.CANCEL_REQUESTED, taskmod.ABORTED,
+            taskmod.RECOVERY_REQUIRED, taskmod.DEAD_LETTER, taskmod.FAILED
+        ), f"child left in unsafe/active state {child_after.status} after parent cancel"
+E       AssertionError: child left in unsafe/active state EXECUTING after parent cancel
+E       assert 'EXECUTING' in ('CANCELLED', 'CANCEL_REQUESTED', 'ABORTED', 'RECOVERY_REQUIRED', 'DEAD_LETTER', 'FAILED')
+E        +  where 'EXECUTING' = TaskRecord(task_id='aj_20261115T153120_3ae66c94', goal='child goal', operation_id='op_20261115T153120_9a859c26', schem...coordinate'], 'effective_permissions_snapshot': ['delegation.coordinate']}}, current_execution_id='', execution_ids=[]).status
+
+tests/s0_proof/test_s0_characterization.py:277: AssertionError
+=========================== short test summary info ============================
+FAILED tests/s0_proof/test_s0_characterization.py::test_a4_cancel_parent_cancels_or_safely_handles_running_children
+1 failed, 6 deselected in 0.23s

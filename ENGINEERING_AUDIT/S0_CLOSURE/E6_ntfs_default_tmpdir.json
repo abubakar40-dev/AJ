@@ -1,0 +1,62 @@
+[
+  {
+    "i": 0,
+    "ok": true,
+    "rc": 0,
+    "tail": ".                                                                        [100%]\n1 passed in 0.65s"
+  },
+  {
+    "i": 1,
+    "ok": true,
+    "rc": 0,
+    "tail": ".                                                                        [100%]\n1 passed in 0.77s"
+  },
+  {
+    "i": 2,
+    "ok": true,
+    "rc": 0,
+    "tail": ".                                                                        [100%]\n1 passed in 0.57s"
+  },
+  {
+    "i": 3,
+    "ok": true,
+    "rc": 0,
+    "tail": ".                                                                        [100%]\n1 passed in 0.39s"
+  },
+  {
+    "i": 4,
+    "ok": false,
+    "rc": 1,
+    "tail": "    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: disk I/O error\n=========================== short test summary info ============================\nFAILED tests/test_phase3.py::test_concurrent_memory_writers_keep_every_event\n1 failed in 0.34s"
+  },
+  {
+    "i": 5,
+    "ok": true,
+    "rc": 0,
+    "tail": ".                                                                        [100%]\n1 passed in 0.46s"
+  },
+  {
+    "i": 6,
+    "ok": false,
+    "rc": 1,
+    "tail": "    self._conn.executescript(_SCHEMA)\n    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\nsqlite3.OperationalError: disk I/O error\n=========================== short test summary info ============================\nFAILED tests/test_phase3.py::test_concurrent_memory_writers_keep_every_event\n1 failed in 0.29s"
+  },
+  {
+    "i": 7,
+    "ok": true,
+    "rc": 0,
+    "tail": ".                                                                        [100%]\n1 passed in 0.31s"
+  },
+  {
+    "i": 8,
+    "ok": true,
+    "rc": 0,
+    "tail": ".                                                                        [100%]\n1 passed in 0.29s"
+  },
+  {
+    "i": 9,
+    "ok": true,
+    "rc": 0,
+    "tail": ".                                                                        [100%]\n1 passed in 0.35s"
+  }
+]

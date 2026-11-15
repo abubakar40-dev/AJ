@@ -1,0 +1,120 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+________ test_b3_parent_with_all_required_children_completed_completes _________
+
+self = <aj.orchestrator.Aj object at 0x7da93630f4d0>
+task_id = 'aj_20261115T154542_f11749c3', status = 'COMPLETED'
+detail = 'complete parent', force = False, reason = 'transition'
+
+    def _before_task_transition(self, task_id: str, status: str, detail: str = "",
+                                *, force: bool = False, reason: str = "transition") -> None:
+        """Fail closed on invalid delegation-parent completion transitions."""
+        if force or status != taskmod.COMPLETED:
+            return
+        dels = self._delegations_for_parent(task_id)
+        if not dels:
+            return
+        try:
+            # Conservative: if any delegation for parent cannot be safely completed, block completion.
+            for d in dels:
+>               agg = aggregate_parent_progress(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+                    self.tasks, parent_task_id=d.request.parent_task_id,
+                    child_task_ids=d.child_task_ids,
+                    aggregation_policy=d.request.aggregation_policy,
+                    required_child_task_ids=(d.request.required_child_ids or d.child_task_ids),
+                )
+E               NameError: name 'aggregate_parent_progress' is not defined
+
+aj/orchestrator.py:3744: NameError
+
+The above exception was the direct cause of the following exception:
+
+ext4_tmpdir = PosixPath('/tmp/aj_s0_proof_cclx_r_c')
+
+    def test_b3_parent_with_all_required_children_completed_completes(ext4_tmpdir):
+        """B3 positive control: parent with all required delegated children COMPLETED can complete
+        through existing aggregation/guard path (no force)."""
+        aj = make_aj(ext4_tmpdir)
+        parent_id, child_id, did, _res = create_delegated_child(aj)
+        # complete child through valid transitions
+        c = aj.tasks.get(child_id)
+        if c.status == taskmod.AUTHORIZED:
+            aj.tasks.transition(child_id, taskmod.EXECUTING, "exec")
+            aj.tasks.transition(child_id, taskmod.VERIFYING, "verify")
+            aj.tasks.transition(child_id, taskmod.COMPLETED, "done")
+        elif c.can_transition(taskmod.COMPLETED):
+            aj.tasks.transition(child_id, taskmod.COMPLETED, "done")
+        else:
+            # drive via allowed edges best-effort
+            for st in (taskmod.EXECUTING, taskmod.VERIFYING, taskmod.COMPLETED):
+                cur = aj.tasks.get(child_id)
+                if cur.can_transition(st):
+                    aj.tasks.transition(child_id, st, "progress")
+        assert aj.tasks.get(child_id).status == taskmod.COMPLETED
+        # ensure delegation reconciliation/aggregation observed, then complete parent
+        try:
+            aj.reconcile_delegation_parent(parent_id)
+        except Exception:
+            pass
+        # move parent to AUTHORIZED->EXECUTING->VERIFYING->COMPLETED if needed
+        p = aj.tasks.get(parent_id)
+        path = {
+            taskmod.RECEIVED: [taskmod.UNDERSTANDING, taskmod.PLANNED, taskmod.AUTHORIZED, taskmod.EXECUTING, taskmod.VERIFYING, taskmod.COMPLETED],
+            taskmod.UNDERSTANDING: [taskmod.PLANNED, taskmod.AUTHORIZED, taskmod.EXECUTING, taskmod.VERIFYING, taskmod.COMPLETED],
+            taskmod.PLANNED: [taskmod.AUTHORIZED, taskmod.EXECUTING, taskmod.VERIFYING, taskmod.COMPLETED],
+            taskmod.AUTHORIZED: [taskmod.EXECUTING, taskmod.VERIFYING, taskmod.COMPLETED],
+            taskmod.EXECUTING: [taskmod.VERIFYING, taskmod.COMPLETED],
+            taskmod.VERIFYING: [taskmod.COMPLETED],
+        }
+        for st in path.get(p.status, []):
+            cur = aj.tasks.get(parent_id)
+            if cur.status == taskmod.COMPLETED:
+                break
+            if cur.can_transition(st):
+>               aj.tasks.transition(parent_id, st, "complete parent")
+
+tests/s0_proof/test_s0_characterization.py:465: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+aj/orchestrator.py:239: in _guarded_transition
+    self._before_task_transition(task_id, status, detail, force=force, reason=reason)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <aj.orchestrator.Aj object at 0x7da93630f4d0>
+task_id = 'aj_20261115T154542_f11749c3', status = 'COMPLETED'
+detail = 'complete parent', force = False, reason = 'transition'
+
+    def _before_task_transition(self, task_id: str, status: str, detail: str = "",
+                                *, force: bool = False, reason: str = "transition") -> None:
+        """Fail closed on invalid delegation-parent completion transitions."""
+        if force or status != taskmod.COMPLETED:
+            return
+        dels = self._delegations_for_parent(task_id)
+        if not dels:
+            return
+        try:
+            # Conservative: if any delegation for parent cannot be safely completed, block completion.
+            for d in dels:
+                agg = aggregate_parent_progress(
+                    self.tasks, parent_task_id=d.request.parent_task_id,
+                    child_task_ids=d.child_task_ids,
+                    aggregation_policy=d.request.aggregation_policy,
+                    required_child_task_ids=(d.request.required_child_ids or d.child_task_ids),
+                )
+                if not agg.get("can_complete", False) or agg.get("requires_manual_review", False):
+                    raise errors.Conflict(
+                        f"parent task {task_id} cannot complete: required child work unresolved/uncertain/manual-review",
+                        detail={"delegation_id": getattr(d, "delegation_id", ""), "aggregation": agg},
+                    )
+        except errors.Conflict:
+            raise
+        except Exception as exc:
+>           raise errors.Conflict(
+                f"parent task {task_id} completion blocked: delegation state unverifiable ({type(exc).__name__})"
+            ) from exc
+E           aj.errors.Conflict: parent task aj_20261115T154542_f11749c3 completion blocked: delegation state unverifiable (NameError)
+
+aj/orchestrator.py:3758: Conflict
+=========================== short test summary info ============================
+FAILED tests/s0_proof/test_s0_characterization.py::test_b3_parent_with_all_required_children_completed_completes
+1 failed, 12 deselected in 0.25s

@@ -1,0 +1,62 @@
+[
+  {
+    "i": 0,
+    "ok": true,
+    "rc": 0,
+    "tail": ".                                                                        [100%]\n1 passed in 0.13s"
+  },
+  {
+    "i": 1,
+    "ok": true,
+    "rc": 0,
+    "tail": ".                                                                        [100%]\n1 passed in 0.22s"
+  },
+  {
+    "i": 2,
+    "ok": true,
+    "rc": 0,
+    "tail": ".                                                                        [100%]\n1 passed in 0.18s"
+  },
+  {
+    "i": 3,
+    "ok": true,
+    "rc": 0,
+    "tail": ".                                                                        [100%]\n1 passed in 0.16s"
+  },
+  {
+    "i": 4,
+    "ok": true,
+    "rc": 0,
+    "tail": ".                                                                        [100%]\n1 passed in 0.17s"
+  },
+  {
+    "i": 5,
+    "ok": true,
+    "rc": 0,
+    "tail": ".                                                                        [100%]\n1 passed in 0.14s"
+  },
+  {
+    "i": 6,
+    "ok": true,
+    "rc": 0,
+    "tail": ".                                                                        [100%]\n1 passed in 0.14s"
+  },
+  {
+    "i": 7,
+    "ok": true,
+    "rc": 0,
+    "tail": ".                                                                        [100%]\n1 passed in 0.17s"
+  },
+  {
+    "i": 8,
+    "ok": true,
+    "rc": 0,
+    "tail": ".                                                                        [100%]\n1 passed in 0.18s"
+  },
+  {
+    "i": 9,
+    "ok": true,
+    "rc": 0,
+    "tail": ".                                                                        [100%]\n1 passed in 0.22s"
+  }
+]

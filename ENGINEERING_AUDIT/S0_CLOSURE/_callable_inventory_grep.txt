@@ -1,0 +1,545 @@
+$ grep -n "tasks\.transition" aj/runtime.py || echo 'NONE'
+(exit 0)
+303:        aj.tasks.transition(record.task_id, UNDERSTANDING)
+428:            aj.tasks.transition(failed.task_id, status)
+
+$ grep -rn "tasks\.transition" aj/orb.py aj/orb_web.py aj/orb_autostart.py 2>&1 || echo 'NONE'
+(exit 0)
+NONE
+
+$ grep -rn "import CLI\|\"import\"\|_cmd_import\|cmd_import\|transfer\.import\|import_record" aj/__main__.py aj/transfer.py aj/runtime.py 2>&1 | head -120
+(exit 0)
+aj/__main__.py:292:    importer = sub.add_parser("import", help="import an export conservatively")
+aj/__main__.py:696:def _cmd_import(config: Config, args) -> int:
+aj/__main__.py:697:    report = transfer.import_file(config, args.source, dry_run=args.dry_run)
+aj/__main__.py:948:    "import": _cmd_import,
+aj/transfer.py:176:        store.import_record(task, reason="imported")
+aj/runtime.py:343:        "export", "import", "backup", "recover", "orb", "inbox",
+aj/runtime.py:346:        if command in ("task", "cancel", "retry", "import"):
+aj/runtime.py:466:        report = transfer.import_file(target, export_path)
+
+$ grep -rn "inbox" aj/__main__.py aj/runtime.py aj/orb.py aj/orb_web.py aj/inbox_cli.py aj/inbox.py 2>&1 | head -120
+(exit 0)
+aj/__main__.py:20:    python -m aj orb [--inbox-root <dir>] [--check-gui] [--system-python] [--debug]
+aj/__main__.py:21:    python -m aj inbox <capture|list|show|process|retry|archive|annotate|summary|orb|view|worker|autostart-install|autostart-remove>
+aj/__main__.py:54:from .inbox_cli import add_inbox_parser, cmd_inbox
+aj/__main__.py:325:    orb.add_argument("--inbox-root", dest="inbox_root", default="", help="override canonical inbox root")
+aj/__main__.py:332:    add_inbox_parser(sub)
+aj/__main__.py:823:    from .inbox import resolve_inbox_root
+aj/__main__.py:824:    explicit = getattr(args, "inbox_root", "") or None
+aj/__main__.py:825:    inbox_root = str(resolve_inbox_root(explicit=explicit, config=config))
+aj/__main__.py:852:            "inbox_root": inbox_root,
+aj/__main__.py:871:                print(f"inbox_root: {inbox_root}")
+aj/__main__.py:892:        run_orb(inbox_root=inbox_root, config=config, debug=debug)
+aj/__main__.py:905:    cmd = [sys_py, "-m", "aj.orb", "--inbox-root", inbox_root]
+aj/__main__.py:909:        _emit({"ok": True, "launching": cmd, "inbox_root": inbox_root, "mode": "system-python"})
+aj/__main__.py:912:        print(f"Inbox root: {inbox_root}")
+aj/__main__.py:953:    "inbox": cmd_inbox,
+aj/runtime.py:343:        "export", "import", "backup", "recover", "orb", "inbox",
+aj/orb.py:4:- Canonical inbox storage via AJ config/env/explicit root (no silent mis-rooting)
+aj/orb.py:8:- Single-instance lock per resolved inbox root
+aj/orb.py:59:from .inbox import (
+aj/orb.py:64:    inbox_summary,
+aj/orb.py:67:    resolve_inbox_root,
+aj/orb.py:195:# Single-instance lock (advisory, per inbox root)
+aj/orb.py:509:                    s = inbox_summary(self.store)
+aj/orb.py:580:                notify("AJ Orb", "Capture ready in inbox")
+aj/orb.py:976:        def open_inbox_folder(self):
+aj/orb.py:979:                notify("AJ Orb", f"Could not open inbox folder: {err}", urgency="normal")
+aj/orb.py:981:        def open_inbox_viewer(self):
+aj/orb.py:989:                cmd = [py, "-m", "aj", "inbox", "--root", str(self.store.root), "view"]
+aj/orb.py:991:                notify("AJ Orb", "Opening inbox viewer...")
+aj/orb.py:993:                notify("AJ Orb", f"Could not open inbox viewer: {e}", urgency="normal")
+aj/orb.py:1003:        def copy_inbox_path(self):
+aj/orb.py:1046:                from .inbox import resolve_inbox_root
+aj/orb.py:1048:                resolved = resolve_inbox_root(config=cfg)
+aj/orb.py:1053:                f"Active inbox: {self.store.root}\n"
+aj/orb.py:1056:                "To use workspace storage set AJ_INBOX_ROOT or core.inbox_root/data_dir in AJ config."
+aj/orb.py:1095:            add("Open inbox viewer", self.open_inbox_viewer)
+aj/orb.py:1096:            add("Open inbox folder", self.open_inbox_folder)
+aj/orb.py:1098:            add("Copy inbox path", self.copy_inbox_path)
+aj/orb.py:1122:    def run_orb(inbox_root: Optional[str] = None, config: Any = None, debug: bool = False,
+aj/orb.py:1126:        Compatibility: older callers passed a positional `data_dir` treated as inbox root.
+aj/orb.py:1127:        Prefer `inbox_root` (explicit inbox root) or `config` for canonical resolution.
+aj/orb.py:1132:        explicit_root = inbox_root or data_dir
+aj/orb.py:1133:        # If an explicit root is provided, treat it as the inbox root (including legacy
+aj/orb.py:1161:                notify("AJ Orb", "AJ Orb is already running for this inbox")
+aj/orb.py:1164:            print("AJ Orb is already running for this inbox.", file=sys.stderr)
+aj/orb.py:1207:    def run_orb(inbox_root: Optional[str] = None, config: Any = None, debug: bool = False,
+aj/orb.py:1236:def run_orb(inbox_root: Optional[str] = None, config: Any = None, debug: bool = False,
+aj/orb.py:1242:    or when the UI bundle is missing. Canonical inbox storage/behavior is
+aj/orb.py:1248:        return run_orb_web(inbox_root=inbox_root, config=config, debug=debug, data_dir=data_dir)
+aj/orb.py:1249:    return _run_orb_gtk_legacy(inbox_root=inbox_root, config=config, debug=debug, data_dir=data_dir)
+aj/orb.py:1254:    ap.add_argument("--inbox-root", dest="inbox_root", default="", help="explicit inbox root path")
+aj/orb.py:1283:    root = args.inbox_root or args.legacy_root or None
+aj/orb.py:1285:        _run_orb_gtk_legacy(inbox_root=root, debug=args.debug)
+aj/orb.py:1287:        run_orb(inbox_root=root, debug=args.debug)
+aj/orb_web.py:4:canonical AJ knowledge inbox. The Python host owns storage, capture, processing,
+aj/orb_web.py:67:from .inbox import (
+aj/orb_web.py:79:    inbox_summary,
+aj/orb_web.py:82:    resolve_inbox_root,
+aj/orb_web.py:220:        summary = inbox_summary(store) if conn != "disconnected" else {"counts": {}}
+aj/orb_web.py:734:                GLib.idle_add(self._open_inbox_viewer)
+aj/orb_web.py:822:        def _open_inbox_viewer(self):
+aj/orb_web.py:829:                cmd = [py, "-m", "aj", "inbox", "--root", str(self.store.root), "view"]
+aj/orb_web.py:831:                GLib.idle_add(self._toast, "info", "Opening inbox viewer", "")
+aj/orb_web.py:833:                GLib.idle_add(self._toast, "error", "Could not open inbox viewer", str(e))
+aj/orb_web.py:1040:    inbox_root: Optional[str] = None,
+aj/orb_web.py:1049:    explicit_root = inbox_root or data_dir
+aj/orb_web.py:1074:            notify("AJ Orb", "AJ Orb is already running for this inbox")
+aj/orb_web.py:1077:        print("AJ Orb is already running for this inbox.", file=sys.stderr)
+aj/orb_web.py:1114:    ap.add_argument("--inbox-root", dest="inbox_root", default="", help="explicit inbox root path")
+aj/orb_web.py:1133:    root = args.inbox_root or args.legacy_root or None
+aj/orb_web.py:1134:    run_orb_web(inbox_root=root, debug=args.debug)
+aj/inbox_cli.py:12:from .inbox import (
+aj/inbox_cli.py:14:    process_capture, process_pending, retry_failed, inbox_summary,
+aj/inbox_cli.py:28:    root = getattr(args, "inbox_root", None) or None
+aj/inbox_cli.py:49:def add_inbox_parser(sub: argparse._SubParsersAction) -> None:
+aj/inbox_cli.py:50:    p = sub.add_parser("inbox", help="Personal knowledge inbox (capture, process, inspect)")
+aj/inbox_cli.py:51:    p.add_argument("--root", dest="inbox_root", default="", help="override inbox data root")
+aj/inbox_cli.py:54:    sp = p.add_subparsers(dest="inbox_cmd")
+aj/inbox_cli.py:101:    summ = sp.add_parser("summary", help="show inbox counts and root")
+aj/inbox_cli.py:116:    view = sp.add_parser("view", help="launch local inbox inspection web UI (localhost)")
+aj/inbox_cli.py:123:    worker = sp.add_parser("worker", help="run inbox background processing loop")
+aj/inbox_cli.py:131:def cmd_inbox(config: Config, args) -> int:
+aj/inbox_cli.py:133:    cmd = getattr(args, "inbox_cmd", None)
+aj/inbox_cli.py:259:            s = inbox_summary(store)
+aj/inbox_cli.py:272:                # pass explicit resolved inbox root so orb uses canonical store
+aj/inbox_cli.py:273:                run_orb(inbox_root=str(store.root), config=config)
+aj/inbox_cli.py:282:                    raise errors.AjError(f"could not launch orb: {e}", code="inbox_error") from e
+aj/inbox_cli.py:284:                raise errors.AjError(f"could not launch orb: {e}", code="inbox_error") from e
+aj/inbox_cli.py:306:            from .inbox_view import serve
+aj/inbox_cli.py:368:        raise errors.AjError(f"unknown inbox command: {cmd}", code=errors.CONFIG_INVALID)
+aj/inbox_cli.py:372:        raise errors.AjError(f"inbox command failed: {type(e).__name__}: {e}", code="inbox_error") from e
+aj/inbox.py:3:A local, capture-first inbox for URLs, files, text and media dropped on the AJ
+aj/inbox.py:63:def default_inbox_root() -> Path:
+aj/inbox.py:64:    """Legacy default inbox location (home). Not a silent fallback for configured roots."""
+aj/inbox.py:65:    return default_data_dir() / "knowledge-inbox"
+aj/inbox.py:70:def _validated_inbox_root_value(value: Any, *, source: str) -> Optional[Path]:
+aj/inbox.py:83:def resolve_inbox_root(
+aj/inbox.py:89:    """Resolve canonical inbox root.
+aj/inbox.py:91:    Precedence: explicit arg > AJ_INBOX_ROOT env > config core.inbox_root
+aj/inbox.py:92:    > config core.data_dir/knowledge-inbox > legacy home default.
+aj/inbox.py:94:    explicit_path = _validated_inbox_root_value(explicit, source="inbox root")
+aj/inbox.py:100:        env_path = _validated_inbox_root_value(env_root, source="AJ_INBOX_ROOT")
+aj/inbox.py:105:        # Explicit inbox root override if configured.
+aj/inbox.py:107:            inbox_override = config.get("core.inbox_root", "")
+aj/inbox.py:109:            inbox_override = ""
+aj/inbox.py:110:        override_path = _validated_inbox_root_value(inbox_override, source="core.inbox_root")
+aj/inbox.py:117:        data_path = _validated_inbox_root_value(data_dir, source="core.data_dir")
+aj/inbox.py:119:            return data_path / "knowledge-inbox"
+aj/inbox.py:121:            raise errors.ConfigError("AJ config does not define core.data_dir for inbox storage")
+aj/inbox.py:123:    return default_inbox_root()
+aj/inbox.py:125:def inbox_root(data_dir: Optional[Path | str] = None, config: Any = None) -> Path:
+aj/inbox.py:126:    """Back-compat: explicit path is treated as the inbox root; otherwise resolve canonically."""
+aj/inbox.py:129:    return resolve_inbox_root(config=config)
+aj/inbox.py:149:            raise errors.ConfigError(f"inbox storage unavailable or not writable: {root}: {e}") from e
+aj/inbox.py:152:        raise errors.ConfigError(f"inbox storage is not writable: {root}")
+aj/inbox.py:244:        # Explicit root (including temp/test dirs) is treated as the inbox root.
+aj/inbox.py:247:        self.root = inbox_root(root, config=config)
+aj/inbox.py:249:        self.db_path = self.paths["index"] / "inbox.sqlite3"
+aj/inbox.py:528:EXTRACTOR_VERSION = "aj-inbox-basic/1"
+aj/inbox.py:714:def inbox_summary(store: InboxStore) -> Dict[str, Any]:
+
+$ grep -rn "\.tasks\.transition(" aj tests 2>&1
+(exit 0)
+aj/orchestrator.py:331:        self.tasks.transition(record.task_id, taskmod.UNDERSTANDING,
+aj/orchestrator.py:338:        self.tasks.transition(record.task_id, taskmod.PLANNED, route.rule)
+aj/orchestrator.py:344:            self.tasks.transition(record.task_id, taskmod.BLOCKED, reason)
+aj/orchestrator.py:386:            self.tasks.transition(record.task_id, taskmod.WAITING_FOR_APPROVAL,
+aj/orchestrator.py:414:            self.tasks.transition(record.task_id, taskmod.ABORTED, decision.reason)
+aj/orchestrator.py:439:        self.tasks.transition(record.task_id, taskmod.AUTHORIZED, decision.reason)
+aj/orchestrator.py:490:            self.tasks.transition(task_id, taskmod.RECOVERING,
+aj/orchestrator.py:492:            record = self.tasks.transition(task_id, taskmod.ESCALATED,
+aj/orchestrator.py:583:        self.tasks.transition(task_id, taskmod.RECOVERING,
+aj/orchestrator.py:585:        self.tasks.transition(task_id, taskmod.RETRYING, f"attempt {record.attempt + 1}")
+aj/orchestrator.py:628:            self.tasks.transition(record.task_id, taskmod.CANCEL_REQUESTED,
+aj/orchestrator.py:649:        record = self.tasks.transition(record.task_id, taskmod.CANCELLED,
+aj/orchestrator.py:1092:                    record = self.tasks.transition(record.task_id, taskmod.RECOVERING,
+aj/orchestrator.py:1094:                    record = self.tasks.transition(record.task_id, taskmod.RETRYING,
+aj/orchestrator.py:1100:                record = self.tasks.transition(record.task_id, taskmod.AUTHORIZED,
+aj/orchestrator.py:1173:                record = self.tasks.transition(record.task_id, taskmod.RECOVERY_REQUIRED, reason)
+aj/orchestrator.py:1308:        self.tasks.transition(record.task_id, taskmod.EXECUTING,
+aj/orchestrator.py:1349:            self.tasks.transition(record.task_id, taskmod.VERIFYING,
+aj/orchestrator.py:1351:            self.tasks.transition(record.task_id, taskmod.COMPLETED,
+aj/orchestrator.py:1425:                self.tasks.transition(record.task_id, taskmod.FAILED, result.status)
+aj/orchestrator.py:1449:            self.tasks.transition(record.task_id, taskmod.VERIFYING, "execution returned")
+aj/orchestrator.py:1450:            self.tasks.transition(record.task_id, taskmod.COMPLETED,
+aj/orchestrator.py:1501:        self.tasks.transition(record.task_id, taskmod.VERIFYING, f"result={result.status}")
+aj/orchestrator.py:1503:            self.tasks.transition(record.task_id, taskmod.COMPLETED,
+aj/orchestrator.py:1512:            self.tasks.transition(record.task_id, taskmod.FAILED, result.status)
+aj/orchestrator.py:1625:            self.tasks.transition(record.task_id, taskmod.CANCELLED,
+aj/orchestrator.py:1656:            self.tasks.transition(record.task_id, taskmod.VERIFYING,
+aj/orchestrator.py:1658:            self.tasks.transition(record.task_id, taskmod.COMPLETED,
+aj/orchestrator.py:2009:            self.tasks.transition(record.task_id, target, f"stale authorization: {reason}")
+aj/orchestrator.py:2058:            self.tasks.transition(record.task_id, taskmod.PLANNED,
+aj/orchestrator.py:2075:                self.tasks.transition(record.task_id, taskmod.WAITING_FOR_APPROVAL,
+aj/orchestrator.py:2097:                self.tasks.transition(record.task_id, taskmod.ABORTED, decision.reason)
+aj/orchestrator.py:2116:            self.tasks.transition(record.task_id, taskmod.AUTHORIZED,
+aj/orchestrator.py:2147:                self.tasks.transition(record.task_id, taskmod.WAITING_FOR_APPROVAL,
+aj/orchestrator.py:2169:                self.tasks.transition(record.task_id, taskmod.ABORTED, decision.reason)
+aj/orchestrator.py:2188:            self.tasks.transition(record.task_id, taskmod.AUTHORIZED,
+aj/orchestrator.py:2251:            self.tasks.transition(task_id, taskmod.DEAD_LETTER, reason)
+aj/orchestrator.py:3247:                        self.tasks.transition(task_id, taskmod.ABORTED, f"operator reconciliation(abort): {reason}"[:300])
+aj/orchestrator.py:3307:                        self.tasks.transition(task_id, taskmod.FAILED, f"operator reconciliation(clear_recovery_required): {reason}"[:300])
+aj/orchestrator.py:3437:        self.tasks.transition(task_id, taskmod.PLANNED, "requeue from dead-letter",
+aj/orchestrator.py:3494:        record = self.tasks.transition(task_id, "ABANDONED",
+aj/orchestrator.py:3660:                self.tasks.transition(record.task_id, target, error.message)
+aj/orchestrator.py:3942:                        self.tasks.transition(task_id, taskmod.ABORTED, "delegated parent cancelled/revoked/unverifiable")
+aj/orchestrator.py:3957:                self.tasks.transition(task_id, taskmod.UNDERSTANDING, "delegated child preparation")
+aj/orchestrator.py:3960:                self.tasks.transition(task_id, taskmod.PLANNED, "delegated child preparation")
+aj/orchestrator.py:3976:                self.tasks.transition(task_id, taskmod.FAILED, "capability not found")
+aj/orchestrator.py:3985:                self.tasks.transition(task_id, final, str(getattr(blocker, "message", "blocked")))
+aj/orchestrator.py:3996:                self.tasks.transition(task_id, taskmod.ABORTED, f"authorization error: {exc}")
+aj/orchestrator.py:4002:            self.tasks.transition(task_id, taskmod.WAITING_FOR_APPROVAL, decision.reason)
+aj/orchestrator.py:4008:            self.tasks.transition(task_id, taskmod.ABORTED, decision.reason)
+aj/orchestrator.py:4011:        self.tasks.transition(task_id, taskmod.AUTHORIZED, f"delegated authorization: {decision.reason}")
+aj/runtime.py:303:        aj.tasks.transition(record.task_id, UNDERSTANDING)
+aj/runtime.py:428:            aj.tasks.transition(failed.task_id, status)
+tests/test_phase5a4_execution_domain.py:98:        aj.tasks.transition(rec.task_id, st)
+tests/test_phase5a5_scheduler_admission.py:71:            aj.tasks.transition(task_id, st)
+tests/test_phase5a5_scheduler_admission.py:92:    aj.tasks.transition(wa.task_id, "UNDERSTANDING")
+tests/test_phase5a5_scheduler_admission.py:93:    aj.tasks.transition(wa.task_id, "PLANNED")
+tests/test_phase5a5_scheduler_admission.py:94:    aj.tasks.transition(wa.task_id, "WAITING_FOR_APPROVAL")
+tests/test_phase5a5_scheduler_admission.py:100:        aj.tasks.transition(done.task_id, st)
+tests/test_phase5a5_scheduler_admission.py:107:    aj.tasks.transition(dep.task_id, "UNDERSTANDING")
+tests/test_phase5a5_scheduler_admission.py:108:    aj.tasks.transition(dep.task_id, "PLANNED")
+tests/test_phase5a5_scheduler_admission.py:109:    aj.tasks.transition(dep.task_id, "BLOCKED", "deps")
+tests/test_phase5a5_scheduler_admission.py:122:    aj.tasks.transition(rec.task_id, "EXECUTING")
+tests/test_phase5a5_scheduler_admission.py:165:    aj.tasks.transition(busy.task_id, "EXECUTING")
+tests/test_phase5a5_scheduler_admission.py:291:    aj.tasks.transition(rr.task_id, "RECOVERY_REQUIRED", "manual")
+tests/test_phase5a6r2_parent_lifecycle.py:55:            aj.tasks.transition(rec.task_id, st)
+tests/test_phase5a6r2_parent_lifecycle.py:127:            aj.tasks.transition(parent.task_id, st)
+tests/test_phase5a6r2_parent_lifecycle.py:131:            aj.tasks.transition(parent.task_id, taskmod.COMPLETED, "should block")
+tests/test_phase5a6r2_parent_lifecycle.py:149:            aj.tasks.transition(parent.task_id, st)
+tests/test_phase5a6r2_parent_lifecycle.py:153:            aj.tasks.transition(parent.task_id, taskmod.COMPLETED, "child unresolved")
+tests/test_phase5a6r2_parent_lifecycle.py:232:            aj.tasks.transition(cid, st)
+tests/test_phase5a6r2_parent_lifecycle.py:259:                    aj.tasks.transition(cid, st)
+tests/test_phase5a6r3_scenario_certification.py:56:            aj.tasks.transition(rec.task_id, st)
+tests/test_phase5a6r3_scenario_certification.py:113:            aj.tasks.transition(tid, st)
+tests/test_phase5a6r3_scenario_certification.py:151:        aj.tasks.transition(cid, taskmod.ABORTED, "authorization rejected")
+tests/test_phase5a6r3_scenario_certification.py:174:        aj.tasks.transition(cid, taskmod.CANCEL_REQUESTED)
+tests/test_phase5a6r3_scenario_certification.py:181:        aj.tasks.transition(cid, taskmod.FAILED)
+tests/test_phase5a6r3_scenario_certification.py:183:        aj.tasks.transition(cid, taskmod.CANCELLED)
+tests/test_phase5a6r3_scenario_certification.py:259:            aj.tasks.transition(parent.task_id, taskmod.COMPLETED)
+tests/test_phase5a6r4_gap_closure.py:55:            aj.tasks.transition(rec.task_id, st)
+tests/test_phase5a6r4_gap_closure.py:112:        aj.tasks.transition(parent.task_id, taskmod.CANCELLED, "cancel")
+tests/test_phase5a6r4_gap_closure.py:120:                aj.tasks.transition(parent.task_id, st)
+tests/test_phase5a6r4_gap_closure.py:144:        aj.tasks.transition(cid, taskmod.AUTHORIZED)
+tests/test_phase5a6r4_gap_closure.py:168:        aj.tasks.transition(cid, taskmod.AUTHORIZED)
+tests/test_phase5a6r4_gap_closure.py:224:            aj.tasks.transition(cid, st)
+tests/test_phase5a6r4_gap_closure.py:227:        aj.tasks.transition(cid, taskmod.CANCEL_REQUESTED)
+tests/test_phase5a6r_delegation_closure.py:57:            aj.tasks.transition(rec.task_id, st)
+tests/test_phase5a6r_delegation_closure.py:152:        aj.tasks.transition(cid, "AUTHORIZED") if child.can_transition("AUTHORIZED") else None
+tests/test_phase5a6r_delegation_closure.py:176:            aj.tasks.transition(cid, stt)
+tests/test_phase5a6_delegation_foundation.py:54:            aj.tasks.transition(rec.task_id, st)
+tests/test_phase5a6_delegation_foundation.py:233:            aj.tasks.transition(cid, st)
+tests/test_step_c_gap_closure.py:61:aj.tasks.transition(rec.task_id, "RECEIVED")
+tests/test_step_c_gap_closure.py:62:aj.tasks.transition(rec.task_id, "UNDERSTANDING")
+tests/test_step_c_gap_closure.py:63:aj.tasks.transition(rec.task_id, "PLANNED")
+tests/test_step_c_gap_closure.py:64:rec = aj.tasks.transition(rec.task_id, "AUTHORIZED")
+tests/test_step_c_gap_closure.py:99:aj.tasks.transition(rec.task_id, "RECEIVED")
+tests/test_step_c_gap_closure.py:100:aj.tasks.transition(rec.task_id, "UNDERSTANDING")
+tests/test_step_c_gap_closure.py:101:aj.tasks.transition(rec.task_id, "PLANNED")
+tests/test_step_c_gap_closure.py:102:aj.tasks.transition(rec.task_id, "AUTHORIZED")
+tests/test_step_c_gap_closure.py:103:rec = aj.tasks.transition(rec.task_id, "EXECUTING")
+tests/test_step_c_gap_closure.py:138:aj.tasks.transition(rec.task_id, "RECEIVED")
+tests/test_step_c_gap_closure.py:139:aj.tasks.transition(rec.task_id, "UNDERSTANDING")
+tests/test_step_c_gap_closure.py:140:aj.tasks.transition(rec.task_id, "PLANNED")
+tests/test_step_c_gap_closure.py:141:aj.tasks.transition(rec.task_id, "AUTHORIZED")
+tests/test_step_c_gap_closure.py:142:aj.tasks.transition(rec.task_id, "EXECUTING")
+tests/test_step_c_gap_closure.py:182:aj.tasks.transition(rec.task_id, "RECEIVED")
+tests/test_step_c_gap_closure.py:183:aj.tasks.transition(rec.task_id, "UNDERSTANDING")
+tests/test_step_c_gap_closure.py:184:aj.tasks.transition(rec.task_id, "PLANNED")
+tests/test_step_c_gap_closure.py:185:aj.tasks.transition(rec.task_id, "AUTHORIZED")
+tests/test_step_c_gap_closure.py:186:aj.tasks.transition(rec.task_id, "RECOVERY_REQUIRED", "test")
+tests/test_step_c_gap_closure.py:187:aj.tasks.transition(rec.task_id, "FAILED")
+tests/test_step_c_gap_closure.py:192:    aj.tasks.transition(rec2.task_id, "RECOVERING", "retry scheduling")
+tests/test_step_c_gap_closure.py:194:    aj.tasks.transition(rec2.task_id, "RETRYING", "retry scheduled")
+tests/test_step_c_gap_closure.py:222:aj.tasks.transition(rec.task_id, "RECEIVED")
+tests/test_step_c_gap_closure.py:223:aj.tasks.transition(rec.task_id, "UNDERSTANDING")
+tests/test_step_c_gap_closure.py:224:aj.tasks.transition(rec.task_id, "PLANNED")
+tests/test_step_c_gap_closure.py:225:aj.tasks.transition(rec.task_id, "AUTHORIZED")
+tests/test_step_c_gap_closure.py:226:aj.tasks.transition(rec.task_id, "RECOVERY_REQUIRED", "test")
+tests/test_step_c_gap_closure.py:227:aj.tasks.transition(rec.task_id, "FAILED")
+tests/test_step_c_gap_closure.py:278:aj.tasks.transition(rec.task_id, "RECEIVED")
+tests/test_step_c_gap_closure.py:279:aj.tasks.transition(rec.task_id, "UNDERSTANDING")
+tests/test_step_c_gap_closure.py:280:aj.tasks.transition(rec.task_id, "PLANNED")
+tests/test_step_c_gap_closure.py:281:aj.tasks.transition(rec.task_id, "AUTHORIZED")
+tests/test_step_c_gap_closure.py:308:aj.tasks.transition(rec.task_id, "RECEIVED")
+tests/test_step_c_gap_closure.py:309:aj.tasks.transition(rec.task_id, "UNDERSTANDING")
+tests/test_step_c_gap_closure.py:310:aj.tasks.transition(rec.task_id, "PLANNED")
+tests/test_step_c_gap_closure.py:311:aj.tasks.transition(rec.task_id, "AUTHORIZED")
+tests/test_step_c_gap_closure.py:312:aj.tasks.transition(rec.task_id, "RECOVERY_REQUIRED", "test")
+tests/test_step_c_gap_closure.py:313:aj.tasks.transition(rec.task_id, "FAILED")
+tests/test_step_c_subprocess_crash_matrix.py:147:aj.tasks.transition(rec.task_id, "RECEIVED")
+tests/test_step_c_subprocess_crash_matrix.py:148:aj.tasks.transition(rec.task_id, "UNDERSTANDING")
+tests/test_step_c_subprocess_crash_matrix.py:149:aj.tasks.transition(rec.task_id, "PLANNED")
+tests/test_step_c_subprocess_crash_matrix.py:150:aj.tasks.transition(rec.task_id, "AUTHORIZED")
+tests/test_step_c_subprocess_crash_matrix.py:241:aj.tasks.transition(rec.task_id, "RECEIVED")
+tests/test_step_c_subprocess_crash_matrix.py:242:aj.tasks.transition(rec.task_id, "UNDERSTANDING")
+tests/test_step_c_subprocess_crash_matrix.py:243:aj.tasks.transition(rec.task_id, "PLANNED")
+tests/test_step_c_subprocess_crash_matrix.py:244:aj.tasks.transition(rec.task_id, "AUTHORIZED")
+tests/test_step_c_subprocess_crash_matrix.py:310:aj.tasks.transition(rec.task_id, "RECEIVED")
+tests/test_step_c_subprocess_crash_matrix.py:311:aj.tasks.transition(rec.task_id, "UNDERSTANDING")
+tests/test_step_c_subprocess_crash_matrix.py:312:aj.tasks.transition(rec.task_id, "PLANNED")
+tests/test_step_c_subprocess_crash_matrix.py:313:aj.tasks.transition(rec.task_id, "AUTHORIZED")
+tests/test_step_f_calling_dispatcher.py:419:        aj.tasks.transition(record.task_id, "CANCEL_REQUESTED", "test cancel")
+tests/test_task_persistence_fail_closed.py:221:            aj.tasks.transition(rec.task_id, s)
+tests/test_task_persistence_fail_closed.py:530:        aj.tasks.transition(tid, taskmod.UNDERSTANDING)
+tests/test_task_persistence_fail_closed.py:531:        aj.tasks.transition(tid, taskmod.PLANNED)
+grep: tests/__pycache__/test_step_c_gap_closure.cpython-314-pytest-9.2.0.pyc: binary file matches
+grep: tests/__pycache__/test_step_c_subprocess_crash_matrix.cpython-314-pytest-9.2.0.pyc: binary file matches
+grep: tests/__pycache__/test_step_c_subprocess_crash_matrix.cpython-314.pyc: binary file matches
+tests/s0_proof/test_s0_characterization.py:126:    aj.tasks.transition(parent.task_id, taskmod.UNDERSTANDING, "s0")
+tests/s0_proof/test_s0_characterization.py:127:    aj.tasks.transition(parent.task_id, taskmod.PLANNED, "s0")
+tests/s0_proof/test_s0_characterization.py:157:    aj.tasks.transition(rec.task_id, taskmod.UNDERSTANDING)
+tests/s0_proof/test_s0_characterization.py:158:    aj.tasks.transition(rec.task_id, taskmod.PLANNED)
+tests/s0_proof/test_s0_characterization.py:159:    aj.tasks.transition(rec.task_id, taskmod.AUTHORIZED)
+tests/s0_proof/test_s0_characterization.py:160:    aj.tasks.transition(rec.task_id, taskmod.EXECUTING)
+tests/s0_proof/test_s0_characterization.py:161:    aj.tasks.transition(rec.task_id, taskmod.FAILED, "fail")
+tests/s0_proof/test_s0_characterization.py:184:    aj.tasks.transition(parent_id, taskmod.CANCELLED, "cancel parent")
+tests/s0_proof/test_s0_characterization.py:192:            aj.tasks.transition(child_id, taskmod.FAILED, "fail child")
+tests/s0_proof/test_s0_characterization.py:194:            aj.tasks.transition(child_id, taskmod.EXECUTING)
+tests/s0_proof/test_s0_characterization.py:195:            aj.tasks.transition(child_id, taskmod.FAILED, "fail child")
+tests/s0_proof/test_s0_characterization.py:245:    aj.tasks.transition(parent_id, taskmod.CANCELLED, "cancel parent")
+tests/s0_proof/test_s0_characterization.py:265:        aj.tasks.transition(child_id, taskmod.EXECUTING, "simulate running")
+tests/s0_proof/test_s0_characterization.py:272:            aj.tasks.transition(parent_id, taskmod.CANCELLED, "force cancel parent")
+tests/s0_proof/test_s0_characterization.py:294:        aj.tasks.transition(parent_id, taskmod.COMPLETED, "force complete", force=True)
+tests/test_audit_reliability_security.py:27:        aj.tasks.transition(task_id, st)
+tests/test_audit_reliability_security.py:36:    aj.tasks.transition(rec.task_id, "RECOVERY_REQUIRED", "manual")
+tests/test_audit_reliability_security.py:127:        aj.tasks.transition(rec.task_id, "FAILED", "fail")
+tests/test_crash_safety.py:189:    control.tasks.transition(record.task_id, "RECEIVED")
+tests/test_crash_safety.py:190:    control.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_crash_safety.py:191:    control.tasks.transition(record.task_id, "PLANNED")
+tests/test_crash_safety.py:192:    control.tasks.transition(record.task_id, "AUTHORIZED")
+tests/test_crash_safety.py:242:    control.tasks.transition(record.task_id, "RECEIVED")
+tests/test_crash_safety.py:243:    control.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_crash_safety.py:244:    control.tasks.transition(record.task_id, "PLANNED")
+tests/test_crash_safety.py:245:    control.tasks.transition(record.task_id, "AUTHORIZED")
+tests/test_crash_safety.py:247:    control.tasks.transition(record.task_id, "RECOVERY_REQUIRED", "test recovery required")
+tests/test_crash_safety.py:249:    control.tasks.transition(record.task_id, "FAILED")
+tests/test_crash_safety.py:353:    control.tasks.transition(record.task_id, "RECEIVED")
+tests/test_crash_safety.py:354:    control.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_crash_safety.py:355:    control.tasks.transition(record.task_id, "PLANNED")
+tests/test_crash_safety.py:356:    control.tasks.transition(record.task_id, "AUTHORIZED")
+tests/test_crash_safety.py:453:    control.tasks.transition(record.task_id, "RECEIVED")
+tests/test_crash_safety.py:454:    control.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_crash_safety.py:455:    control.tasks.transition(record.task_id, "PLANNED")
+tests/test_crash_safety.py:456:    control.tasks.transition(record.task_id, "AUTHORIZED")
+tests/test_crash_safety.py:521:    control.tasks.transition(record.task_id, "RECEIVED")
+tests/test_crash_safety.py:522:    control.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_crash_safety.py:523:    control.tasks.transition(record.task_id, "PLANNED")
+tests/test_crash_safety.py:524:    control.tasks.transition(record.task_id, "AUTHORIZED")
+tests/test_crash_safety.py:525:    control.tasks.transition(record.task_id, "RECOVERY_REQUIRED", "test")
+tests/test_crash_safety.py:526:    control.tasks.transition(record.task_id, "FAILED")
+tests/test_crash_safety.py:656:    control.tasks.transition(record.task_id, "RECEIVED")
+tests/test_crash_safety.py:657:    control.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_crash_safety.py:658:    control.tasks.transition(record.task_id, "PLANNED")
+tests/test_crash_safety.py:659:    control.tasks.transition(record.task_id, "AUTHORIZED")
+tests/test_crash_safety.py:660:    control.tasks.transition(record.task_id, "RECOVERY_REQUIRED", "test")
+tests/test_crash_safety.py:661:    control.tasks.transition(record.task_id, "FAILED")
+tests/test_crash_safety.py:726:    control.tasks.transition(record.task_id, "RECEIVED")
+tests/test_crash_safety.py:727:    control.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_crash_safety.py:728:    control.tasks.transition(record.task_id, "PLANNED")
+tests/test_crash_safety.py:729:    control.tasks.transition(record.task_id, "AUTHORIZED")
+tests/test_crash_safety.py:799:    control.tasks.transition(record.task_id, "RECEIVED")
+tests/test_crash_safety.py:800:    control.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_crash_safety.py:801:    control.tasks.transition(record.task_id, "PLANNED")
+tests/test_crash_safety.py:802:    control.tasks.transition(record.task_id, "AUTHORIZED")
+tests/test_crash_safety.py:843:    control.tasks.transition(record.task_id, "RECEIVED")
+tests/test_crash_safety.py:844:    control.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_crash_safety.py:845:    control.tasks.transition(record.task_id, "PLANNED")
+tests/test_crash_safety.py:846:    control.tasks.transition(record.task_id, "AUTHORIZED")
+tests/test_crash_safety.py:847:    control.tasks.transition(record.task_id, "RECOVERY_REQUIRED", "test")
+tests/test_crash_safety.py:848:    control.tasks.transition(record.task_id, "FAILED")
+tests/test_crash_safety.py.bak:160:    control.tasks.transition(record.task_id, "RECEIVED")
+tests/test_crash_safety.py.bak:161:    control.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_crash_safety.py.bak:162:    control.tasks.transition(record.task_id, "PLANNED")
+tests/test_crash_safety.py.bak:163:    control.tasks.transition(record.task_id, "AUTHORIZED")
+tests/test_crash_safety.py.bak:213:    control.tasks.transition(record.task_id, "RECEIVED")
+tests/test_crash_safety.py.bak:214:    control.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_crash_safety.py.bak:215:    control.tasks.transition(record.task_id, "PLANNED")
+tests/test_crash_safety.py.bak:216:    control.tasks.transition(record.task_id, "AUTHORIZED")
+tests/test_crash_safety.py.bak:218:    control.tasks.transition(record.task_id, "RECOVERY_REQUIRED", "test recovery required")
+tests/test_crash_safety.py.bak:220:    control.tasks.transition(record.task_id, "FAILED")
+tests/test_crash_safety.py.bak:324:    control.tasks.transition(record.task_id, "RECEIVED")
+tests/test_crash_safety.py.bak:325:    control.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_crash_safety.py.bak:326:    control.tasks.transition(record.task_id, "PLANNED")
+tests/test_crash_safety.py.bak:327:    control.tasks.transition(record.task_id, "AUTHORIZED")
+tests/test_crash_safety.py.bak:424:    control.tasks.transition(record.task_id, "RECEIVED")
+tests/test_crash_safety.py.bak:425:    control.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_crash_safety.py.bak:426:    control.tasks.transition(record.task_id, "PLANNED")
+tests/test_crash_safety.py.bak:427:    control.tasks.transition(record.task_id, "AUTHORIZED")
+tests/test_crash_safety.py.bak:484:    control.tasks.transition(record.task_id, "RECEIVED")
+tests/test_crash_safety.py.bak:485:    control.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_crash_safety.py.bak:486:    control.tasks.transition(record.task_id, "PLANNED")
+tests/test_crash_safety.py.bak:487:    control.tasks.transition(record.task_id, "AUTHORIZED")
+tests/test_crash_safety.py.bak:488:    control.tasks.transition(record.task_id, "RECOVERY_REQUIRED", "test")
+tests/test_crash_safety.py.bak:489:    control.tasks.transition(record.task_id, "FAILED")
+tests/test_crash_safety.py.bak:619:    control.tasks.transition(record.task_id, "RECEIVED")
+tests/test_crash_safety.py.bak:620:    control.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_crash_safety.py.bak:621:    control.tasks.transition(record.task_id, "PLANNED")
+tests/test_crash_safety.py.bak:622:    control.tasks.transition(record.task_id, "AUTHORIZED")
+tests/test_crash_safety.py.bak:623:    control.tasks.transition(record.task_id, "RECOVERY_REQUIRED", "test")
+tests/test_crash_safety.py.bak:624:    control.tasks.transition(record.task_id, "FAILED")
+tests/test_crash_safety.py.bak:685:    control.tasks.transition(record.task_id, "RECEIVED")
+tests/test_crash_safety.py.bak:686:    control.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_crash_safety.py.bak:687:    control.tasks.transition(record.task_id, "PLANNED")
+tests/test_crash_safety.py.bak:688:    control.tasks.transition(record.task_id, "AUTHORIZED")
+tests/test_crash_safety.py.bak:750:    control.tasks.transition(record.task_id, "RECEIVED")
+tests/test_crash_safety.py.bak:751:    control.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_crash_safety.py.bak:752:    control.tasks.transition(record.task_id, "PLANNED")
+tests/test_crash_safety.py.bak:753:    control.tasks.transition(record.task_id, "AUTHORIZED")
+tests/test_crash_safety.py.bak:815:    control.tasks.transition(record.task_id, "RECEIVED")
+tests/test_crash_safety.py.bak:816:    control.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_crash_safety.py.bak:817:    control.tasks.transition(record.task_id, "PLANNED")
+tests/test_crash_safety.py.bak:818:    control.tasks.transition(record.task_id, "AUTHORIZED")
+tests/test_crash_safety.py.bak:819:    control.tasks.transition(record.task_id, "RECOVERY_REQUIRED", "test")
+tests/test_crash_safety.py.bak:820:    control.tasks.transition(record.task_id, "FAILED")
+tests/test_f2_authorization_context.py:101:        aj.tasks.transition(record2.task_id, st)
+tests/test_f2_authorization_context.py:104:    aj.tasks.transition(record2.task_id, "AUTHORIZED", "prior authorization")
+tests/test_f2_authorization_context.py:122:        aj.tasks.transition(record.task_id, st)
+tests/test_f2_authorization_context.py:125:    aj.tasks.transition(record.task_id, "AUTHORIZED", "prior authorization")
+tests/test_f2_authorization_context.py:151:        aj.tasks.transition(record.task_id, st)
+tests/test_f2_authorization_context.py:154:    aj.tasks.transition(record.task_id, "AUTHORIZED", "prior authorization")
+tests/test_f2_authorization_context.py:172:        aj.tasks.transition(record.task_id, st)
+tests/test_f2_authorization_context.py:176:    aj.tasks.transition(record.task_id, "AUTHORIZED", "prior authorization")
+tests/test_f2_authorization_context.py:194:        aj.tasks.transition(record.task_id, st)
+tests/test_f2_authorization_context.py:197:    aj.tasks.transition(record.task_id, "AUTHORIZED", "prior authorization")
+tests/test_f2_authorization_context.py:215:        aj.tasks.transition(record.task_id, st)
+tests/test_f2_authorization_context.py:218:    aj.tasks.transition(record.task_id, "AUTHORIZED", "prior authorization")
+tests/test_f2_authorization_context.py:235:        aj.tasks.transition(record.task_id, st)
+tests/test_f2_authorization_context.py:238:    aj.tasks.transition(record.task_id, "AUTHORIZED", "prior authorization")
+tests/test_f2_authorization_context.py:256:        aj.tasks.transition(record.task_id, st)
+tests/test_f2_authorization_context.py:272:        aj.tasks.transition(record.task_id, st)
+tests/test_f2_authorization_context.py:290:        aj.tasks.transition(record.task_id, st)
+tests/test_f2_authorization_context.py:306:        aj.tasks.transition(record.task_id, st)
+tests/test_f2_authorization_context.py:309:    aj.tasks.transition(record.task_id, "AUTHORIZED", "prior authorization")
+tests/test_f2_authorization_context.py:333:        aj.tasks.transition(record.task_id, st)
+tests/test_f2_authorization_context.py:336:    aj.tasks.transition(record.task_id, "AUTHORIZED", "prior authorization")
+tests/test_f2_permission_enforcement.py:181:        aj.tasks.transition(record.task_id, status)
+tests/test_f2_permission_enforcement.py:199:        aj.tasks.transition(record.task_id, status)
+tests/test_f2_permission_enforcement.py:216:        aj.tasks.transition(record.task_id, status)
+tests/test_f2_scheduler_resume.py:67:    aj.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_f2_scheduler_resume.py:68:    aj.tasks.transition(record.task_id, PLANNED)
+tests/test_f2_scheduler_resume.py:84:    aj.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_f2_scheduler_resume.py:85:    aj.tasks.transition(record.task_id, PLANNED)
+tests/test_f2_scheduler_resume.py:100:    aj.tasks.transition(record.task_id, "UNDERSTANDING")
+tests/test_f2_scheduler_resume.py:101:    aj.tasks.transition(record.task_id, PLANNED)
+tests/test_f2_scheduler_resume.py:102:    aj.tasks.transition(record.task_id, BLOCKED, "manual")
+tests/test_f2_scheduler_resume.py:122:        aj.tasks.transition(record.task_id, status)
+tests/test_f2_scheduler_resume.py:126:    aj.tasks.transition(record.task_id, "AUTHORIZED", "prior authorization")
+tests/test_f2_scheduler_resume.py:144:        aj.tasks.transition(record.task_id, status)
+tests/test_f2_scheduler_resume.py:170:        aj.tasks.transition(record.task_id, status)
+tests/test_phase3.py:72:        control.tasks.transition(record.task_id, status)
+tests/test_phase3.py:75:    control.tasks.transition(record.task_id, FAILED)
+tests/test_phase3.py:149:        aj.tasks.transition(record.task_id, status)
+tests/test_phase3.py:510:    aj.tasks.transition(record.task_id, UNDERSTANDING)
+tests/test_phase3.py:678:        aj.tasks.transition(record_b.task_id, status)
+tests/test_phase3.py:695:        aj.tasks.transition(record_1.task_id, status)
+tests/test_phase3.py:698:        aj.tasks.transition(record_2.task_id, status)
+tests/test_phase3c_recovery_integrity.py:30:        aj.tasks.transition(task_id, st)
+tests/test_phase3c_recovery_integrity.py:55:                    aj.tasks.transition(rec.task_id, "FAILED", "fail")
+tests/test_phase3c_recovery_integrity.py:56:                    aj.tasks.transition(rec.task_id, "RECOVERING", "recover")
+tests/test_phase3c_recovery_integrity.py:57:                    aj.tasks.transition(rec.task_id, "DEAD_LETTER", "terminal")
+tests/test_phase3c_recovery_integrity.py:59:                    aj.tasks.transition(rec.task_id, "ABORTED", "terminal")
+tests/test_phase3c_recovery_integrity.py:61:                    aj.tasks.transition(rec.task_id, "CANCELLED", "terminal")
+tests/test_phase3c_recovery_integrity.py:63:                    aj.tasks.transition(rec.task_id, status, "terminal")
+tests/test_phase3c_recovery_integrity.py:259:        aj.tasks.transition(rec.task_id, "FAILED", "exhausted")
+tests/test_phase3d_recovery_observability.py:29:        aj.tasks.transition(task_id, st)
+tests/test_phase3d_recovery_observability.py:39:    aj.tasks.transition(rec.task_id, "RECOVERY_REQUIRED", "manual review")
+tests/test_phase3e_evidence_consistency.py:35:        aj.tasks.transition(rec.task_id, st)
+tests/test_phase3e_evidence_consistency.py:36:    aj.tasks.transition(rec.task_id, "RECOVERY_REQUIRED", "manual")
+tests/test_phase3f_identity_trust_boundary.py:33:        aj.tasks.transition(rec.task_id, st)
+tests/test_phase3f_identity_trust_boundary.py:34:    aj.tasks.transition(rec.task_id, "RECOVERY_REQUIRED", "manual")
+tests/test_phase3_lifecycle_reliability.py:138:            aj.tasks.transition(rec.task_id, s)
+tests/test_phase3_lifecycle_reliability.py:170:            aj.tasks.transition(rec.task_id, s)
+
+$ grep -rn "force=True" aj tests 2>&1
+(exit 0)
+aj/orchestrator.py:3438:                              force=True, reason="requeue")
+aj/orchestrator.py:3496:                                       force=True, reason="abandoned")
+tests/s0_proof/test_s0_characterization.py:283:@pytest.mark.xfail(strict=True, reason="INV-xx/T parent completion guard: cannot complete with unresolved required child even with force=True")
+tests/s0_proof/test_s0_characterization.py:285:    """A5: parent COMPLETED via force=True with unresolved required child must be blocked."""
+tests/s0_proof/test_s0_characterization.py:294:        aj.tasks.transition(parent_id, taskmod.COMPLETED, "force complete", force=True)
+
+$ grep -n "tasks\.transition = _guarded_transition\|_orig_transition\|_before_task_transition" aj/orchestrator.py
+(exit 0)
+237:            _orig_transition = self.tasks.transition
+239:                self._before_task_transition(task_id, status, detail, force=force, reason=reason)
+240:                return _orig_transition(task_id, status, detail, force=force, reason=reason)
+241:            self.tasks.transition = _guarded_transition
+3733:    def _before_task_transition(self, task_id: str, status: str, detail: str = "",
+
+$ grep -rn "dead_letter\|requeue\|abandon\|Aj\." aj/runtime.py 2>&1 | head -80
+(exit 0)
+
+
+$ grep -rn "def _cmd_" aj/__main__.py
+(exit 0)
+353:def _cmd_run(config: Config, args) -> int:
+406:def _cmd_tasks(config: Config, args) -> int:
+423:def _cmd_task(config: Config, args) -> int:
+436:def _cmd_cancel(config: Config, args) -> int:
+454:def _cmd_retry(config: Config, args) -> int:
+473:def _cmd_audit(config: Config, args) -> int:
+483:def _cmd_memory(config: Config, args) -> int:
+506:def _cmd_summary(config: Config, args) -> int:
+565:def _cmd_capabilities(config: Config, args) -> int:
+619:def _cmd_permissions(config: Config, args) -> int:
+643:def _cmd_config(config: Config, args) -> int:
+663:def _cmd_diagnostics(config: Config, args) -> int:
+686:def _cmd_export(config: Config, args) -> int:
+696:def _cmd_import(config: Config, args) -> int:
+709:def _cmd_backup(config: Config, args) -> int:
+730:def _cmd_recover(config: Config, args) -> int:
+797:def _cmd_reconcile(config: Config, args) -> int:
+822:def _cmd_orb(config: Config, args) -> int:
+917:def _cmd_consistency(config: Config, args) -> int:
+
+$ grep -rn "task" aj/inbox_cli.py 2>&1 | head -60
+(exit 0)
+196:                raise errors.AjError(f"capture not found: {args.capture_id}", code="task_not_found")
+238:                raise errors.AjError(f"capture not found: {args.capture_id}", code="task_not_found")
+251:                raise errors.AjError(f"capture not found: {args.capture_id}", code="task_not_found")
+
+$ grep -rn "import" aj/inbox.py aj/inbox_cli.py 2>&1 | head -40
+(exit 0)
+aj/inbox.py:11:from __future__ import annotations
+aj/inbox.py:13:import hashlib
+aj/inbox.py:14:import json
+aj/inbox.py:15:import mimetypes
+aj/inbox.py:16:import os
+aj/inbox.py:17:import re
+aj/inbox.py:18:import shutil
+aj/inbox.py:19:import sqlite3
+aj/inbox.py:20:import threading
+aj/inbox.py:21:import uuid
+aj/inbox.py:22:from dataclasses import dataclass
+aj/inbox.py:23:from datetime import datetime, timezone
+aj/inbox.py:24:from pathlib import Path
+aj/inbox.py:25:from typing import Any, Dict, List, Optional, Tuple
+aj/inbox.py:26:from urllib.parse import urlparse
+aj/inbox.py:29:    from . import errors
+aj/inbox.py:547:        from pypdf import PdfReader  # type: ignore
+aj/inbox.py:562:        import fitz  # type: ignore
+aj/inbox.py:577:        from youtube_transcript_api import YouTubeTranscriptApi  # type: ignore
+aj/inbox.py:632:                    import urllib.request
+aj/inbox_cli.py:2:from __future__ import annotations
+aj/inbox_cli.py:4:import argparse
+aj/inbox_cli.py:5:import json
+aj/inbox_cli.py:6:import sys
+aj/inbox_cli.py:7:from pathlib import Path
+aj/inbox_cli.py:8:from typing import Any, Dict, List, Optional
+aj/inbox_cli.py:10:from . import errors
+aj/inbox_cli.py:11:from .config import Config
+aj/inbox_cli.py:12:from .inbox import (
+aj/inbox_cli.py:271:                from .orb import run_orb
+aj/inbox_cli.py:278:                    from .orb import run_orb
+aj/inbox_cli.py:287:            from .orb_autostart import install
+aj/inbox_cli.py:296:            from .orb_autostart import remove
+aj/inbox_cli.py:305:            import webbrowser
+aj/inbox_cli.py:306:            from .inbox_view import serve
+aj/inbox_cli.py:329:            import time
+aj/inbox_cli.py:330:            from datetime import datetime, timezone

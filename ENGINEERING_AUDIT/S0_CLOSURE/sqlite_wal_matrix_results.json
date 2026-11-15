@@ -1,0 +1,3130 @@
+{
+  "meta": {
+    "sqlite_version": "3.46.1",
+    "python": "3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]",
+    "pid": 810043,
+    "cwd": "/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ",
+    "findmnt": {
+      "tmp_tmpfs_or_tmp": "TARGET SOURCE FSTYPE OPTIONS\n/tmp   tmpfs  tmpfs  rw,nosuid,nodev,nr_inodes=1048576,inode64,usrquota",
+      "home_ext4": "TARGET SOURCE    FSTYPE OPTIONS\n/      /dev/sda2 ext4   rw,relatime",
+      "dev_shm": "TARGET   SOURCE FSTYPE OPTIONS\n/dev/shm tmpfs  tmpfs  rw,nosuid,nodev,inode64,usrquota",
+      "ntfs_workspace": "TARGET                          SOURCE    FSTYPE OPTIONS\n/run/media/abubakargcx/My Drive /dev/sda4 ntfs3  rw,nosuid,nodev,relatime,uid=1000,gid=1000,acl,iocharset=utf8,prealloc"
+    },
+    "df_T": {
+      "tmp_tmpfs_or_tmp": "Filesystem     Type  1K-blocks   Used Available Use% Mounted on\ntmpfs          tmpfs   3605244 784232   2821012  22% /tmp",
+      "home_ext4": "Filesystem     Type 1K-blocks      Used Available Use% Mounted on\n/dev/sda2      ext4 141230588 125513416   8470212  94% /",
+      "dev_shm": "Filesystem     Type  1K-blocks  Used Available Use% Mounted on\ntmpfs          tmpfs   3605244 25212   3580032   1% /dev/shm",
+      "ntfs_workspace": "Filesystem     Type  1K-blocks     Used Available Use% Mounted on\n/dev/sda4      ntfs3 104856572 36338032  68518540  35% /run/media/abubakargcx/My Drive"
+    },
+    "real_memory_config": {
+      "core.memory_path": "",
+      "core.data_dir": "/home/abubakargcx/.local/share/aj"
+    },
+    "elapsed_seconds": 57.549
+  },
+  "cells": {
+    "tmp_tmpfs_or_tmp::v1_fork4_no_precreate": {
+      "path_type": "tmp_tmpfs_or_tmp",
+      "variant": "v1_fork4_no_precreate",
+      "runs": [
+        {
+          "run": 0,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 1,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 2,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 3,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 4,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 5,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 6,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 7,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 8,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 9,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 10,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 11,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 12,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 13,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 14,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 15,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 16,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 17,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 18,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 19,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        }
+      ],
+      "pass": 20,
+      "fail": 0,
+      "first_failure": null
+    },
+    "tmp_tmpfs_or_tmp::v2_fork4_precreate": {
+      "path_type": "tmp_tmpfs_or_tmp",
+      "variant": "v2_fork4_precreate",
+      "runs": [
+        {
+          "run": 0,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 1,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 2,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 3,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 4,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 5,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 6,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 7,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 8,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 9,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 10,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 11,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 12,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 13,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 14,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 15,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 16,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 17,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 18,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 19,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        }
+      ],
+      "pass": 20,
+      "fail": 0,
+      "first_failure": null
+    },
+    "tmp_tmpfs_or_tmp::v3_1proc": {
+      "path_type": "tmp_tmpfs_or_tmp",
+      "variant": "v3_1proc",
+      "runs": [
+        {
+          "run": 0,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 1,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 2,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 3,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 4,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 5,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 6,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 7,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 8,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 9,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 10,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 11,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 12,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 13,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 14,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 15,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 16,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 17,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 18,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 19,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        }
+      ],
+      "pass": 20,
+      "fail": 0,
+      "first_failure": null
+    },
+    "tmp_tmpfs_or_tmp::v4_spawn4_no_precreate": {
+      "path_type": "tmp_tmpfs_or_tmp",
+      "variant": "v4_spawn4_no_precreate",
+      "runs": [
+        {
+          "run": 0,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 1,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 2,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 3,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 4,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 5,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 6,
+          "ok": false,
+          "error": "OperationalError: database is locked",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: database is locked"
+        },
+        {
+          "run": 7,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 8,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 9,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 10,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 11,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 12,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 13,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 14,
+          "ok": false,
+          "error": "OperationalError: database is locked",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: database is locked"
+        },
+        {
+          "run": 15,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 16,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 17,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 18,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 19,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        }
+      ],
+      "pass": 18,
+      "fail": 2,
+      "first_failure": {
+        "run": 6,
+        "ok": false,
+        "error": "OperationalError: database is locked",
+        "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+        "journal_mode": "wal",
+        "integrity": "ok",
+        "events": null,
+        "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: database is locked"
+      }
+    },
+    "home_ext4::v1_fork4_no_precreate": {
+      "path_type": "home_ext4",
+      "variant": "v1_fork4_no_precreate",
+      "runs": [
+        {
+          "run": 0,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 1,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 2,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 3,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 4,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 5,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 6,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 7,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 8,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 9,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 10,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 11,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 12,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 13,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 14,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 15,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 16,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 17,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 18,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 19,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        }
+      ],
+      "pass": 20,
+      "fail": 0,
+      "first_failure": null
+    },
+    "home_ext4::v2_fork4_precreate": {
+      "path_type": "home_ext4",
+      "variant": "v2_fork4_precreate",
+      "runs": [
+        {
+          "run": 0,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 1,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 2,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 3,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 4,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 5,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 6,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 7,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 8,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 9,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 10,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 11,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 12,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 13,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 14,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 15,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 16,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 17,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 18,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 19,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        }
+      ],
+      "pass": 20,
+      "fail": 0,
+      "first_failure": null
+    },
+    "home_ext4::v3_1proc": {
+      "path_type": "home_ext4",
+      "variant": "v3_1proc",
+      "runs": [
+        {
+          "run": 0,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 1,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 2,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 3,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 4,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 5,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 6,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 7,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 8,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 9,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 10,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 11,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 12,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 13,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 14,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 15,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 16,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 17,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 18,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 19,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        }
+      ],
+      "pass": 20,
+      "fail": 0,
+      "first_failure": null
+    },
+    "home_ext4::v4_spawn4_no_precreate": {
+      "path_type": "home_ext4",
+      "variant": "v4_spawn4_no_precreate",
+      "runs": [
+        {
+          "run": 0,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 1,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 2,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 3,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 4,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 5,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 6,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 7,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 8,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 9,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 10,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 11,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 12,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 13,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 14,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 15,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 16,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 17,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 18,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 19,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        }
+      ],
+      "pass": 20,
+      "fail": 0,
+      "first_failure": null
+    },
+    "dev_shm::v1_fork4_no_precreate": {
+      "path_type": "dev_shm",
+      "variant": "v1_fork4_no_precreate",
+      "runs": [
+        {
+          "run": 0,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 1,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 2,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 3,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 4,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 5,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 6,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 7,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 8,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 9,
+          "ok": false,
+          "error": "OperationalError: database is locked",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: database is locked"
+        },
+        {
+          "run": 10,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 11,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 12,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 13,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 14,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 15,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 16,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 17,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 18,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 19,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        }
+      ],
+      "pass": 19,
+      "fail": 1,
+      "first_failure": {
+        "run": 9,
+        "ok": false,
+        "error": "OperationalError: database is locked",
+        "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+        "journal_mode": "wal",
+        "integrity": "ok",
+        "events": null,
+        "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: database is locked"
+      }
+    },
+    "dev_shm::v2_fork4_precreate": {
+      "path_type": "dev_shm",
+      "variant": "v2_fork4_precreate",
+      "runs": [
+        {
+          "run": 0,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 1,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 2,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 3,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 4,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 5,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 6,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 7,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 8,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 9,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 10,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 11,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 12,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 13,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 14,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 15,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 16,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 17,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 18,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 19,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        }
+      ],
+      "pass": 20,
+      "fail": 0,
+      "first_failure": null
+    },
+    "dev_shm::v3_1proc": {
+      "path_type": "dev_shm",
+      "variant": "v3_1proc",
+      "runs": [
+        {
+          "run": 0,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 1,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 2,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 3,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 4,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 5,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 6,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 7,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 8,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 9,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 10,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 11,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 12,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 13,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 14,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 15,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 16,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 17,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 18,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 19,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        }
+      ],
+      "pass": 20,
+      "fail": 0,
+      "first_failure": null
+    },
+    "dev_shm::v4_spawn4_no_precreate": {
+      "path_type": "dev_shm",
+      "variant": "v4_spawn4_no_precreate",
+      "runs": [
+        {
+          "run": 0,
+          "ok": false,
+          "error": "OperationalError: database is locked",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: database is locked"
+        },
+        {
+          "run": 1,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 2,
+          "ok": false,
+          "error": "OperationalError: database is locked",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: database is locked"
+        },
+        {
+          "run": 3,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 4,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 5,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 6,
+          "ok": false,
+          "error": "OperationalError: database is locked",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: database is locked"
+        },
+        {
+          "run": 7,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 8,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 9,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 10,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 11,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 12,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 13,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 14,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 15,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 16,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 17,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 18,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 19,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        }
+      ],
+      "pass": 17,
+      "fail": 3,
+      "first_failure": {
+        "run": 0,
+        "ok": false,
+        "error": "OperationalError: database is locked",
+        "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+        "journal_mode": "wal",
+        "integrity": "ok",
+        "events": null,
+        "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: database is locked"
+      }
+    },
+    "ntfs_workspace::v1_fork4_no_precreate": {
+      "path_type": "ntfs_workspace",
+      "variant": "v1_fork4_no_precreate",
+      "runs": [
+        {
+          "run": 0,
+          "ok": false,
+          "error": "OperationalError: disk I/O error",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+        },
+        {
+          "run": 1,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 2,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 3,
+          "ok": false,
+          "error": "OperationalError: disk I/O error",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+        },
+        {
+          "run": 4,
+          "ok": false,
+          "error": "OperationalError: disk I/O error",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+        },
+        {
+          "run": 5,
+          "ok": false,
+          "error": "OperationalError: disk I/O error",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 118, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 118, in __init__\n    self._conn.executescript(_SCHEMA)\n    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+        },
+        {
+          "run": 6,
+          "ok": false,
+          "error": "OperationalError: disk I/O error",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+        },
+        {
+          "run": 7,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 8,
+          "ok": false,
+          "error": "OperationalError: disk I/O error",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+        },
+        {
+          "run": 9,
+          "ok": false,
+          "error": "OperationalError: disk I/O error",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+        },
+        {
+          "run": 10,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 11,
+          "ok": false,
+          "error": "OperationalError: disk I/O error",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+        },
+        {
+          "run": 12,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 13,
+          "ok": false,
+          "error": "OperationalError: disk I/O error",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 118, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 118, in __init__\n    self._conn.executescript(_SCHEMA)\n    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+        },
+        {
+          "run": 14,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 15,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 16,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 17,
+          "ok": false,
+          "error": "OperationalError: disk I/O error",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+        },
+        {
+          "run": 18,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 19,
+          "ok": false,
+          "error": "OperationalError: disk I/O error",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+        }
+      ],
+      "pass": 9,
+      "fail": 11,
+      "first_failure": {
+        "run": 0,
+        "ok": false,
+        "error": "OperationalError: disk I/O error",
+        "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+        "journal_mode": "wal",
+        "integrity": "ok",
+        "events": null,
+        "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+      }
+    },
+    "ntfs_workspace::v2_fork4_precreate": {
+      "path_type": "ntfs_workspace",
+      "variant": "v2_fork4_precreate",
+      "runs": [
+        {
+          "run": 0,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 1,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 2,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 3,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 4,
+          "ok": false,
+          "error": "OperationalError: disk I/O error",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+        },
+        {
+          "run": 5,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 6,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 7,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 8,
+          "ok": false,
+          "error": "OperationalError: disk I/O error",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+        },
+        {
+          "run": 9,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 10,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 11,
+          "ok": false,
+          "error": "OperationalError: disk I/O error",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+        },
+        {
+          "run": 12,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 13,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 14,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 15,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 16,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 17,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 18,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        },
+        {
+          "run": 19,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 81
+        }
+      ],
+      "pass": 17,
+      "fail": 3,
+      "first_failure": {
+        "run": 4,
+        "ok": false,
+        "error": "OperationalError: disk I/O error",
+        "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+        "journal_mode": "wal",
+        "integrity": "ok",
+        "events": null,
+        "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+      }
+    },
+    "ntfs_workspace::v3_1proc": {
+      "path_type": "ntfs_workspace",
+      "variant": "v3_1proc",
+      "runs": [
+        {
+          "run": 0,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 1,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 2,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 3,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 4,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 5,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 6,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 7,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 8,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 9,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 10,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 11,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 12,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 13,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 14,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 15,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 16,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 17,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 18,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        },
+        {
+          "run": 19,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 20
+        }
+      ],
+      "pass": 20,
+      "fail": 0,
+      "first_failure": null
+    },
+    "ntfs_workspace::v4_spawn4_no_precreate": {
+      "path_type": "ntfs_workspace",
+      "variant": "v4_spawn4_no_precreate",
+      "runs": [
+        {
+          "run": 0,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 1,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 2,
+          "ok": false,
+          "error": "OperationalError: disk I/O error",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 118, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 118, in __init__\n    self._conn.executescript(_SCHEMA)\n    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+        },
+        {
+          "run": 3,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 4,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 5,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 6,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 7,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 8,
+          "ok": false,
+          "error": "OperationalError: database is locked",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: database is locked"
+        },
+        {
+          "run": 9,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 10,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 11,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 12,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 13,
+          "ok": false,
+          "error": "OperationalError: database is locked",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: database is locked"
+        },
+        {
+          "run": 14,
+          "ok": false,
+          "error": "OperationalError: database is locked",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: database is locked"
+        },
+        {
+          "run": 15,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 16,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 17,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 18,
+          "ok": true,
+          "error": null,
+          "first_failing_line": null,
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": 80
+        },
+        {
+          "run": 19,
+          "ok": false,
+          "error": "OperationalError: disk I/O error",
+          "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__",
+          "journal_mode": "wal",
+          "integrity": "ok",
+          "events": null,
+          "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 116, in __init__\n    self._conn.execute(\"PRAGMA journal_mode=WAL\")\n    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+        }
+      ],
+      "pass": 15,
+      "fail": 5,
+      "first_failure": {
+        "run": 2,
+        "ok": false,
+        "error": "OperationalError: disk I/O error",
+        "first_failing_line": "File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 118, in __init__",
+        "journal_mode": "wal",
+        "integrity": "ok",
+        "events": null,
+        "traceback_tail": "Traceback (most recent call last):\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/ENGINEERING_AUDIT/S0_CLOSURE/sqlite_wal_experiment.py\", line 46, in memory_writer\n    store = MemoryStore(path)\n  File \"/run/media/abubakargcx/My Drive/AI_WORKSPACE/AJ/aj/memory.py\", line 118, in __init__\n    self._conn.executescript(_SCHEMA)\n    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\nsqlite3.OperationalError: disk I/O error"
+      }
+    }
+  }
+}

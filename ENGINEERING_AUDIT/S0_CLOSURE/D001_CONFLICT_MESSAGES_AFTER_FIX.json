@@ -1,0 +1,17 @@
+{
+  "direct_guard": {
+    "exc": "Conflict",
+    "msg": "parent task aj_20261115T155040_cb37172b cannot complete: required child work unresolved/uncertain/manual-review",
+    "detail_summary": "aggregation shows waiting/required unresolved, can_complete false"
+  },
+  "child_failed": {
+    "exc": "Conflict",
+    "msg": "parent task aj_20261115T155040_6c4710e4 cannot complete: required child work unresolved/uncertain/manual-review",
+    "detail_summary": "aggregation shows failed required child, can_complete false"
+  },
+  "idempotency_conflict": {
+    "exc": "Conflict",
+    "msg": "same delegation idempotency key with different specification",
+    "note": "not from completion guard; unaffected by D-001"
+  }
+}

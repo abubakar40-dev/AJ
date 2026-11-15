@@ -1,0 +1,37 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___________ test_a7_t11_unsupported_capabilities_or_claims_rejected ____________
+
+ext4_tmpdir = PosixPath('/tmp/aj_s0_proof_7wjgekti')
+
+    @pytest.mark.xfail(strict=True, reason="T-11: unsupported capabilities/claims must be rejected and reported")
+    def test_a7_t11_unsupported_capabilities_or_claims_rejected(ext4_tmpdir):
+        """A7 (T-11): attempts to use unsupported capabilities/claims must be rejected and
+        reported. Current behavior expected to not enforce/support this surface."""
+        aj = make_aj(ext4_tmpdir)
+        parent = create_planned_parent(aj, "test.child")
+        seed_internal_agent(aj, ["test.child"])
+        # attempt unsupported capability/claim in delegation request (Doc 58 semantics)
+        req = delegation_request(parent.task_id, "test.child")
+        req["unsupported_claim"] = "exactly_once_global"
+        req["claims"] = ["cross_store_atomicity", "distributed_exactly_once"]
+        req["required_capabilities"] = ["test.child", "unsupported.magic.capability"]
+        rejected = False
+        report = None
+        try:
+            res = aj.delegate(req)
+            report = res
+            # if not rejected, ensure it explicitly reports unsupported claims/capabilities as rejected
+            # (target invariant)
+            rejected = False
+        except Exception as e:
+            rejected = True
+            report = str(e)
+>       assert rejected, f"unsupported capabilities/claims not rejected: {report}"
+E       AssertionError: unsupported capabilities/claims not rejected: {'delegation': {'schema_version': 1, 'delegation_id': 'dlg_23a26dcfda1d4804', 'parent_task_id': 'aj_20261115T153119_5c88746f', 'root_task_id': 'aj_20261115T153119_5c88746f', 'request': {'schema_version': 1, 'parent_task_id': 'aj_20261115T153119_5c88746f', 'requested_work': 'delegate work', 'required_capabilities': ['test.child', 'unsupported.magic.capability'], 'child_specs': [{'goal': 'child goal', 'required_capabilities': ['test.child'], 'capability_id': 'test.child', 'child_ref': 'c1', 'priority': 0, 'deadline': None, 'request_payload': {}, 'permission_context': {}}], 'constraints': [], 'priority': 0, 'deadline': None, 'permission_context': {'parent_permissions': ['delegation.coordinate'], 'requested_permissions': ['delegation.coordinate'], 'agent_permissions': ['delegation.coordinate'], 'system_permissions': ['delegation.coordinate']}, 'correlation_id': '', 'idempotency_key': '', 'provenance': {}, 'aggregation_policy': 'all_required', 'required_child_ids': [], 'max_children': 1}, 'child_task_ids': ['aj_20261115T153119_037a7c82'], 'child_refs': {'c1': 'aj_20261115T153119_037a7c82'}, 'status': 'COMPLETED_CREATION', 'created_at': 1794738679.4205391, 'updated_at': 1794738679.4310377, 'reason': 'reconciled: can_complete=False manual_review=False incorrect_complete=False', 'evidence': {'actor': 'aj', 'provenance': {}, 'last_reconciliation': {'at': 1794738679.43102, 'trigger': 'explicit', 'actor': 'system', 'source_child_task_id': '', 'aggregation': {'parent_task_id': 'aj_20261115T153119_5c88746f', 'aggregation_policy': 'all_required', 'required_child_task_ids': ['aj_20261115T153119_037a7c82'], 'counts': {'created': 1, 'eligible': 0, 'admitted': 0, 'running': 0, 'completed': 0, 'failed': 0, 'cancelled': 0, 'recovery_required': 0, 'manual_review': 0, 'waiting': 1, 'unknown': 0}, 'children': [{'child_task_id': 'aj_20261115T153119_037a7c82', 'status': 'AUTHORIZED'}], 'waiting_for_children': True, 'can_complete': False, 'requires_manual_review': False, 'child_state_snapshot': {'items': [{'child_task_id': 'aj_20261115T153119_037a7c82', 'status': 'AUTHORIZED', 'updated_at': 1794738679.4267573, 'completed_at': None, 'requires_user_decision': False}], 'hash': '3c9f2a5762cb34a23276a12a18f390e7f4baa988e39b62c2e26053fb7b52636b'}}, 'children': [], 'incorrect_parent_completion': False}, 'reconciliation_history': [{'at': 1794738679.43102, 'hash': '3c9f2a5762cb34a23276a12a18f390e7f4baa988e39b62c2e26053fb7b52636b', 'can_complete': False, 'manual_review': False, 'trigger': 'explicit'}]}}, 'assignments': [{'schema_version': 1, 'assignment_id': 'asg_f88d1be673d2132a', 'delegation_id': 'dlg_23a26dcfda1d4804', 'parent_task_id': 'aj_20261115T153119_5c88746f', 'child_task_id': 'aj_20261115T153119_037a7c82', 'execution_id': '', 'attempt_id': '', 'agent_id': 'agent.aj.internal', 'capability_id': 'test.child', 'status': 'ASSIGNED', 'logical_internal': True, 'reason': "Selected agent.aj.internal (deterministic) for capabilities ['test.child'].", 'match': {'ok': True, 'reason': 'matched', 'agent_id': 'agent.aj.internal', 'required_capabilities': ['test.child'], 'execution_mode': 'logical_internal', 'logical_internal': True, 'explanation': "Selected agent.aj.internal (deterministic) for capabilities ['test.child'].", 'rejections': [{'agent_id': 'agent.helix', 'reasons': ['test.child:capability_not_supported']}, {'agent_id': 'agent.jarvis', 'reasons': ['agent_unavailable', 'test.child:agent_unavailable']}]}, 'permission_decision': {'ok': True, 'reason': 'narrowed', 'effective_permissions': ['delegation.coordinate'], 'explanation': 'Effective permissions computed as intersection (narrowing only).', 'parent_permissions': ['delegation.coordinate'], 'requested_permissions': ['delegation.coordinate'], 'agent_permissions': ['delegation.coordinate'], 'system_permissions': ['delegation.coordinate']}, 'lease_id': '', 'created_at': 1794738679.4288874, 'updated_at': 1794738679.4288878, 'completed_at': None, 'events': []}], 'aggregation': {'parent_task_id': 'aj_20261115T153119_5c88746f', 'aggregation_policy': 'all_required', 'required_child_task_ids': ['aj_20261115T153119_037a7c82'], 'counts': {'created': 1, 'eligible': 0, 'admitted': 0, 'running': 0, 'completed': 0, 'failed': 0, 'cancelled': 0, 'recovery_required': 0, 'manual_review': 0, 'waiting': 1, 'unknown': 0}, 'children': [{'child_task_id': 'aj_20261115T153119_037a7c82', 'status': 'AUTHORIZED'}], 'waiting_for_children': True, 'can_complete': False, 'requires_manual_review': False}}
+E       assert False
+
+tests/s0_proof/test_s0_characterization.py:368: AssertionError
+=========================== short test summary info ============================
+FAILED tests/s0_proof/test_s0_characterization.py::test_a7_t11_unsupported_capabilities_or_claims_rejected
+1 failed, 6 deselected in 0.30s

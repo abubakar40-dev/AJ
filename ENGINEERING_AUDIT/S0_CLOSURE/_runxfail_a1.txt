@@ -1,0 +1,40 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___________________ test_a1_abandon_survives_reload_and_list ___________________
+
+ext4_tmpdir = PosixPath('/tmp/aj_s0_proof_xql77p2r')
+
+    @pytest.mark.xfail(strict=True, reason="INV-ABANDONED/Doc58: ABANDONED must be formal terminal+loadable")
+    def test_a1_abandon_survives_reload_and_list(ext4_tmpdir):
+        """A1 (ABANDONED formal terminal, INV loadability): abandon a task, rebuild TaskStore
+        from disk, assert it is still loaded and listed.
+        Expected gap: ABANDONED not in TRANSITIONS/TERMINAL so reload skips it (load error)."""
+        aj = make_aj(ext4_tmpdir)
+        rec = aj.tasks.create("task to abandon")
+        aj.tasks.save(rec, "created")
+        # move to FAILED so abandon path is reachable via dead_letter/abandon semantics? abandon() allows from many states in current impl?
+        aj.tasks.transition(rec.task_id, taskmod.UNDERSTANDING)
+        aj.tasks.transition(rec.task_id, taskmod.PLANNED)
+        aj.tasks.transition(rec.task_id, taskmod.AUTHORIZED)
+        aj.tasks.transition(rec.task_id, taskmod.EXECUTING)
+        aj.tasks.transition(rec.task_id, taskmod.FAILED, "fail")
+        # dead letter then abandon (current supported flow)
+        aj.dead_letter(rec.task_id, "dl")
+        aj.abandon(rec.task_id, "abandon now")
+        assert aj.tasks.get(rec.task_id).status == "ABANDONED"
+    
+        # rebuild store from disk
+        store2 = taskmod.TaskStore(ext4_tmpdir)
+        found = store2.find(rec.task_id)
+        # invariant: abandoned task must remain loadable/listed with preserved history
+        assert found is not None, f"abandoned task missing after reload; load_errors={store2.load_errors}"
+>       assert found.status == "ABANDONED"
+E       AssertionError: assert 'DEAD_LETTER' == 'ABANDONED'
+E         
+E         - ABANDONED
+E         + DEAD_LETTER
+
+tests/s0_proof/test_s0_characterization.py:172: AssertionError
+=========================== short test summary info ============================
+FAILED tests/s0_proof/test_s0_characterization.py::test_a1_abandon_survives_reload_and_list
+1 failed, 6 deselected in 0.69s

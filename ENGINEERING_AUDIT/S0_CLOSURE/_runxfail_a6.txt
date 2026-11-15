@@ -1,0 +1,47 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___________ test_a6_t04_missing_or_malformed_required_classification ___________
+
+ext4_tmpdir = PosixPath('/tmp/aj_s0_proof_w4kalcd1')
+
+    @pytest.mark.xfail(strict=True, reason="T-04: missing/malformed required classification must fail closed (default required)")
+    def test_a6_t04_missing_or_malformed_required_classification(ext4_tmpdir):
+        """A6 (T-04): missing and malformed `required` classification must be treated as
+        required / fail closed per Doc 58. Current implementation expected to lack this field."""
+        aj = make_aj(ext4_tmpdir)
+        parent = create_planned_parent(aj, "test.child")
+        seed_internal_agent(aj, ["test.child"])
+        # missing required field
+        req_missing = delegation_request(parent.task_id, "test.child")
+        # malformed required field
+        req_malformed = delegation_request(
+            parent.task_id, "test.child",
+            child_specs=[{
+                "child_ref": "c1", "goal": "child 1", "required_capabilities": ["test.child"],
+                "capability_id": "test.child", "required": "maybe",
+            }],
+        )
+    
+        def child_classified_required(res):
+            # target invariant: child/delegation record must carry required classification defaulting to True
+            d = res.get("delegation") or res
+            # inspect persisted delegation/child request for explicit required semantics
+            # try multiple plausible locations
+            req = d.get("request") or {}
+            specs = req.get("child_specs") or []
+            if specs:
+                val = specs[0].get("required", None)
+                return val is True
+            return False
+    
+        # missing case
+        res1 = aj.delegate(req_missing)
+>       assert child_classified_required(res1), f"missing required not treated as required/fail-closed: {res1}"
+E       AssertionError: missing required not treated as required/fail-closed: {'delegation': {'schema_version': 1, 'delegation_id': 'dlg_8c1a990f97d46514', 'parent_task_id': 'aj_20261115T153119_a166f201', 'root_task_id': 'aj_20261115T153119_a166f201', 'request': {'schema_version': 1, 'parent_task_id': 'aj_20261115T153119_a166f201', 'requested_work': 'delegate work', 'required_capabilities': ['test.child'], 'child_specs': [{'goal': 'child goal', 'required_capabilities': ['test.child'], 'capability_id': 'test.child', 'child_ref': 'c1', 'priority': 0, 'deadline': None, 'request_payload': {}, 'permission_context': {}}], 'constraints': [], 'priority': 0, 'deadline': None, 'permission_context': {'parent_permissions': ['delegation.coordinate'], 'requested_permissions': ['delegation.coordinate'], 'agent_permissions': ['delegation.coordinate'], 'system_permissions': ['delegation.coordinate']}, 'correlation_id': '', 'idempotency_key': '', 'provenance': {}, 'aggregation_policy': 'all_required', 'required_child_ids': [], 'max_children': 1}, 'child_task_ids': ['aj_20261115T153119_a41a6bd6'], 'child_refs': {'c1': 'aj_20261115T153119_a41a6bd6'}, 'status': 'COMPLETED_CREATION', 'created_at': 1794738679.9680374, 'updated_at': 1794738679.977363, 'reason': 'reconciled: can_complete=False manual_review=False incorrect_complete=False', 'evidence': {'actor': 'aj', 'provenance': {}, 'last_reconciliation': {'at': 1794738679.9773533, 'trigger': 'explicit', 'actor': 'system', 'source_child_task_id': '', 'aggregation': {'parent_task_id': 'aj_20261115T153119_a166f201', 'aggregation_policy': 'all_required', 'required_child_task_ids': ['aj_20261115T153119_a41a6bd6'], 'counts': {'created': 1, 'eligible': 0, 'admitted': 0, 'running': 0, 'completed': 0, 'failed': 0, 'cancelled': 0, 'recovery_required': 0, 'manual_review': 0, 'waiting': 1, 'unknown': 0}, 'children': [{'child_task_id': 'aj_20261115T153119_a41a6bd6', 'status': 'AUTHORIZED'}], 'waiting_for_children': True, 'can_complete': False, 'requires_manual_review': False, 'child_state_snapshot': {'items': [{'child_task_id': 'aj_20261115T153119_a41a6bd6', 'status': 'AUTHORIZED', 'updated_at': 1794738679.9728017, 'completed_at': None, 'requires_user_decision': False}], 'hash': 'f56af05ace8faf2bb4abf01a6f964b257621a2affa0afa3803b82332e49ceef3'}}, 'children': [], 'incorrect_parent_completion': False}, 'reconciliation_history': [{'at': 1794738679.9773533, 'hash': 'f56af05ace8faf2bb4abf01a6f964b257621a2affa0afa3803b82332e49ceef3', 'can_complete': False, 'manual_review': False, 'trigger': 'explicit'}]}}, 'assignments': [{'schema_version': 1, 'assignment_id': 'asg_5964ba2390503628', 'delegation_id': 'dlg_8c1a990f97d46514', 'parent_task_id': 'aj_20261115T153119_a166f201', 'child_task_id': 'aj_20261115T153119_a41a6bd6', 'execution_id': '', 'attempt_id': '', 'agent_id': 'agent.aj.internal', 'capability_id': 'test.child', 'status': 'ASSIGNED', 'logical_internal': True, 'reason': "Selected agent.aj.internal (deterministic) for capabilities ['test.child'].", 'match': {'ok': True, 'reason': 'matched', 'agent_id': 'agent.aj.internal', 'required_capabilities': ['test.child'], 'execution_mode': 'logical_internal', 'logical_internal': True, 'explanation': "Selected agent.aj.internal (deterministic) for capabilities ['test.child'].", 'rejections': [{'agent_id': 'agent.helix', 'reasons': ['test.child:capability_not_supported']}, {'agent_id': 'agent.jarvis', 'reasons': ['agent_unavailable', 'test.child:agent_unavailable']}]}, 'permission_decision': {'ok': True, 'reason': 'narrowed', 'effective_permissions': ['delegation.coordinate'], 'explanation': 'Effective permissions computed as intersection (narrowing only).', 'parent_permissions': ['delegation.coordinate'], 'requested_permissions': ['delegation.coordinate'], 'agent_permissions': ['delegation.coordinate'], 'system_permissions': ['delegation.coordinate']}, 'lease_id': '', 'created_at': 1794738679.975933, 'updated_at': 1794738679.9759338, 'completed_at': None, 'events': []}], 'aggregation': {'parent_task_id': 'aj_20261115T153119_a166f201', 'aggregation_policy': 'all_required', 'required_child_task_ids': ['aj_20261115T153119_a41a6bd6'], 'counts': {'created': 1, 'eligible': 0, 'admitted': 0, 'running': 0, 'completed': 0, 'failed': 0, 'cancelled': 0, 'recovery_required': 0, 'manual_review': 0, 'waiting': 1, 'unknown': 0}, 'children': [{'child_task_id': 'aj_20261115T153119_a41a6bd6', 'status': 'AUTHORIZED'}], 'waiting_for_children': True, 'can_complete': False, 'requires_manual_review': False}}
+E       assert False
+E        +  where False = <function test_a6_t04_missing_or_malformed_required_classification.<locals>.child_classified_required at 0x719f01b3d900>({'delegation': {'schema_version': 1, 'delegation_id': 'dlg_8c1a990f97d46514', 'parent_task_id': 'aj_20261115T153119_a1...ids': ['aj_20261115T153119_a41a6bd6'], 'counts': {'created': 1, 'eligible': 0, 'admitted': 0, 'running': 0, ...}, ...}})
+
+tests/s0_proof/test_s0_characterization.py:335: AssertionError
+=========================== short test summary info ============================
+FAILED tests/s0_proof/test_s0_characterization.py::test_a6_t04_missing_or_malformed_required_classification
+1 failed, 6 deselected in 0.20s

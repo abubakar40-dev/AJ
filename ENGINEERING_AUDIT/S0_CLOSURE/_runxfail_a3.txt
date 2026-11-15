@@ -1,0 +1,26 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+________ test_a3_scheduler_does_not_dispatch_child_of_cancelled_parent _________
+
+ext4_tmpdir = PosixPath('/tmp/aj_s0_proof_xdwk4m16')
+
+    @pytest.mark.xfail(strict=True, reason="INV/Doc58: scheduler must not dispatch delegated child with cancelled/revoked parent")
+    def test_a3_scheduler_does_not_dispatch_child_of_cancelled_parent(ext4_tmpdir):
+        """A3: Scheduler.run_once with a cancelled delegated parent must not dispatch child."""
+        aj = make_aj(ext4_tmpdir)
+        parent_id, child_id, _did, _res = create_delegated_child(aj, ext4_tmpdir)
+        # ensure child is authorized/schedulable in current behavior
+        child = aj.tasks.get(child_id)
+        aj.tasks.transition(parent_id, taskmod.CANCELLED, "cancel parent")
+        sched = Scheduler(aj)
+        # if child in dispatchable state, run_once should not dispatch it
+        res = sched.run_once(limit=10, workers=1)
+        dispatched = res.get("selected") or []
+>       assert child_id not in dispatched, f"child dispatched despite cancelled parent: {res}"
+E       AssertionError: child dispatched despite cancelled parent: {'worker_id': 'scheduler-1794738679453124798', 'selected': ['aj_20261115T153119_5dc18b7a'], 'results': [{'task_id': 'aj_20261115T153119_5dc18b7a', 'status': 'ABORTED', 'ok': False, 'detail': 'delegated execution blocked: parent delegation authority revoked/cancelled', 'eligibility': {'eligible': True, 'reason_code': 'ELIGIBLE', 'explanation': 'Task is eligible for admission/dispatch consideration.', 'details': {'status': 'AUTHORIZED', 'capability_id': 'test.child'}}, 'admission': {'admitted': True, 'deferred': False, 'reason_code': 'ADMITTED', 'explanation': 'Admitted for dispatch under current bounded capacity policy.', 'details': {'active_count': 0, 'selected_active': 0, 'limits': {'global_max_active_executions': 2, 'global_max_admitted_waiting': 10, 'max_dispatch_per_run': 5, 'max_workers': 1}}}, 'dispatch': {'state': 'completed_dispatch_call', 'lease_id': 'lease_20261115T153119_d7dd59f0'}}], 'completed': 0, 'failed': 1, 'decisions': [{'task_id': 'aj_20261115T153119_5dc18b7a', 'eligibility': {'eligible': True, 'reason_code': 'ELIGIBLE', 'explanation': 'Task is eligible for admission/dispatch consideration.', 'details': {'status': 'AUTHORIZED', 'capability_id': 'test.child'}}, 'admission': {'admitted': True, 'deferred': False, 'reason_code': 'ADMITTED', 'explanation': 'Admitted for dispatch under current bounded capacity policy.', 'details': {'active_count': 0, 'selected_active': 0, 'limits': {'global_max_active_executions': 2, 'global_max_admitted_waiting': 10, 'max_dispatch_per_run': 5, 'max_workers': 1}}}, 'selected': True}], 'limits': {'requested_limit': 10, 'requested_workers': 1, 'effective_limit': 5, 'effective_workers': 1, 'max_dispatch_per_run': 5, 'global_max_admitted_waiting': 10}}
+E       assert 'aj_20261115T153119_5dc18b7a' not in ['aj_20261115T153119_5dc18b7a']
+
+tests/s0_proof/test_s0_characterization.py:250: AssertionError
+=========================== short test summary info ============================
+FAILED tests/s0_proof/test_s0_characterization.py::test_a3_scheduler_does_not_dispatch_child_of_cancelled_parent
+1 failed, 6 deselected in 0.20s

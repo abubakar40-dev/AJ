@@ -1,0 +1,20 @@
+xxxxxxx................................................................. [ 12%]
+........................................................................ [ 24%]
+........................................................................ [ 36%]
+........................................................................ [ 49%]
+........................................................................ [ 61%]
+........................................................................ [ 73%]
+........................................................................ [ 86%]
+........................................................................ [ 98%]
+........                                                                 [100%]
+=============================== warnings summary ===============================
+../../../../../../usr/lib/python3/dist-packages/gi/overrides/__init__.py:159
+  /usr/lib/python3/dist-packages/gi/overrides/__init__.py:159: PyGIDeprecationWarning: GLib.unix_signal_add_full is deprecated; use GLibUnix.signal_add_full instead
+    value = getattr(proxy, attr)
+
+tests/test_phase3.py: 12 warnings
+  /usr/lib/python3.14/multiprocessing/popen_fork.py:70: DeprecationWarning: This process (pid=812672) is multi-threaded, use of fork() may lead to deadlocks in the child.
+    self.pid = os.fork()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+577 passed, 7 xfailed, 13 warnings in 46.00s
